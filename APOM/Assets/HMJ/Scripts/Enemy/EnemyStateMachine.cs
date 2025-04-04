@@ -14,15 +14,18 @@ public class EnemyStateMachine : StateMachine
     public EnemyIdleState EnemyIdleState { get; }
     public EnemyAttackState EnemyAttackState { get; }
     public EnemyChaseState EnemyChaseState { get; }
+    public EnemyWalkState EnemyWalkState { get; }
 
     public EnemyStateMachine(Enemy enemy)
     {
         this.Enemy = enemy;
         //Target = GameObject.FindGameObjectWithTag("Player").GetComponent<Health>();
 
-        //EnemyIdleState = new EnemyIdleState(this);
-        //EnemyAttackState = new EnemyAttackState(this);
-        //EnemyChaseState = new EnemyChaseState(this);
+        EnemyIdleState = new EnemyIdleState(this);
+        EnemyAttackState = new EnemyAttackState(this);
+        EnemyChaseState = new EnemyChaseState(this);
+        EnemyWalkState = new EnemyWalkState(this);
+
 
         //MovementSpeed = enemy.SOData.GroundData.BaseSpeed;
         //RotationDamping = enemy.SOData.GroundData.BaseRotationDamping;
