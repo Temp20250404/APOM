@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    //[field: SerializeField] public EnemySO SOData { get; private set; }
+    [field: SerializeField] public EnemyData SOData { get; private set; }
 
     [field: Header("Animations")]
     [field: SerializeField] public EnemyAnimationData EnemyAnimationData { get; private set; }
@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     public CharacterController Controller { get; private set; }
 
     private EnemyStateMachine stateMachine;
+    public EnemyAI enemyAI;
    // public ForceReceiver ForceReceiver { get; private set; }
 
     private void Awake()
@@ -23,6 +24,7 @@ public class Enemy : MonoBehaviour
         Controller = GetComponent<CharacterController>();
 
         stateMachine = new EnemyStateMachine(this);
+        enemyAI = GetComponent<EnemyAI>();
     }
     void Start()
     {

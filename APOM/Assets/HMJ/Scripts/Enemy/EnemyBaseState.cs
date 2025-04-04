@@ -1,38 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyBaseState : IState
 {
     protected EnemyStateMachine stateMachine;
+    protected readonly EnemyGroundData groundData;
 
 
     public EnemyBaseState(EnemyStateMachine stateMachine)
     {
         this.stateMachine = stateMachine;
+        groundData = stateMachine.Enemy.SOData.GroundData;
     }
     public virtual void Enter()
     {
-        throw new System.NotImplementedException();
+        stateMachine.Enemy.enemyAI.MoveSpeed(stateMachine.MoveMentSpeedModifier);
     }
 
     public virtual void Exit()
     {
-        throw new System.NotImplementedException();
     }
 
     public virtual void HandleInput()
     {
-        throw new System.NotImplementedException();
     }
 
     public virtual void PhysicsUpdate()
     {
-        throw new System.NotImplementedException();
     }
 
     public virtual void Update()
     {
-        throw new System.NotImplementedException();
+    }
+
+    protected void StartAnimation(int parameterHash)
+    {
+        stateMachine.Enemy.Anim.SetBool(parameterHash, true);
+    }
+
+    protected void StopAnimation(int parameterHash)
+    {
+        stateMachine.Enemy.Anim.SetBool(parameterHash, false);
     }
 }
