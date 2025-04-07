@@ -15,8 +15,13 @@ public class GameManager : Singleton<GameManager>, IManager
         //stateMachine.ChangeState();
     }
 
+    private void Start()
+    {
+        
+    }
+
     public void Init()
-    { 
+    {
     }
 
     public void Clear()

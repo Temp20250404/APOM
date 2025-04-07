@@ -21,8 +21,24 @@ public class UIManager : IManager
     private List<UI_Follow> _followList = new List<UI_Follow>();
 
     public void Init()
-    {        
- 
+    {
+        if (_sceneUIParent == null)
+        {
+            GameObject sceneParent = new GameObject("SceneUIParent");
+            _sceneUIParent = sceneParent.transform;
+        }
+
+        if (_popupUIParent == null)
+        {
+            GameObject popupParent = new GameObject("PopupUIParent");
+            _popupUIParent = popupParent.transform;
+        }
+
+        if (_followUIParent == null)
+        {
+            GameObject followParent = new GameObject("FollowUIParent");
+            _followUIParent = followParent.transform;
+        }
     } 
   
     public void Clear()
@@ -91,6 +107,7 @@ public class UIManager : IManager
 
         GameObject go = Managers.Resource.Instantiate($"UI/Popup/{name}");
         T popup = Util.GetOrAddComponent<T>(go);
+        popup.Init();
         _popupStack.Push(popup);
 
         go.transform.SetParent(_popupUIParent.transform, false);

@@ -5,9 +5,9 @@ using UnityEngine.InputSystem;
 
 public enum EPlayerInput
 {
-	move,
-	interaction,
-	LeftMouse
+	MOVE,
+	INTERACTION,
+    //LEFTMOUSE,
 }
 
 [System.Serializable]
