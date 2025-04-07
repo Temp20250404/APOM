@@ -13,7 +13,7 @@ public class EnemyAI : MonoBehaviour
     private NavMeshAgent agent;
     public Transform target;
 
-    void Start()
+    void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
     }

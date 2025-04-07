@@ -23,8 +23,8 @@ public class Enemy : MonoBehaviour
         Anim = GetComponentInChildren<Animator>();
         Controller = GetComponent<CharacterController>();
 
-        stateMachine = new EnemyStateMachine(this);
         enemyAI = GetComponent<EnemyAI>();
+        stateMachine = new EnemyStateMachine(this);
     }
     void Start()
     {
