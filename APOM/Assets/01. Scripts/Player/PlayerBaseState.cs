@@ -2,20 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Windows;
+using static PlayerController;
 
 public class PlayerBaseState : IState
 {
-    private Vector2[] moveInput;
-
-    private int moveInputSize = 10;
-    private int moveInputIndex = 0;
-
-    private Vector3[] moveDir;
-
-    private int moveDirSize = 10;
-    private int moveDirIndex = 0;
-
-
     protected PlayerStateMachine stateMachine;
     protected readonly PlayerDefaultData defaultData;
 
@@ -43,10 +34,6 @@ public class PlayerBaseState : IState
     public virtual void StateHandleInput()
     {
         ReadMovementInput();
-
-        //Vector2 currentInput = stateMachine.player.inputController.playerActions.Move.ReadValue<Vector2>();
-        //moveInput[moveInputIndex] = currentInput;
-        //moveInputIndex = (moveInputIndex + 1) % moveInputSize;
     }
 
     public virtual void StatePhysicsUpdate()
@@ -85,8 +72,10 @@ public class PlayerBaseState : IState
 
     protected Vector3 GetMovementDirection()
     {
-        Vector3 forward = stateMachine.player.mainCameraTransform.forward;
-        Vector3 right = stateMachine.player.mainCameraTransform.right;
+        float radian = stateMachine.player.inputController.recivePacketRotation * Mathf.Deg2Rad;
+
+        Vector3 forward = new Vector3(Mathf.Sin(radian), 0f, Mathf.Cos(radian));
+        Vector3 right = new Vector3(Mathf.Cos(radian), 0f, -Mathf.Sin(radian));
 
         forward.y = 0;
         right.y = 0;
@@ -94,7 +83,7 @@ public class PlayerBaseState : IState
         forward.Normalize();
         right.Normalize();
 
-        return forward * stateMachine.movementInput.y + right * stateMachine.movementInput.x;
+        return forward * GetInputWASD().y + right * GetInputWASD().x;
     }
 
     private float GetMovementSpeed()
@@ -113,6 +102,32 @@ public class PlayerBaseState : IState
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             playerTransform.rotation = Quaternion.Slerp(playerTransform.rotation, targetRotation, stateMachine.rotationDamping * Time.deltaTime);
         }
+    }
+
+    protected Vector2 GetInputWASD()
+    {
+        bool[] inputWASD = stateMachine.player.inputController.recivePacketWASD;
+        Vector2 input = Vector2.zero;
+
+        if (inputWASD[(int)EKEYINPUT.W])
+        {
+            input.y += 1f; // W
+        }
+        if (inputWASD[(int)EKEYINPUT.S])
+        {
+            input.y -= 1f; // S
+        }
+        if (inputWASD[(int)EKEYINPUT.A])
+        {
+            input.x -= 1f; // A
+        }
+        if (inputWASD[(int)EKEYINPUT.D])
+        {
+            input.x += 1f; // D
+        }
+        input = input.normalized;
+
+        return input;
     }
 
     protected virtual void AddInputActionsCallbacks()

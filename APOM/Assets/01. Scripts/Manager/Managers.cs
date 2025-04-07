@@ -20,6 +20,7 @@ public class Managers : Singleton<Managers>
     [field: SerializeField] private SoundManager sound = new SoundManager();
     [field: SerializeField] private UIManager ui = new UIManager();
     [field: SerializeField] private PoolManager pool = new PoolManager();
+    [field: SerializeField] private PlayerManager @player = new PlayerManager();
 
     public static GameManager GameManager => Instance.gameManager;
     public static DataManager Data => Instance.data;
@@ -29,8 +30,8 @@ public class Managers : Singleton<Managers>
     public static SoundManager Sound => Instance.sound;
     public static UIManager UI => Instance.ui;
     public static PoolManager Pool => Instance.pool;
+    public static PlayerManager Player => Instance.@player;
 
-    public static GameObject Player { get; private set; }
     protected override void Awake()
     {
         base.Awake();
@@ -65,6 +66,7 @@ public class Managers : Singleton<Managers>
         Sound.Init();
         UI.Init();
         Pool.Init();
+        Player.Init();
     }
 
     public static void Clear()
