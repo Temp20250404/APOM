@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     private PlayerStateMachine stateMachine;
     public Transform mainCameraTransform { get; set; }
 
+    public bool isMainPlayer;
+
     private void Awake()
     {
         animationData.Initialize();

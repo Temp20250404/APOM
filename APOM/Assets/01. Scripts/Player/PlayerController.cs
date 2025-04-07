@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    enum EKEYINPUT
+    public enum EKEYINPUT
     {
         W = 0,
         A = 1,
