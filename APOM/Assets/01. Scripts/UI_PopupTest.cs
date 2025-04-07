@@ -8,7 +8,8 @@ public class UI_PopupTest : UI_Popup
 {
     enum Buttons
     {
-        Button, //오브젝트의 이름
+        //오브젝트의 이름
+        CloseButton
     }
 
     public override void Init()
@@ -18,7 +19,7 @@ public class UI_PopupTest : UI_Popup
         Bind<Button>(typeof(Buttons));
 
         // 버튼 클릭 시 닫기
-        GetButton((int)Buttons.Button).onClick.AddListener(() => 
+        GetButton((int)Buttons.CloseButton).onClick.AddListener(() => 
         { 
             Managers.UI.ClosePopupUI();
         });
