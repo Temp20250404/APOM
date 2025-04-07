@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class GameManager : Singleton<GameManager>, IManager
+public class GameManager : IManager
 {
     private GMStateMachine stateMachine;
 

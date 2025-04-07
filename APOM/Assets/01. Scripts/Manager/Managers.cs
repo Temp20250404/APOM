@@ -13,13 +13,15 @@ public interface IManager
 public class Managers : Singleton<Managers>
 {
     [field: SerializeField] private GameManager gameManager = new GameManager();
-    [field: SerializeField] private DataManager data;
+    [field: SerializeField] private DataManager data = new DataManager();
     [field: SerializeField] private InputManager input = new InputManager();
     [field: SerializeField] private ResourceManager resource = new ResourceManager();
     [field: SerializeField] private EventManager @event = new EventManager();
     [field: SerializeField] private SoundManager sound = new SoundManager();
     [field: SerializeField] private UIManager ui = new UIManager();
     [field: SerializeField] private PoolManager pool = new PoolManager();
+    [field: SerializeField] private NetworkManager network = new NetworkManager();
+    [field: SerializeField] private PacketManager packet = new PacketManager();
 
     public static GameManager GameManager => Instance.gameManager;
     public static DataManager Data => Instance.data;
@@ -29,6 +31,8 @@ public class Managers : Singleton<Managers>
     public static SoundManager Sound => Instance.sound;
     public static UIManager UI => Instance.ui;
     public static PoolManager Pool => Instance.pool;
+    public static NetworkManager Network => Instance.network;
+    public static PacketManager Packet => Instance.packet;
 
     public static GameObject Player { get; private set; }
     protected override void Awake()
@@ -39,10 +43,11 @@ public class Managers : Singleton<Managers>
         {
             gameManager = new GameManager();
         }
-        //  Player = FindFirstObjectByType<PlayerController>().gameObject;
-        data = new DataManager();
-        Init();
 
+        Application.targetFrameRate = 60;   // 최대 프레임 60으로 조정
+        JobQueue.Push(() => { });           // 잡큐 enq 시작
+
+        Init();
     }
     private void Start()
     {
@@ -55,7 +60,7 @@ public class Managers : Singleton<Managers>
 
     private void Update()
     {
-        //_input.OnUpdate();
+        Network.Update();
     }
 
     private static void Init()
@@ -65,6 +70,8 @@ public class Managers : Singleton<Managers>
         Sound.Init();
         UI.Init();
         Pool.Init();
+        Network.Init();
+        Packet.Init();
     }
 
     public static void Clear()
