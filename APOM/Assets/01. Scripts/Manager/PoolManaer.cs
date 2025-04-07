@@ -36,6 +36,7 @@ public class PoolManager : IManager
         {
             GameObject go = Object.Instantiate<GameObject>(Original);
             go.name = Original.name;
+
             return go;
         }
 
@@ -55,13 +56,18 @@ public class PoolManager : IManager
             GameObject obj;
 
             if (_poolStack.Count > 0)
+            {
                 obj = _poolStack.Pop();
+            }
             else
+            {
                 obj = Create();
+            }
 
             obj.gameObject.SetActive(true);
 
             obj.transform.parent = parent;
+
             return obj; 
         }
     }
@@ -125,7 +131,9 @@ public class PoolManager : IManager
     public GameObject Get(GameObject original, Transform parent = null)
     {
         if (_pool.ContainsKey(original.name) == false)
+        {
             CreatePool(original);
+        }
 
         GameObject obj = _pool[original.name].Pop(parent);
         obj.GetComponent<IPoolable>()?.Initialize(obj => Release(obj)); 

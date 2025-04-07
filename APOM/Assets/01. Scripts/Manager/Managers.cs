@@ -11,7 +11,8 @@ public interface IManager
 }
 
 public class Managers : Singleton<Managers>
-{ 
+{
+    [field: SerializeField] private GameManager gameManager = new GameManager();
     [field: SerializeField] private DataManager data;
     [field: SerializeField] private InputManager input = new InputManager();
     [field: SerializeField] private ResourceManager resource = new ResourceManager();
@@ -19,7 +20,8 @@ public class Managers : Singleton<Managers>
     [field: SerializeField] private SoundManager sound = new SoundManager();
     [field: SerializeField] private UIManager ui = new UIManager();
     [field: SerializeField] private PoolManager pool = new PoolManager();
-      
+
+    public static GameManager GameManager => Instance.gameManager;
     public static DataManager Data => Instance.data;
     public static InputManager Input => Instance.input;
     public static ResourceManager Resource => Instance.resource;

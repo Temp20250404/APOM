@@ -35,22 +35,29 @@ public class InputManager : IManager
     }
  
 	public void SetActive(bool active)
-	{ 
+	{
 		if (active)
+		{
 			inputActionAsset.Enable();
-		
-		else 
-			inputActionAsset.Disable(); 
+		}
+		else
+		{
+			inputActionAsset.Disable();
+		}
 	}
 
 	private void BindAction(Type type)
 	{
 		if (inputActionAsset == null)
-			return; 
+		{
+			return;
+		}
 
 		string mapName = type.Name;
 		if (mapName[0] == 'E')
+		{
 			mapName = mapName.Substring(1);
+		}
 
 		playerInputMap = inputActionAsset.FindActionMap(mapName);
 		foreach (EPlayerInput t in Enum.GetValues(type))

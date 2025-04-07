@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ResourceManager : IManager
@@ -41,11 +42,14 @@ public class ResourceManager : IManager
 
         // Poolable 컴포넌트가 있으면 풀링 처리
         if (original.GetComponent<IPoolable>() != null)
+        {
             return Managers.Pool.Get(original, parent).gameObject;
+        }
 
         // 풀링 처리가 안되어 있으면 일반 인스턴스화
         GameObject go = Object.Instantiate(original, parent);
         go.name = original.name;
+
         return go; 
     }
 

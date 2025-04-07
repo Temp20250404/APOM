@@ -22,18 +22,9 @@ public abstract class StateMachine
         currentState?.StateEnter();
     }
 
-    public void StateUpdate()
-    {
-        currentState?.StateUpdate();
-    }
+    public void StateUpdate() => currentState?.StateUpdate();
 
-    public void StateHandleInput()
-    {
-        currentState?.StateHandleInput();
-    }
+    public void StateHandleInput() => currentState?.StateHandleInput();
 
-    public void StatePhysicsUpdate()
-    {
-        currentState?.StatePhysicsUpdate();
-    }
+    public void StatePhysicsUpdate() => currentState?.StatePhysicsUpdate();
 }

@@ -1,20 +1,24 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
 [Serializable]
 public class UIManager : IManager
 {
-    [SerializeField] private Transform _sceneUIParent; 
-    [SerializeField] private Transform _popupUIParent; 
+    [SerializeField] private Transform _sceneUIParent;
+    [SerializeField] private Transform _popupUIParent;
+    [SerializeField] private Transform _followUIParent;
 
     private int _order = 10;
 
-    private Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
     private UI_Scene _sceneUI = null;
+    private Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
+    private List<UI_Follow> _followList = new List<UI_Follow>();
 
     public void Init()
     {        
@@ -25,6 +29,7 @@ public class UIManager : IManager
     {
         
     }
+
     public void SetCanvas(GameObject go, bool sort = true)
     {
         Canvas canvas = go.GetOrAddComponent<Canvas>();
@@ -107,7 +112,6 @@ public class UIManager : IManager
 
         ClosePopupUI();
     }
-
     public void ClosePopupUI()
     {
         if (_popupStack.Count == 0)
@@ -125,5 +129,44 @@ public class UIManager : IManager
             ClosePopupUI();
     }
 
+    public void CloseFollowUI(UI_Follow follow)
+    {
+        if (_followList.Contains(follow))
+        {
+            _followList.Remove(follow);
+            GameObject.Destroy(follow.gameObject);
+            _order--;
+        }
+    }
+    public void CloseFollowUI()
+    {
+        if (_followList.Count == 0)
+            return;
 
+        Camera mainCamera = Camera.main;
+        if (mainCamera == null)
+        {
+            Debug.LogWarning("메인 카메라를 찾을 수 없습니다.");
+            return;
+        }
+
+        for (int i = _followList.Count - 1; i >= 0; i--)
+        {
+            UI_Follow follow = _followList[i];
+
+            // 뷰포트 좌표는 (0,0)에서 (1,1) 사이이면 화면 내에 있는 것으로 판단
+            Vector3 viewportPos = mainCamera.WorldToViewportPoint(follow.transform.position);
+            bool isVisible = viewportPos.x >= 0 && viewportPos.x <= 1 &&
+                             viewportPos.y >= 0 && viewportPos.y <= 1 &&
+                             viewportPos.z > 0;
+
+            // 카메라에 보이지 않는 경우 제거
+            if (!isVisible)
+            {
+                _followList.RemoveAt(i);
+                GameObject.Destroy(follow.gameObject);
+                _order--;
+            }
+        }
+    }
 }
