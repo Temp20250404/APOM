@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.EventSystems;
 
 public enum ChatType
 {
@@ -14,7 +15,7 @@ public enum ChatType
     Count         // ChatType 항목의 수
 }
 
-public class ChatController : MonoBehaviour
+public class ChatController : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     [SerializeField]
     private GameObject textChatPrefab; // 대화 텍스트 프리팹 (UI에서 생성될 텍스트 오브젝트)
@@ -36,6 +37,14 @@ public class ChatController : MonoBehaviour
 
     private string ID = "Player"; // 대화에서 사용할 ID (예: 유저의 이름)
 
+    private RectTransform rectTransform; // RectTransform 컴포넌트 (UI 요소의 위치와 크기를 조정하는 데 사용)
+    private Vector2 originalSize; // 원래 크기 저장 (UI 요소의 크기를 조정하기 위해 사용)
+    private Vector2 originalMousePosition; // 원래 마우스 위치 저장 (드래그 시작 시점)
+    private Vector2 currentSize; // 현재 크기 저장 (UI 요소의 크기를 조정하기 위해 사용)
+
+    private float minChatSize = 20f; // 최소 너비 (채팅 텍스트의 최소 크기)
+    private float maxChatSize = 40f; // 최대 너비 (채팅 텍스트의 최대 크기)
+
     private void Awake()
     {
         chatList = new List<ChatCell>(); // 대화 셀들을 저장할 리스트 초기화
@@ -45,6 +54,11 @@ public class ChatController : MonoBehaviour
         textInput.color = Color.red; // 대화 입력창의 텍스트 색상 설정
     }
 
+    private void Start()
+    {
+        rectTransform = GetComponent<RectTransform>(); // RectTransform 컴포넌트 가져오기
+        originalSize = rectTransform.sizeDelta; // 원래 크기 저장
+    }
     // Update is called once per frame
     void Update()
     {
@@ -77,6 +91,7 @@ public class ChatController : MonoBehaviour
         ChatCell chatCell = clone.GetComponent<ChatCell>(); // ChatCell 컴포넌트를 가져옴
 
         chatCell.Setup(currentInputType, currentTextColor, SetupText()); // 셀에 대화 정보 설정
+        chatCell.GetComponent<TextMeshProUGUI>().fontSize = NewChatSize(); // 폰트 크기 설정
 
         inputField.text = ""; // 대화 입력창 초기화
 
@@ -135,5 +150,45 @@ public class ChatController : MonoBehaviour
                 chatList[i].gameObject.SetActive(chatList[i].ChatType == currentViewType);
             }
         }
+    }
+
+    public void OnPointerUp(PointerEventData eventData)
+    {
+        currentSize = rectTransform.sizeDelta; // 드래그 종료 시 원래 크기 저장
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        Vector2 delta = eventData.position - originalMousePosition; // 드래그한 거리 계산
+
+        rectTransform.sizeDelta = new Vector2(Mathf.Clamp(Mathf.Max(currentSize.x + delta.x, 400), 400, 1600),
+            Mathf.Clamp(Mathf.Max(currentSize.y + delta.y, 500), 400, 800)); // 크기 조정
+
+        AdjustFontSize(delta);
+    }
+
+    public void OnPointerDown(PointerEventData eventData)
+    {
+        originalMousePosition = eventData.position; // 드래그 시작 시점 저장
+    }
+
+    private void AdjustFontSize(Vector2 delta)
+    {
+        foreach (ChatCell chatCell in chatList)
+        {
+            var cell = chatCell.GetComponent<TextMeshProUGUI>();
+            cell.fontSize = NewChatSize(); // 각 대화 셀의 폰트 크기 설정
+            cell.rectTransform.sizeDelta = new Vector2(Mathf.Clamp(Mathf.Max(currentSize.x + delta.x, 400), 400, 1600), cell.rectTransform.sizeDelta.y); // 셀 크기 조정
+        }   
+    }
+
+    private float NewChatSize()
+    {
+        // 현재 크기에 따라 폰트 크기 조정
+        float widthRatio = rectTransform.sizeDelta.x / originalSize.x;
+        float heightRatio = rectTransform.sizeDelta.y / originalSize.y;
+        float newChatSize = Mathf.Clamp(Mathf.Max(widthRatio * minChatSize, heightRatio * minChatSize), minChatSize, maxChatSize);
+
+        return newChatSize; // 조정된 폰트 크기 반환
     }
 }
