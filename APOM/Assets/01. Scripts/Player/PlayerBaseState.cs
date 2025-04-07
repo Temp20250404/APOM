@@ -7,13 +7,13 @@ public class PlayerBaseState : IState
 {
     private Vector2[] moveInput;
 
-    private int moveInputSize = 10;
-    private int moveInputIndex = 0;
+    //private int moveInputSize = 10;
+    //private int moveInputIndex = 0;
 
     private Vector3[] moveDir;
 
-    private int moveDirSize = 10;
-    private int moveDirIndex = 0;
+    //private int moveDirSize = 10;
+    //private int moveDirIndex = 0;
 
 
     protected PlayerStateMachine stateMachine;
