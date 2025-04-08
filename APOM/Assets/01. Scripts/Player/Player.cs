@@ -7,6 +7,8 @@ using UnityEngine.Playables;
 
 public class Player : MonoBehaviour
 {
+    public uint playerID { get; set; }
+
     [field: SerializeField] public PlayerSObj data { get; private set; }
 
     [field:Header("Animations")]
@@ -17,8 +19,6 @@ public class Player : MonoBehaviour
     public CharacterController characterController { get; private set; }
     private PlayerStateMachine stateMachine;
     public Transform mainCameraTransform { get; set; }
-
-    public bool isMainPlayer;
 
     private void Awake()
     {
@@ -36,6 +36,7 @@ public class Player : MonoBehaviour
         stateMachine.ChangeState(stateMachine.idleState);
 
         mainCameraTransform = Camera.main.transform;
+        
     }
 
     private void Update()

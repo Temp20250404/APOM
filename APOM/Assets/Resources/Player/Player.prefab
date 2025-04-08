@@ -2215,7 +2215,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55f3384b573781748bea842df97cd349, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  recivePacketWASD: 00000000
+  isMainPlayer: 0
+  reciveKeyInputs: 0000000000
   recivePacketRotation: 0
 --- !u!1 &7860200344137225048
 GameObject:

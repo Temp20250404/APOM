@@ -7,17 +7,6 @@ using static PlayerController;
 
 public class PlayerBaseState : IState
 {
-    private Vector2[] moveInput;
-
-    //private int moveInputSize = 10;
-    //private int moveInputIndex = 0;
-
-    private Vector3[] moveDir;
-
-    //private int moveDirSize = 10;
-    //private int moveDirIndex = 0;
-
-
     protected PlayerStateMachine stateMachine;
     protected readonly PlayerDefaultData defaultData;
 
@@ -63,7 +52,8 @@ public class PlayerBaseState : IState
 
     private void ReadMovementInput()
     {
-        stateMachine.movementInput = stateMachine.player.inputController.playerActions.Move.ReadValue<Vector2>();
+        stateMachine.movementInput = GetInputWASD();
+        //stateMachine.movementInput = stateMachine.player.inputController.playerActions.Move.ReadValue<Vector2>();
     }
 
     protected virtual void Move()
@@ -117,7 +107,7 @@ public class PlayerBaseState : IState
 
     protected Vector2 GetInputWASD()
     {
-        bool[] inputWASD = stateMachine.player.inputController.recivePacketWASD;
+        bool[] inputWASD = stateMachine.player.inputController.reciveKeyInputs;
         Vector2 input = Vector2.zero;
 
         if (inputWASD[(int)EKEYINPUT.W])
@@ -155,5 +145,6 @@ public class PlayerBaseState : IState
 
     protected virtual void OnMoveCanceled(InputAction.CallbackContext context)
     {
+        stateMachine.movementInput = Vector2.zero;
     }
 }

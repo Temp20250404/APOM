@@ -21,6 +21,9 @@ class PacketHandler
         SC_KEYINFO keyinfoPacket = packet as SC_KEYINFO;
 
         // TODO: SC_Keyinfo 패킷 처리 로직을 여기에 구현
+        Player player = Managers.Player.GetPlayer(keyinfoPacket.PlayerID);
+        player.playerID = keyinfoPacket.PlayerID;
+        player.inputController.RecivePacket(keyinfoPacket.KeyInfo, keyinfoPacket.CameraYaw);
     }
 
     // SC_LOGIN_RESPONSE 패킷을 처리하는 함수
@@ -53,5 +56,7 @@ class PacketHandler
         SC_SPAWN_CHARACTER spawnCharacterPacket = packet as SC_SPAWN_CHARACTER;
 
         // TODO: SC_SpawnCharacter 패킷 처리 로직을 여기에 구현
+
+        Managers.Player.SpawnPlayer(spawnCharacterPacket);
     }
 }

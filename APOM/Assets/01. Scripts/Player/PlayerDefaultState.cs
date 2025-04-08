@@ -44,6 +44,11 @@ public class PlayerDefaultState : PlayerBaseState
         {
             return;
         }
+        stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.W] = false;
+        stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.S] = false;
+        stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.A] = false;
+        stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.D] = false;
+        stateMachine.movementInput = Vector2.zero;
 
         stateMachine.ChangeState(stateMachine.idleState);
 
