@@ -25,7 +25,7 @@ public class EnemyStateMachine : StateMachine
         EnemyChaseState = new EnemyChaseState(this);
         EnemyWalkState = new EnemyWalkState(this);
 
-        states = new Dictionary<EnemyState, IState>
+        enemystates = new Dictionary<EnemyState, IState>
         {
             { EnemyState.Idle, EnemyIdleState },
             { EnemyState.Attack, EnemyAttackState },

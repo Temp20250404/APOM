@@ -13,7 +13,6 @@ public class Enemy : MonoBehaviour
 
     private EnemyStateMachine stateMachine;
     public EnemyAI enemyAI;
-   // public ForceReceiver ForceReceiver { get; private set; }
 
     private void Awake()
     {
@@ -32,12 +31,6 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        stateMachine.HandleInput();
         stateMachine.Update();
-    }
-
-    private void FixedUpdate()
-    {
-        stateMachine.PhysicsUpdate();
     }
 }

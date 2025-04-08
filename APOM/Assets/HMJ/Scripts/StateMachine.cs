@@ -4,9 +4,7 @@ public interface IState
 {
     public void Enter();
     public void Exit();
-    public void HandleInput();
     public void Update();
-    public void PhysicsUpdate();
 }
 
 public enum EnemyState
@@ -17,31 +15,45 @@ public enum EnemyState
     Attack
 }
 
+public enum BossState
+{
+    Idle,
+    Walk,
+    Chase,
+    Attack
+}
+
+public enum BossPhase
+{
+    Phase1,
+    Phase2,
+    Phase3,
+    Phase4
+}
+
 public abstract class StateMachine
 {
     protected IState currentState;
 
-    public Dictionary<EnemyState, IState> states;
+    public Dictionary<EnemyState, IState> enemystates;
+    public Dictionary<BossState, IState>  bossStates;
 
     public void ChangeState(EnemyState newState)
     {
         currentState?.Exit();
-        currentState = states[newState];
+        currentState = enemystates[newState];
         currentState?.Enter();
     }
 
-    public void HandleInput()
+    public void ChangeState(BossState newState)
     {
-        currentState?.HandleInput();
+        currentState?.Exit();
+        currentState = bossStates[newState];
+        currentState?.Enter();
     }
 
     public void Update()  // 생명주기 아님, Monobe가 없음
     {
         currentState?.Update();
-    }
-
-    public void PhysicsUpdate()
-    {
-        currentState?.PhysicsUpdate();
     }
 }

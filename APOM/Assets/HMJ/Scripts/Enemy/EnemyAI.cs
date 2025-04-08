@@ -10,9 +10,6 @@ public class EnemyAI : MonoBehaviour
     public LayerMask targetMask;
     public LayerMask obstacleMask; // 장애물 레이어 (벽 등)
 
-    private float waitTimer;
-    public bool isWaiting = false;
-    private float nextWaitDuration;
     private Vector3 wanderTarget;
 
     private NavMeshAgent agent;
@@ -75,10 +72,6 @@ public class EnemyAI : MonoBehaviour
 
     public void StartWalk()
     {
-        isWaiting = false;
-        waitTimer = 0f;
-        nextWaitDuration = Random.Range(3f, 6f);
-
         wanderTarget = GetRandomWalkPoint(2f, 4f);
         agent.SetDestination(wanderTarget);
     }
