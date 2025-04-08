@@ -27,10 +27,11 @@ public class PlayerController : MonoBehaviour
 
     private bool isMoving = false;
 
-    private bool[] previousKeyInputs = new bool[(int)EKEYINPUT.END];
+    private uint previousKeyInputs = 0;
     private bool[] currentKeyInputs = new bool[(int)EKEYINPUT.END];
+    private uint ucurrentKeyInputs = 0;
 
-    private bool[] sendKeyInputs = new bool[(int)EKEYINPUT.END];
+    private uint sendKeyInputs = 0;
     [HideInInspector] public bool[] reciveKeyInputs = new bool[(int)EKEYINPUT.END];
 
     private float previousRotation;
@@ -39,6 +40,7 @@ public class PlayerController : MonoBehaviour
     private float sendPacketRotation;
     [HideInInspector] public float recivePacketRotation;
 
+    bool rotationChanged;
     private void Awake()
     {
         playerInputs = new PlayerInputs();
@@ -54,6 +56,7 @@ public class PlayerController : MonoBehaviour
         {
             pivot = _pivot.gameObject;
         }
+        
     }
 
     private void Start()
@@ -67,10 +70,14 @@ public class PlayerController : MonoBehaviour
     public void Update()
     {
         KeyInput();
-        CheckIsMoving();
-        if (isMoving)
+        CheckMoveRotationChange();
+
+        rotationChanged = (ucurrentKeyInputs != 0) && (currentRotation != previousRotation);
+        if (ucurrentKeyInputs != previousKeyInputs || rotationChanged)
         {
-            CheckMoveRotationChange();
+            previousKeyInputs = ucurrentKeyInputs;
+            previousRotation = currentRotation;
+            SendPacket();
         }
     }
 
@@ -92,75 +99,42 @@ public class PlayerController : MonoBehaviour
         cinemachineFreeLook.LookAt = pivot.transform;
     }
 
-    void CheckIsMoving()
+    void KeyInput()
     {
-        if (isMainPlayer == false)
-        {
-            return;
-        }
+        currentKeyInputs[(int)EKEYINPUT.W] = Input.GetKey(KeyCode.W);
+        currentKeyInputs[(int)EKEYINPUT.S] = Input.GetKey(KeyCode.S);
+        currentKeyInputs[(int)EKEYINPUT.A] = Input.GetKey(KeyCode.A);
+        currentKeyInputs[(int)EKEYINPUT.D] = Input.GetKey(KeyCode.D);
 
-        if (currentKeyInputs.Contains(true))
-        {
-            isMoving = true;
+        ucurrentKeyInputs = ChnageToUint(currentKeyInputs);
 
-            currentRotation = cinemachineFreeLook.m_XAxis.Value;
-        }
-        else
+        if (previousKeyInputs != ucurrentKeyInputs)
         {
-            isMoving = false;
+            sendKeyInputs = ucurrentKeyInputs;
         }
     }
 
-    void KeyInput()
+    private uint ChnageToUint(bool[] _keyInputs)
     {
-        Vector2 move = playerInputs.Player.Move.ReadValue<Vector2>();
-
-        // WASD 상태 업데이트
-        currentKeyInputs[(int)EKEYINPUT.W] = move.y > 0.5f;   // W
-        currentKeyInputs[(int)EKEYINPUT.S] = move.y < -0.5f;  // S
-        currentKeyInputs[(int)EKEYINPUT.A] = move.x < -0.5f;  // A
-        currentKeyInputs[(int)EKEYINPUT.D] = move.x > 0.5f;   // D
-
-        bool stateChanged = false;
+        uint uintKetyInput = 0;
         for (int i = 0; i < (int)EKEYINPUT.END; i++)
         {
-            if (previousKeyInputs[i] != currentKeyInputs[i])
-            {
-                stateChanged = true;
-                break;
-            }
+            uintKetyInput |= _keyInputs[i] ? (1u << i) : 0;
         }
 
-        if (stateChanged)
-        {
-            sendKeyInputs = currentKeyInputs;
-            SendPacket();
-
-            for (int i = 0; i < (int)EKEYINPUT.END; i++)
-            {
-                previousKeyInputs[i] = currentKeyInputs[i];
-            }
-        }
+        return uintKetyInput;
     }
 
     private void SendPacket()
     {
         CS_KEYINFO packet = new CS_KEYINFO();
 
-        packet.KeyInfo = 0;
-        for (int i = 0; i < (int)EKEYINPUT.END; i++)
-        {
-            if (sendKeyInputs[i])
-            {
-                packet.KeyInfo |= (1u << i);
-            }
-        }
+        packet.KeyInfo = sendKeyInputs;
 
         packet.CameraYaw = sendPacketRotation;
 
         Managers.Network.Send(packet);
 
-        Debug.Log("Send Input Packet: " + string.Join(", ", sendKeyInputs));
     }
 
     private void CheckMoveRotationChange()
@@ -169,14 +143,11 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
+        currentRotation = cinemachineFreeLook.m_XAxis.Value;
 
         if (previousRotation != currentRotation)
         {
             sendPacketRotation = currentRotation;
-            previousRotation = currentRotation;
-
-            SendPacket();
-            Debug.Log("Send Rotation Packet: " + sendPacketRotation);
         }
     }
 
