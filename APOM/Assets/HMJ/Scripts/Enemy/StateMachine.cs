@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 public interface IState
 {
     public void Enter();
@@ -7,14 +9,24 @@ public interface IState
     public void PhysicsUpdate();
 }
 
+public enum EnemyState
+{
+    Idle,
+    Walk,
+    Chase,
+    Attack
+}
+
 public abstract class StateMachine
 {
     protected IState currentState;
 
-    public void ChangeState(IState state)
+    public Dictionary<EnemyState, IState> states;
+
+    public void ChangeState(EnemyState newState)
     {
         currentState?.Exit();
-        currentState = state;
+        currentState = states[newState];
         currentState?.Enter();
     }
 

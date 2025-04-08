@@ -9,7 +9,6 @@ public class Enemy : MonoBehaviour
     [field: Header("Animations")]
     [field: SerializeField] public EnemyAnimationData EnemyAnimationData { get; private set; }
     public Animator Anim { get; private set; }
-
     public CharacterController Controller { get; private set; }
 
     private EnemyStateMachine stateMachine;
@@ -28,7 +27,7 @@ public class Enemy : MonoBehaviour
     }
     void Start()
     {
-        stateMachine.ChangeState(stateMachine.EnemyIdleState);
+        stateMachine.ChangeState(EnemyState.Idle);
     }
 
     private void Update()

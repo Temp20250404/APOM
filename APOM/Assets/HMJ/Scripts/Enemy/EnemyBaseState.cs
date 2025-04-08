@@ -33,6 +33,7 @@ public class EnemyBaseState : IState
 
     public virtual void Update()
     {
+
     }
 
     protected void StartAnimation(int parameterHash)

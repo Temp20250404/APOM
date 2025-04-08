@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ChatCell : MonoBehaviour
 {
-    public ChatType ChatType { private set; get; } // 해당 대화 셀의 ChatType을 저장 (읽기 전용)
+    public ChatType ChatType { private set; get; } // 해당 대화 셀의 ChatType을 저장
 
     [SerializeField] private TextMeshProUGUI chatText;
 

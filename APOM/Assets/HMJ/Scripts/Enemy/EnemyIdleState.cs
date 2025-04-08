@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnemyIdleState : EnemyBaseState
 {
+    private float idleTime;
+    private float waitTime;
     public EnemyIdleState(EnemyStateMachine stateMachine) : base(stateMachine)
     {
 
@@ -17,6 +19,9 @@ public class EnemyIdleState : EnemyBaseState
         base.Enter();
         // Animation 전환
         StartAnimation(stateMachine.Enemy.EnemyAnimationData.IdleParameterHash);
+
+        idleTime = Random.Range(2f, 4f);
+        waitTime = 0f;
     }
 
     // Idle 상태에서 다른 상태로 전환될 때
@@ -31,9 +36,32 @@ public class EnemyIdleState : EnemyBaseState
     {
         base.Update();
 
-        if(stateMachine.Enemy.enemyAI.DetectTargets())
+        if (stateMachine.Enemy.enemyAI.IsAttackRange(stateMachine.Enemy.SOData))
         {
-            stateMachine.ChangeState(stateMachine.EnemyChaseState);
+            AnimatorStateInfo animStateInfo = stateMachine.Enemy.Anim.GetCurrentAnimatorStateInfo(0);
+            if (animStateInfo.IsTag("Idle") && animStateInfo.normalizedTime >= 0.8f)
+            {
+                stateMachine.ChangeState(EnemyState.Attack);
+                Debug.Log("Attack State");  
+            }
+        }
+
+        if (!stateMachine.Enemy.enemyAI.IsAttackRange(stateMachine.Enemy.SOData) && stateMachine.Enemy.enemyAI.DetectTargets())
+        {
+            stateMachine.ChangeState(EnemyState.Chase);
+            Debug.Log("Chase State");
+        }
+
+        UpdateWalk();
+    }
+
+    private void UpdateWalk()
+    {
+        waitTime += Time.deltaTime;
+        if (waitTime >= idleTime)
+        {
+            stateMachine.ChangeState(EnemyState.Walk);
+            Debug.Log("Walk State");
         }
     }
 }

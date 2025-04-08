@@ -14,6 +14,7 @@ public class EnemyWalkState : EnemyBaseState
         stateMachine.MoveMentSpeedModifier = groundData.WalkSpeedModifier;
         base.Enter();
         StartAnimation(stateMachine.Enemy.EnemyAnimationData.WalkParameterHash);
+        stateMachine.Enemy.enemyAI.StartWalk();
     }
 
     // Walk 상태에서 다른 상태로 전환될 때
@@ -25,6 +26,17 @@ public class EnemyWalkState : EnemyBaseState
 
     public override void Update()
     {
+        if(stateMachine.Enemy.enemyAI.DetectTargets())
+        {
+            stateMachine.ChangeState(EnemyState.Chase);
+            Debug.Log("Chase State");
+            return;
+        }
 
+        if (stateMachine.Enemy.enemyAI.EndWalk())
+        {
+            stateMachine.ChangeState(EnemyState.Idle); // 도착 시 Idle 상태로 전환
+            return;
+        }
     }
 }

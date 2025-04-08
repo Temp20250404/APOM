@@ -10,6 +10,11 @@ public class EnemyAI : MonoBehaviour
     public LayerMask targetMask;
     public LayerMask obstacleMask; // 장애물 레이어 (벽 등)
 
+    private float waitTimer;
+    public bool isWaiting = false;
+    private float nextWaitDuration;
+    private Vector3 wanderTarget;
+
     private NavMeshAgent agent;
     public Transform target;
 
@@ -25,9 +30,9 @@ public class EnemyAI : MonoBehaviour
 
         foreach (Collider targetCollider in targetsInRange)
         {
-            if(target == null)
+            if (target == null)
             {
-                target = targetCollider.transform;  
+                target = targetCollider.transform;
             }
             return true;
         }
@@ -57,5 +62,43 @@ public class EnemyAI : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, viewDistance); // 시야 범위
         Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position, transform.position + transform.forward * viewDistance); // 시야의 앞쪽 (시작선)
+    }
+
+    public bool IsAttackRange(EnemyData data)
+    {
+        if (target == null) return false;
+
+        // 타겟과의 거리 계산
+        float distance = Vector3.Distance(transform.position, target.position);
+        return distance <= data.AttackRange;
+    }
+
+    public void StartWalk()
+    {
+        isWaiting = false;
+        waitTimer = 0f;
+        nextWaitDuration = Random.Range(3f, 6f);
+
+        wanderTarget = GetRandomWalkPoint(2f, 4f);
+        agent.SetDestination(wanderTarget);
+    }
+
+    private Vector3 GetRandomWalkPoint(float minRaius, float maxRaius)
+    {
+        Vector3 randomPoint = Random.insideUnitSphere * Random.Range(minRaius, maxRaius);
+        randomPoint += transform.position;
+
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(randomPoint, out hit, maxRaius, NavMesh.AllAreas))
+        {
+            return hit.position;
+        }
+
+        return transform.position; // 기본 위치 반환
+    }
+
+    public bool EndWalk()
+    {
+        return !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance;
     }
 }
