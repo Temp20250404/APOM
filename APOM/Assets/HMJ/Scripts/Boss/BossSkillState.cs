@@ -13,7 +13,6 @@ public class BossSkillState : BossBaseState
 
     public override void Enter()
     {
-        // 가만히 있는 상태이기 때문에 Speed를 0으로
         stateMachine.MoveMentSpeedModifier = 0f;
         base.Enter();
         StartAnimation(stateMachine.Boss.BossAnimationData.BossSkill_ParameterHash);

@@ -45,6 +45,8 @@ public class ChatController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
     private float minChatSize = 20f; // 최소 너비 (채팅 텍스트의 최소 크기)
     private float maxChatSize = 40f; // 최대 너비 (채팅 텍스트의 최대 크기)
 
+    private bool isToggleCollapse; // 대화창 접기/펼치기 상태 (true: 접힘, false: 펼쳐짐)
+
     private void Awake()
     {
         chatList = new List<ChatCell>(); // 대화 셀들을 저장할 리스트 초기화
@@ -58,6 +60,8 @@ public class ChatController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
     {
         rectTransform = GetComponent<RectTransform>(); // RectTransform 컴포넌트 가져오기
         originalSize = rectTransform.sizeDelta; // 원래 크기 저장
+        currentSize = originalSize; // 현재 크기 초기화
+        Debug.Log(originalSize);
     }
     // Update is called once per frame
     void Update()
@@ -152,23 +156,33 @@ public class ChatController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
         }
     }
 
+    public void ToggleCollapseChatWindow() // 대화창 접기/펼치기 메서드
+    {
+        isToggleCollapse = !isToggleCollapse; // 현재 상태 반전
+        bool isOn = rectTransform.sizeDelta.y < currentSize.y; // 현재 상태 확인 (펼쳐져 있는지 접혀 있는지)
+        rectTransform.sizeDelta = isOn ? currentSize : new Vector2(originalSize.x, 200); // 원래 크기로 복원
+    }
+
     public void OnPointerUp(PointerEventData eventData)
     {
+        if(isToggleCollapse) return; // 대화창이 접혀 있는 경우 드래그 종료 처리 안 함
         currentSize = rectTransform.sizeDelta; // 드래그 종료 시 원래 크기 저장
     }
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (isToggleCollapse) return; // 대화창이 접혀 있는 경우 드래그 처리 안 함
         Vector2 delta = eventData.position - originalMousePosition; // 드래그한 거리 계산
 
-        rectTransform.sizeDelta = new Vector2(Mathf.Clamp(Mathf.Max(currentSize.x + delta.x, 400), 400, 1600),
-            Mathf.Clamp(Mathf.Max(currentSize.y + delta.y, 500), 400, 800)); // 크기 조정
+        rectTransform.sizeDelta = new Vector2(Mathf.Clamp(currentSize.x + delta.x, 500, 1600),
+            Mathf.Clamp(currentSize.y + delta.y, 200, 800)); // 크기 조정
 
         AdjustFontSize(delta);
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        if (isToggleCollapse) return; // 대화창이 접혀 있는 경우 드래그 시작 처리 안 함
         originalMousePosition = eventData.position; // 드래그 시작 시점 저장
     }
 
@@ -178,7 +192,7 @@ public class ChatController : MonoBehaviour, IPointerDownHandler, IDragHandler, 
         {
             var cell = chatCell.GetComponent<TextMeshProUGUI>();
             cell.fontSize = NewChatSize(); // 각 대화 셀의 폰트 크기 설정
-            cell.rectTransform.sizeDelta = new Vector2(Mathf.Clamp(Mathf.Max(currentSize.x + delta.x, 400), 400, 1600), cell.rectTransform.sizeDelta.y); // 셀 크기 조정
+            cell.rectTransform.sizeDelta = new Vector2(Mathf.Clamp(currentSize.x + delta.x -20, 480, 1600), cell.rectTransform.sizeDelta.y); // 셀 크기 조정
         }   
     }
 
