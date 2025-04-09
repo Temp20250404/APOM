@@ -645,12 +645,8 @@ MonoBehaviour:
     phase: 3
     skillType: 2
     animationHash: 0
-  nextSkillToUse:
-    skillTimer: 0
-    skillDelay: 0
-    phase: 0
-    skillType: -1
-    animationHash: 0
+  postSkillCooldown: 1
+  postSkillCooldownTimer: 0
 --- !u!114 &1992501337
 MonoBehaviour:
   m_ObjectHideFlags: 0

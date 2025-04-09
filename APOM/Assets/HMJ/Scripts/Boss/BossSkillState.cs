@@ -35,10 +35,7 @@ public class BossSkillState : BossBaseState
         {
             Debug.Log("[Skill 종료] Idle로 전환합니다.");
             stateMachine.ChangeState(BossState.Idle);
-            stateMachine.Boss.bossAI.NextSkillToUse = null;
-
-            // 스킬 간 대기 시간 설정
-            stateMachine.Boss.bossAI.postSkillCooldownTimer = stateMachine.Boss.bossAI.postSkillCooldown;
+            stateMachine.Boss.bossAI.ClearSkill();
         }
     }
 

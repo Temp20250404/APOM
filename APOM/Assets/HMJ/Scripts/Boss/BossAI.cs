@@ -111,6 +111,12 @@ public class BossAI : MonoBehaviour
         }
     }
 
+    public void ClearSkill()
+    {
+        NextSkillToUse = null;
+        postSkillCooldownTimer = postSkillCooldown;
+    }
+
     private void UseSkill(BossSkill skill)
     {
         Debug.Log($"[페이즈 {phase}] 스킬 발동!");
