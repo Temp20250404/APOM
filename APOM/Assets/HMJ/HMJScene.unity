@@ -568,7 +568,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &1992501333
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -628,17 +628,29 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   target: {fileID: 0}
-  phase: 0
+  phase: 3
   skillList:
   - skillTimer: 0
-    startPhase: 0
-    skillDelay: 10
+    skillDelay: 5
+    phase: 1
+    skillType: 0
+    animationHash: 0
   - skillTimer: 0
-    startPhase: 0
-    skillDelay: 20
+    skillDelay: 5
+    phase: 2
+    skillType: 1
+    animationHash: 0
   - skillTimer: 0
-    startPhase: 0
-    skillDelay: 30
+    skillDelay: 5
+    phase: 3
+    skillType: 2
+    animationHash: 0
+  nextSkillToUse:
+    skillTimer: 0
+    skillDelay: 0
+    phase: 0
+    skillType: -1
+    animationHash: 0
 --- !u!114 &1992501337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -659,6 +671,10 @@ MonoBehaviour:
     Attack2ParameterName: Attack2
     Attack_ParameterName: '@Attack'
     WalkParameterName: Walk
+    BossSkill1ParameterName: BossSkill1
+    BossSkill2ParameterName: BossSkill2
+    BossSkill3ParameterName: BossSkill3
+    BossSkill_ParameterName: '@BossSkill'
   bossAI: {fileID: 0}
   currentHealth: 0
 --- !u!143 &1992501338
@@ -678,7 +694,7 @@ CharacterController:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_Height: 0
   m_Radius: 3
@@ -846,7 +862,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5981778911725990675, guid: 1a1fde688cced5e4c99f62bab3fc882d, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

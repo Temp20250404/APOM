@@ -25,6 +25,17 @@ public class BossBaseState : IState
     public virtual void Update()
     {
         stateMachine.Boss.bossAI.HandleSkills();
+
+        if(stateMachine.Boss.bossAI.NextSkillToUse == null) return;
+
+        BossSkill skill = stateMachine.Boss.bossAI.NextSkillToUse;
+
+        if (skill != null)
+        {
+            Debug.Log("[Skill 시작] Skill로 전환합니다.");
+            stateMachine.BossSkillState.SetSkill(skill);
+            stateMachine.ChangeState(BossState.Skill);
+        }
     }
 
     protected void StartAnimation(int parameterHash)

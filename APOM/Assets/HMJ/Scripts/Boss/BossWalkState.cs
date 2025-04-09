@@ -26,6 +26,8 @@ public class BossWalkState : BossBaseState
 
     public override void Update()
     {
+        base.Update();
+
         if (stateMachine.Boss.bossAI.DetectTargets())
         {
             stateMachine.ChangeState(BossState.Chase);

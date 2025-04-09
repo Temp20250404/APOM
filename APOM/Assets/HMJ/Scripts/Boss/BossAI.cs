@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using SEnum = System.Enum;
@@ -8,8 +9,10 @@ using SEnum = System.Enum;
 public class BossSkill
 {
     public float skillTimer = 0f;
-    public BossPhase phase;          // 이 스킬이 등장하는 시작 페이즈
     public float skillDelay;         // 쿨타임
+    public BossPhase phase;          // 이 스킬이 등장하는 시작 페이즈
+    public BossSkillType skillType = BossSkillType.None; // 스킬 타입
+    public int animationHash; // 애니메이션 해시
 }
 public class BossAI : MonoBehaviour
 {
@@ -19,9 +22,6 @@ public class BossAI : MonoBehaviour
     public LayerMask targetMask;
     public LayerMask obstacleMask; // 장애물 레이어 (벽 등)
 
-    private float waitTimer;
-    public bool isWaiting = false;
-    private float nextWaitDuration;
     private Vector3 wanderTarget;
 
     private NavMeshAgent agent;
@@ -32,6 +32,15 @@ public class BossAI : MonoBehaviour
 
     [Header("스킬 리스트")]
     public List<BossSkill> skillList;
+    private BossSkill nextSkillToUse; // 다음 사용할 스킬
+    public BossSkill NextSkillToUse
+    {
+        get => nextSkillToUse; // 외부에서 접근할 수 있도록 프로퍼티로 제공
+        set => nextSkillToUse = value;
+    }
+
+    [HideInInspector] public float postSkillCooldown = 1f; // 스킬 종료 후 대기 시간
+    [HideInInspector] public float postSkillCooldownTimer = 0f;
 
     Dictionary<BossPhase, List<BossSkill>> bossSkillData = new();
 
@@ -44,9 +53,9 @@ public class BossAI : MonoBehaviour
     private void InitializeSkillDictionary()
     {
         // 딕셔너리 초기화
-        foreach (BossPhase p in SEnum.GetValues(typeof(BossPhase)))
+        foreach (BossPhase phase in SEnum.GetValues(typeof(BossPhase)))
         {
-            bossSkillData[p] = new List<BossSkill>();
+            bossSkillData[phase] = new List<BossSkill>();
         }
 
         // skillList 안에서 각 스킬의 phase 기준으로 분류
@@ -56,18 +65,48 @@ public class BossAI : MonoBehaviour
         }
     }
 
+    public void InitSkillsAnimationHash(BossAnimationData animData)
+    {
+        foreach (var skill in skillList)
+        {
+            switch (skill.skillType)
+            {
+                case BossSkillType.Skill1:
+                    skill.animationHash = animData.BossSkill1ParameterHash;
+                    break;
+                case BossSkillType.Skill2:
+                    skill.animationHash = animData.BossSkill2ParameterHash;
+                    break;
+                case BossSkillType.Skill3:
+                    skill.animationHash = animData.BossSkill3ParameterHash;
+                    break;
+            }
+        }
+    }
+
+
     // 스킬 쿨타임 및 발동 처리
     public void HandleSkills()
     {
-        foreach (var skill in GetAllSkillsUpToCurrentPhase())
+        // 스킬이 하나 실행 중이면 더 이상 진행하지 않음
+        if (nextSkillToUse != null) return;
+
+        // 쿨다운 타이머가 남아있으면 아무 스킬도 선택하지 않음
+        if (postSkillCooldownTimer > 0f)
+        {
+            postSkillCooldownTimer -= Time.deltaTime;
+            return;
+        }
+
+        foreach (BossSkill skill in GetAllSkillsUpToCurrentPhase())
         {
             skill.skillTimer += Time.deltaTime;
 
             if (skill.skillTimer >= skill.skillDelay)
             {
+                nextSkillToUse = skill;
                 skill.skillTimer = 0f;
-                
-                UseSkill(skill);
+                break;
             }
         }
     }
@@ -129,7 +168,6 @@ public class BossAI : MonoBehaviour
     public void MoveSpeed(float Modifier)
     {
         agent.speed = Modifier;
-        Debug.Log("MoveSpeed : " + agent.speed);
     }
 
     // 플레이어 추적
@@ -162,10 +200,6 @@ public class BossAI : MonoBehaviour
 
     public void StartWalk()
     {
-        isWaiting = false;
-        waitTimer = 0f;
-        nextWaitDuration = Random.Range(3f, 6f);
-
         wanderTarget = GetRandomWalkPoint(2f, 4f);
         agent.SetDestination(wanderTarget);
     }

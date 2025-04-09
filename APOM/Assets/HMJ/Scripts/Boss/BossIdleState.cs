@@ -42,14 +42,12 @@ public class BossIdleState : BossBaseState
             if (animStateInfo.IsTag("Idle") && animStateInfo.normalizedTime >= 0.8f)
             {
                 stateMachine.ChangeState(BossState.Attack);
-                Debug.Log("Attack State");
             }
         }
 
         if (!stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData) && stateMachine.Boss.bossAI.DetectTargets())
         {
             stateMachine.ChangeState(BossState.Chase);
-            Debug.Log("Chase State");
         }
 
         UpdateWalk();
@@ -61,7 +59,6 @@ public class BossIdleState : BossBaseState
         if (waitTime >= idleTime)
         {
             stateMachine.ChangeState(BossState.Walk);
-            Debug.Log("Walk State");
         }
     }
 }

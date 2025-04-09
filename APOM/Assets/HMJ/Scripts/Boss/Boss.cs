@@ -19,12 +19,11 @@ public class Boss : MonoBehaviour
 
     private void Awake()
     {
-        BossAnimationData.Initialize();
-
         Anim = GetComponentInChildren<Animator>();
-        Controller = GetComponent<CharacterController>();
-
         bossAI = GetComponent<BossAI>();
+        Controller = GetComponent<CharacterController>();
+        BossAnimationData.Initialize();
+        bossAI.InitSkillsAnimationHash(BossAnimationData);
         stateMachine = new BossStateMachine(this);
     }
     void Start()

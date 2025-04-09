@@ -20,7 +20,8 @@ public enum BossState
     Idle,
     Walk,
     Chase,
-    Attack
+    Attack,
+    Skill
 }
 
 public enum BossPhase
@@ -29,6 +30,14 @@ public enum BossPhase
     Phase2,
     Phase3,
     Phase4
+}
+
+public enum BossSkillType
+{
+    None = -1,
+    Skill1,
+    Skill2,
+    Skill3
 }
 
 public abstract class StateMachine

@@ -15,6 +15,7 @@ public class BossStateMachine : StateMachine
     public BossAttackState BossAttackState { get; }
     public BossChaseState BossChaseState { get; }
     public BossWalkState BossWalkState { get; }
+    public BossSkillState BossSkillState { get; }
 
     public BossStateMachine(Boss Boss)
     {
@@ -24,13 +25,15 @@ public class BossStateMachine : StateMachine
         BossAttackState = new BossAttackState(this);
         BossChaseState = new BossChaseState(this);
         BossWalkState = new BossWalkState(this);
+        BossSkillState = new BossSkillState(this);
 
         bossStates = new Dictionary<BossState, IState>
         {
             { BossState.Idle, BossIdleState },
             { BossState.Attack, BossAttackState },
             { BossState.Chase, BossChaseState },
-            { BossState.Walk, BossWalkState }
+            { BossState.Walk, BossWalkState },
+            { BossState.Skill, BossSkillState }
         };
     }
 }

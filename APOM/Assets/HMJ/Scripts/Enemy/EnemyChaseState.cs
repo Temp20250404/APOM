@@ -12,7 +12,6 @@ public class EnemyChaseState : EnemyBaseState
     // Walk 상태로 전환되었을 때
     public override void Enter()
     {
-        Debug.Log("Chase State");
         // BaseSpeed에 곱해줄 값 세팅
         stateMachine.MoveMentSpeedModifier = groundData.ChasingSpeedModifier * groundData.BaseSpeed;
         base.Enter();
@@ -31,7 +30,6 @@ public class EnemyChaseState : EnemyBaseState
         if(stateMachine.Enemy.enemyAI.DetectTargets())
         {
             stateMachine.Enemy.enemyAI.ChaseTarget();
-            Debug.Log("Chase State");
         }
         else
         {
@@ -42,7 +40,6 @@ public class EnemyChaseState : EnemyBaseState
         if (stateMachine.Enemy.enemyAI.IsAttackRange(stateMachine.Enemy.SOData))
         {
             stateMachine.ChangeState(EnemyState.Attack);
-            Debug.Log("Attack State");
         }
     }
 }

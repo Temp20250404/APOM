@@ -28,10 +28,11 @@ public class BossChaseState : BossBaseState
 
     public override void Update()
     {
+        base.Update();
+
         if (stateMachine.Boss.bossAI.DetectTargets())
         {
             stateMachine.Boss.bossAI.ChaseTarget();
-            Debug.Log("Chase State");
         }
         else
         {
@@ -42,7 +43,6 @@ public class BossChaseState : BossBaseState
         if (stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData))
         {
             stateMachine.ChangeState(BossState.Attack);
-            Debug.Log("Attack State");
         }
     }
 }
