@@ -121,20 +121,39 @@ namespace ServerCore
 			}
 		}
 
-		public void Disconnect()
-		{
-			if (Interlocked.Exchange(ref _disconnected, 1) == 1)
-				return;
+        public void Disconnect()
+        {
+            if (Interlocked.Exchange(ref _disconnected, 1) == 1)
+                return;
 
-			OnDisconnected(_socket.RemoteEndPoint);
-			_socket.Shutdown(SocketShutdown.Both);
-			_socket.Close();
-			Clear();
-		}
+            try
+            {
+                OnDisconnected(_socket.RemoteEndPoint);
 
-		#region 네트워크 통신
+                // 소켓이 연결되어 있는 경우에만 Shutdown 시도
+                if (_socket.Connected)
+                {
+                    _socket.Shutdown(SocketShutdown.Both);
+                }
+            }
+            catch (SocketException ex)
+            {
+                // 예외 로그만 남기고 무시해도 됨
+                Console.WriteLine($"[Disconnect] SocketException: {ex.Message}");
+            }
+            catch (ObjectDisposedException)
+            {
+                // 이미 닫힌 경우 무시 가능
+            }
 
-		void RegisterSend()
+            _socket.Close();
+            Clear();
+        }
+
+
+        #region 네트워크 통신
+
+        void RegisterSend()
 		{
 			if (_disconnected == 1)
 				return;
