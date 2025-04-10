@@ -77,7 +77,11 @@ public class PlayerController : MonoBehaviour
         {
             previousKeyInputs = ucurrentKeyInputs;
             previousRotation = currentRotation;
-            SendPacket();
+            Util.SendPacket<CS_KEYINFO>(packet =>
+            {
+                packet.KeyInfo = sendKeyInputs;
+                packet.CameraYaw = sendPacketRotation;
+            });
         }
     }
 
@@ -123,18 +127,6 @@ public class PlayerController : MonoBehaviour
         }
 
         return uintKetyInput;
-    }
-
-    private void SendPacket()
-    {
-        CS_KEYINFO packet = new CS_KEYINFO();
-
-        packet.KeyInfo = sendKeyInputs;
-
-        packet.CameraYaw = sendPacketRotation;
-
-        Managers.Network.Send(packet);
-
     }
 
     private void CheckMoveRotationChange()

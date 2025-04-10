@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     public CharacterController characterController { get; private set; }
     private PlayerStateMachine stateMachine;
     public Transform mainCameraTransform { get; set; }
+    private PlayerStat Stat = new PlayerStat();
 
     private void Awake()
     {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -75,5 +76,12 @@ public class Util
         return null;
     }
 
+    public static void SendPacket<T>(Action<T> _Action) where T : Google.Protobuf.IMessage, new()
+    {
+        T packet = new T();
 
+        _Action(packet);
+
+        Managers.Network.Send(packet);
+    }
 }
