@@ -61,7 +61,11 @@ public class PlayerManager : IManager
         {
             loginPlayerList.Remove(_id);
             GameObject.Destroy(_player);
+
+            Debug.Log($"플레이어 {_id} 삭제 성공");
         }
+        else
+            Debug.Log($"플레이어 {_id} 삭제 실패");
     }
 
     public Player GetPlayer(uint _playerID)
