@@ -1,4 +1,5 @@
 
+using Game;
 using System;
 using System.Collections;
 using System.Runtime.InteropServices;
@@ -55,8 +56,12 @@ public class Managers : Singleton<Managers>
         UI.ShowSceneUI<UI_SceneTest>(); // ShowSceneUI<UI_SceneTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
         UI.ShowSceneUI<UI_SceneTest>("UI_SceneTest 1");
         UI.ShowPopupUI<UI_Inventory>(); // ShowPopupUI<UI_PopupTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
-        //UI.ShowPopupUI<SkillPopupUI>(); 
+        UI.ShowPopupUI<UI_PopupTest>(); // ShowPopupUI<UI_PopupTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
+                                        //UI.ShowPopupUI<SkillPopupUI>(); 
 
+
+        // 서버에 4초를 주기로 생존 여부를 알리는 패킷을 보내는 기능
+        StartCoroutine(SendTimeoutPackt()); 
     }
 
     private void Update()
@@ -92,4 +97,15 @@ public class Managers : Singleton<Managers>
         action?.Invoke();
     }
 
+    IEnumerator SendTimeoutPackt()
+    {
+        while (true)
+        {
+            CS_CHECK_TIMEOUT ptk = new CS_CHECK_TIMEOUT();
+            ptk.BCheck = true;
+
+            Managers.Network.Send(ptk);
+            yield return new WaitForSeconds(4f);
+        }
+    }
 }
