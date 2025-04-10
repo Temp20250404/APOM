@@ -1,0 +1,218 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6609981776864222267
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8111464569852246462}
+  - component: {fileID: 5148888123989325673}
+  - component: {fileID: 9205499338247323375}
+  - component: {fileID: 8608416676321504227}
+  - component: {fileID: 7858075829981708637}
+  m_Layer: 0
+  m_Name: Boss
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8111464569852246462
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6609981776864222267}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.443, z: -8.54}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 849777871348532356}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!195 &5148888123989325673
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6609981776864222267}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!143 &9205499338247323375
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6609981776864222267}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 0
+  m_Radius: 3
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 2.52, z: 0}
+--- !u!114 &8608416676321504227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6609981776864222267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eda08d17b81ebe2428867dec3a21458b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <SOData>k__BackingField: {fileID: 11400000, guid: 16e842b374c751747b88a186f471f5d0, type: 2}
+  <BossAnimationData>k__BackingField:
+    ChasingParameterName: Chasing
+    IdleParameterName: Idle
+    AttackParameterName: Attack
+    Attack2ParameterName: Attack2
+    Attack_ParameterName: '@Attack'
+    WalkParameterName: Walk
+    BossSkill1ParameterName: BossSkill1
+    BossSkill2ParameterName: BossSkill2
+    BossSkill3ParameterName: BossSkill3
+    BossSkill_ParameterName: '@BossSkill'
+  bossAI: {fileID: 0}
+  currentHealth: 0
+--- !u!114 &7858075829981708637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6609981776864222267}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fbb28d37ea13754db64f948c11372a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewDistance: 10
+  viewAngle: 360
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 16384
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
+  target: {fileID: 0}
+  phase: 3
+  skillList:
+  - skillTimer: 0
+    skillDelay: 5
+    phase: 1
+    skillType: 0
+    animationHash: 0
+  - skillTimer: 0
+    skillDelay: 5
+    phase: 2
+    skillType: 1
+    animationHash: 0
+  - skillTimer: 0
+    skillDelay: 5
+    phase: 3
+    skillType: 2
+    animationHash: 0
+  postSkillCooldown: 1
+  postSkillCooldownTimer: 0
+--- !u!1001 &2257265788215747606
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8111464569852246462}
+    m_Modifications:
+    - target: {fileID: 1484058393081176210, guid: 318830e16c9af9a449459f9b35ed0179, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484058393081176210, guid: 318830e16c9af9a449459f9b35ed0179, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484058393081176210, guid: 318830e16c9af9a449459f9b35ed0179, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484058393081176210, guid: 318830e16c9af9a449459f9b35ed0179, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484058393081176210, guid: 318830e16c9af9a449459f9b35ed0179, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484058393081176210, guid: 318830e16c9af9a449459f9b35ed0179, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484058393081176210, guid: 318830e16c9af9a449459f9b35ed0179, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484058393081176210, guid: 318830e16c9af9a449459f9b35ed0179, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484058393081176210, guid: 318830e16c9af9a449459f9b35ed0179, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1484058393081176210, guid: 318830e16c9af9a449459f9b35ed0179, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5889267320979916260, guid: 318830e16c9af9a449459f9b35ed0179, type: 3}
+      propertyPath: m_Name
+      value: DragonSoulEaterRedHP
+      objectReference: {fileID: 0}
+    - target: {fileID: 7439186059543906664, guid: 318830e16c9af9a449459f9b35ed0179, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 28fee84e43af73548898dc8344c23df6, type: 2}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 318830e16c9af9a449459f9b35ed0179, type: 3}
+--- !u!4 &849777871348532356 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1484058393081176210, guid: 318830e16c9af9a449459f9b35ed0179, type: 3}
+  m_PrefabInstance: {fileID: 2257265788215747606}
+  m_PrefabAsset: {fileID: 0}
