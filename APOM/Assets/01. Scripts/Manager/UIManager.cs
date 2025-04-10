@@ -7,12 +7,25 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
+public enum ItemCategory // 아이템 카테고리
+{
+    Weapon,
+    Expendable,
+    Ingredient,
+    Etc
+}
+
+
+
 [Serializable]
 public class UIManager : IManager
 {
     [SerializeField] private Transform _sceneUIParent;
     [SerializeField] private Transform _popupUIParent;
     [SerializeField] private Transform _followUIParent;
+
+    public List<Item> inventoryItems = new List<Item>();
+
 
     private int _order = 10;
 
@@ -105,6 +118,7 @@ public class UIManager : IManager
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
 
+        Debug.Log(name);
         GameObject go = Managers.Resource.Instantiate($"UI/Popup/{name}");
         T popup = Util.GetOrAddComponent<T>(go);
         popup.Init();
@@ -185,5 +199,35 @@ public class UIManager : IManager
                 _order--;
             }
         }
+    }
+
+    private int GetSortPriority(ItemCategory category) // 정렬 우선순위 지정
+    {
+        switch (category)
+        {
+            case ItemCategory.Weapon: return 0;
+            case ItemCategory.Expendable: return 1;
+            case ItemCategory.Ingredient: return 2;
+            case ItemCategory.Etc: return 3;
+            default: return 4;
+        }   
+    }
+
+    public void SortInventory(List<Item> inventory)
+    {
+        inventory.Sort(CompareItems);
+        Debug.Log("인벤토리 정렬 끝");
+        //UpdateInventoryUI();
+    }
+
+    private int CompareItems(Item a, Item b)
+    {
+        int orderA = GetSortPriority(a.category);
+        int orderB = GetSortPriority(b.category);
+
+        if (orderA != orderB)
+            return orderA.CompareTo(orderB);
+
+        return string.Compare(a.name, b.name);
     }
 }
