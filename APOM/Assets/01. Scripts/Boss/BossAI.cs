@@ -117,11 +117,11 @@ public class BossAI : MonoBehaviour
         postSkillCooldownTimer = postSkillCooldown;
     }
 
-    private void UseSkill(BossSkill skill)
-    {
-        Debug.Log($"[페이즈 {phase}] 스킬 발동!");
-        // 이펙트 및 Transform 처리? 정도 
-    }
+    //private void UseSkill(BossSkill skill)
+    //{
+    //    Debug.Log($"[페이즈 {phase}] 스킬 발동!");
+    //    // 이펙트 및 Transform 처리? 정도 
+    //}
 
     // 현재 페이즈까지의 모든 스킬을 가져오는 메서드
     public List<BossSkill> GetAllSkillsUpToCurrentPhase()

@@ -8,23 +8,23 @@ public class EnemyWalkState : EnemyBaseState
     {
     }
 
-    public override void Enter()
+    public override void StateEnter()
     {
         // BaseSpeed에 곱해줄 값 세팅
         stateMachine.MoveMentSpeedModifier = groundData.WalkSpeedModifier;
-        base.Enter();
+        base.StateEnter();
         StartAnimation(stateMachine.Enemy.EnemyAnimationData.WalkParameterHash);
         stateMachine.Enemy.enemyAI.StartWalk();
     }
 
     // Walk 상태에서 다른 상태로 전환될 때
-    public override void Exit()
+    public override void StateExit()
     {
-        base.Exit();
+        base.StateExit();
         StopAnimation(stateMachine.Enemy.EnemyAnimationData.WalkParameterHash);
     }
 
-    public override void Update()
+    public override void StateUpdate()
     {
         if(stateMachine.Enemy.enemyAI.DetectTargets())
         {

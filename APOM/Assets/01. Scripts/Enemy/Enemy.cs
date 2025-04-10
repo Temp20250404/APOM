@@ -31,6 +31,6 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
-        stateMachine.Update();
+        stateMachine.StateUpdate();
     }
 }

@@ -34,6 +34,6 @@ public class Boss : MonoBehaviour
 
     private void Update()
     {
-        stateMachine.Update();
+        stateMachine.StateUpdate();
     }
 }

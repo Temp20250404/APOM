@@ -11,23 +11,23 @@ public class BossSkillState : BossBaseState
 
     }
 
-    public override void Enter()
+    public override void StateEnter()
     {
         stateMachine.MoveMentSpeedModifier = 0f;
-        base.Enter();
+        base.StateEnter();
         StartAnimation(stateMachine.Boss.BossAnimationData.BossSkill_ParameterHash);
         StartAnimation(bossSkill.animationHash);
     }
 
-    public override void Exit()
+    public override void StateExit()
     {
-        base.Exit();
+        base.StateExit();
 
         StopAnimation(bossSkill.animationHash);
         StopAnimation(stateMachine.Boss.BossAnimationData.BossSkill_ParameterHash);
     }
 
-    public override void Update()
+    public override void StateUpdate()
     {
         AnimatorStateInfo animStateInfo = stateMachine.Boss.Anim.GetCurrentAnimatorStateInfo(0);
         if (animStateInfo.normalizedTime >= 1f && animStateInfo.IsTag("Skills"))

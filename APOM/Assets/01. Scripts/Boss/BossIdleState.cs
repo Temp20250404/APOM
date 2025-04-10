@@ -12,11 +12,11 @@ public class BossIdleState : BossBaseState
     }
 
     // Idle 상태에 들어왔을 때
-    public override void Enter()
+    public override void StateEnter()
     {
         // 가만히 있는 상태이기 때문에 Speed를 0으로
         stateMachine.MoveMentSpeedModifier = 0f;
-        base.Enter();
+        base.StateEnter();
         // Animation 전환
         StartAnimation(stateMachine.Boss.BossAnimationData.IdleParameterHash);
 
@@ -25,16 +25,16 @@ public class BossIdleState : BossBaseState
     }
 
     // Idle 상태에서 다른 상태로 전환될 때
-    public override void Exit()
+    public override void StateExit()
     {
-        base.Exit();
+        base.StateExit();
 
         StopAnimation(stateMachine.Boss.BossAnimationData.IdleParameterHash);
     }
 
-    public override void Update()
+    public override void StateUpdate()
     {
-        base.Update();
+        base.StateUpdate();
 
         if (stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData))
         {

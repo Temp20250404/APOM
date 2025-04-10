@@ -13,20 +13,17 @@ public class BossBaseState : IState
         this.stateMachine = stateMachine;
         groundData = stateMachine.Boss.SOData.GroundData;
     }
-    public virtual void Enter()
+
+    public virtual void StateEnter()
     {
         stateMachine.Boss.bossAI.MoveSpeed(stateMachine.MoveMentSpeedModifier);
     }
 
-    public virtual void Exit()
-    {
-    }
-
-    public virtual void Update()
+    public virtual void StateUpdate()
     {
         stateMachine.Boss.bossAI.HandleSkills();
 
-        if(stateMachine.Boss.bossAI.NextSkillToUse == null) return;
+        if (stateMachine.Boss.bossAI.NextSkillToUse == null) return;
 
         BossSkill skill = stateMachine.Boss.bossAI.NextSkillToUse;
 
@@ -36,6 +33,18 @@ public class BossBaseState : IState
             stateMachine.BossSkillState.SetSkill(skill);
             stateMachine.ChangeState(BossState.Skill);
         }
+    }
+
+    public virtual void StateExit()
+    {
+    }
+
+    public virtual void StateHandleInput()
+    {
+    }
+
+    public virtual void StatePhysicsUpdate()
+    {
     }
 
     protected void StartAnimation(int parameterHash)

@@ -10,24 +10,24 @@ public class BossChaseState : BossBaseState
     }
 
     // Walk 상태로 전환되었을 때
-    public override void Enter()
+    public override void StateEnter()
     {
         // BaseSpeed에 곱해줄 값 세팅
         stateMachine.MoveMentSpeedModifier = groundData.ChasingSpeedModifier * groundData.BaseSpeed;
-        base.Enter();
+        base.StateEnter();
         StartAnimation(stateMachine.Boss.BossAnimationData.ChasingParameterHash);
     }
 
     // Walk 상태에서 다른 상태로 전환될 때
-    public override void Exit()
+    public override void StateExit()
     {
-        base.Exit();
+        base.StateExit();
         StopAnimation(stateMachine.Boss.BossAnimationData.ChasingParameterHash);
     }
 
-    public override void Update()
+    public override void StateUpdate()
     {
-        base.Update();
+        base.StateUpdate();
 
         if (stateMachine.Boss.bossAI.DetectTargets())
         {

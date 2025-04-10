@@ -14,16 +14,16 @@ public class EnemyBaseState : IState
         this.stateMachine = stateMachine;
         groundData = stateMachine.Enemy.SOData.GroundData;
     }
-    public virtual void Enter()
+    public virtual void StateEnter()
     {
         stateMachine.Enemy.enemyAI.MoveSpeed(stateMachine.MoveMentSpeedModifier);
     }
 
-    public virtual void Exit()
+    public virtual void StateExit()
     {
     }
 
-    public virtual void Update()
+    public virtual void StateUpdate()
     {
 
     }
@@ -37,4 +37,8 @@ public class EnemyBaseState : IState
     {
         stateMachine.Enemy.Anim.SetBool(parameterHash, false);
     }
+
+    public void StateHandleInput() { }
+
+    public void StatePhysicsUpdate(){ }
 }
