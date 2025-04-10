@@ -195,7 +195,6 @@ public class UI_Chat : UI_Scene, IPointerDownHandler, IDragHandler, IPointerUpHa
         rectTransform.sizeDelta = isExpanded ? currentSize : new Vector2(originalSize.x, 200);
     }
 
-    // === 채팅창 드래그 리사이즈 관련 ===
 
     public void OnPointerDown(PointerEventData eventData)
     {
