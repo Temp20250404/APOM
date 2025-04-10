@@ -110,7 +110,8 @@ public class UIManager : IManager
   
 		go.transform.SetParent(_sceneUIParent.transform, false);
 
-		return sceneUI; 
+        sceneUI.Init();
+        return sceneUI; 
 	}
 
 	public T ShowPopupUI<T>(string name = null) where T : UI_Popup
