@@ -58,8 +58,6 @@ public class UI_Chat : UI_Scene, IPointerDownHandler, IDragHandler, IPointerUpHa
     private Vector2 currentSize;
 
     // 채팅창 사이즈 및 폰트 제한
-    private const float MinFontSize = 20f;
-    private const float MaxFontSize = 40f;
     private const float MinWidth = 500f;
     private const float MaxWidth = 1600f;
     private const float MinHeight = 200f;
@@ -141,7 +139,8 @@ public class UI_Chat : UI_Scene, IPointerDownHandler, IDragHandler, IPointerUpHa
         // 서버에 채팅 메시지 전송
         CS_CHAT ptk = new CS_CHAT();
         ptk.Message = strChatText;
-        ptk.Channel = string.Empty;
+        ptk.Channel = (uint)currentInputType;
+        // ptk.ChatType = (int)currentInputType; // 채팅 타입을 int로 변환하여 전송
         Managers.Network.Send(ptk);
 
         // 필드 초기화
@@ -149,11 +148,14 @@ public class UI_Chat : UI_Scene, IPointerDownHandler, IDragHandler, IPointerUpHa
     }
 
 
-    public void ServerByChat(string message, string channel)
+    public void ServerByChat(string message, uint channel)//int chatType
     {
+        ChatType type = (ChatType)channel;
+        Color color = ChatColors[type];
+
         var chatCell = Instantiate(ChatCell, parentContent).GetComponent<ChatCell>();
-        chatCell.Setup(currentInputType, currentTextColor, message);
-        chatCell.GetComponent<TextMeshProUGUI>().fontSize = CalculateChatFontSize();
+        chatCell.Setup(type, color, message);
+        //chatCell.GetComponent<TextMeshProUGUI>().fontSize = CalculateChatFontSize();
 
         chatList.Add(chatCell);
     }
@@ -228,7 +230,7 @@ public class UI_Chat : UI_Scene, IPointerDownHandler, IDragHandler, IPointerUpHa
             Mathf.Clamp(currentSize.y + delta.y, MinHeight, MaxHeight));
 
         rectTransform.sizeDelta = newSize;
-        AdjustFontSize(newSize);
+        //AdjustFontSize(newSize);
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -240,23 +242,23 @@ public class UI_Chat : UI_Scene, IPointerDownHandler, IDragHandler, IPointerUpHa
     /// <summary>
     /// 채팅 셀의 폰트 크기 및 너비 조정
     /// </summary>
-    private void AdjustFontSize(Vector2 newSize)
-    {
-        foreach (var cell in chatList)
-        {
-            var text = cell.GetComponent<TextMeshProUGUI>();
-            text.fontSize = CalculateChatFontSize();
-            text.rectTransform.sizeDelta = new Vector2(newSize.x - 20, text.rectTransform.sizeDelta.y);
-        }
-    }
+    //private void AdjustFontSize(Vector2 newSize)
+    //{
+    //    foreach (var cell in chatList)
+    //    {
+    //        var text = cell.GetComponent<TextMeshProUGUI>();
+    //        text.fontSize = CalculateChatFontSize();
+    //        text.rectTransform.sizeDelta = new Vector2(newSize.x - 20, text.rectTransform.sizeDelta.y);
+    //    }
+    //}
 
     /// <summary>
     /// 채팅창 사이즈에 따라 폰트 크기 계산
     /// </summary>
-    private float CalculateChatFontSize()
-    {
-        float widthRatio = rectTransform.sizeDelta.x / originalSize.x;
-        float heightRatio = rectTransform.sizeDelta.y / originalSize.y;
-        return Mathf.Clamp(Mathf.Max(widthRatio, heightRatio) * MinFontSize, MinFontSize, MaxFontSize);
-    }
+    //private float CalculateChatFontSize()
+    //{
+    //    float widthRatio = rectTransform.sizeDelta.x / originalSize.x;
+    //    float heightRatio = rectTransform.sizeDelta.y / originalSize.y;
+    //    return Mathf.Clamp(Mathf.Max(widthRatio, heightRatio) * MinFontSize, MinFontSize, MaxFontSize);
+    //}
 }

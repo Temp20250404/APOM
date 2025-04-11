@@ -16,6 +16,7 @@ class PacketHandler
 
         
         //UI_CHAT을 찾아서 ServerByChat 함수를 호출
+        //Managers.UI._sceneUI.UI_Chat.ServerByChat(chatPacket.Message, chatPacket.Channel);
         Managers.UI._sceneUI.UI_Chat.ServerByChat(chatPacket.Message, chatPacket.Channel);
     }
 
