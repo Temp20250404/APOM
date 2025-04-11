@@ -5,26 +5,49 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UGS;
+using Unity.Jobs;
 using UnityEngine;
 
-[UGS(typeof(EItemType))]
-public enum EItemType
+[UGS(typeof(EGRADE))]
+public enum EGRADE
 {
-    consume,
-    equip,
+    COMMON,
+    UNCOMMON,
+    RARE,
+    LEGENDARY
+}
+
+[UGS(typeof(EEQUIPTYPE))]
+public enum EEQUIPTYPE
+{
+    WEAPON,
+    HELMET,
+    ARMOR,
+    GLOVES,
+    SHOES,
+    PENDANT,
+    EARING,
+    RING
+}
+
+[UGS(typeof(EJOB))]
+public enum EJOB
+{
+    ARCHER,
+    LANCE
 }
 
 public class DataManager : IManager
 {
-    public ItemData itemData { get; private set; } = new ItemData();
+    public EquipmentData equipmentData { get; private set; } = new EquipmentData();
 
     public void Init()
     {
         UnityGoogleSheet.LoadAllData();
-        EItemType itemType;
-        if (ItemData.GetDictionary().TryGetValue(3, out APOM_Data.Item_Data foundItem))
+        EGRADE grades;
+        if (EquipmentData.GetDictionary().TryGetValue(3, out APOM_Data.Equipment_Data foundItem))
         {
-            itemType = foundItem.itemType;
+            grades = foundItem.grade;
         }
         SaveAllSheetDataToSDD("Test");
         Debug.Log("DataManager Initialized");

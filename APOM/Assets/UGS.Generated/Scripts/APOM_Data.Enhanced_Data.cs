@@ -17,39 +17,39 @@ using UnityEngine;
 namespace APOM_Data
 {
     [GoogleSheet.Attribute.TableStruct]
-    public partial class Data : ITable
+    public partial class Enhanced_Data : ITable
     { 
 
-        public delegate void OnLoadedFromGoogleSheets(List<Data> loadedList, Dictionary<int, Data> loadedDictionary);
+        public delegate void OnLoadedFromGoogleSheets(List<Enhanced_Data> loadedList, Dictionary<int, Enhanced_Data> loadedDictionary);
 
         static bool isLoaded = false;
         static string spreadSheetID = "1vtDMZth01VidgPCcacKCi6XieVUPtxoWthe8_SqFrec"; // it is file id
-        static string sheetID = "0"; // it is sheet id
+        static string sheetID = "1054479324"; // it is sheet id
         static UnityFileReader reader = new UnityFileReader();
 
 /* Your Loaded Data Storage. */
     
-        public static Dictionary<int, Data> DataMap = new Dictionary<int, Data>();  
-        public static List<Data> DataList = new List<Data>();   
+        public static Dictionary<int, Enhanced_Data> Enhanced_DataMap = new Dictionary<int, Enhanced_Data>();  
+        public static List<Enhanced_Data> Enhanced_DataList = new List<Enhanced_Data>();   
 
         /// <summary>
-        /// Get Data List 
+        /// Get Enhanced_Data List 
         /// Auto Load
         /// </summary>
-        public static List<Data> GetList()
+        public static List<Enhanced_Data> GetList()
         {{
            if (isLoaded == false) Load();
-           return DataList;
+           return Enhanced_DataList;
         }}
 
         /// <summary>
-        /// Get Data Dictionary, keyType is your sheet A1 field type.
+        /// Get Enhanced_Data Dictionary, keyType is your sheet A1 field type.
         /// - Auto Load
         /// </summary>
-        public static Dictionary<int, Data>  GetDictionary()
+        public static Dictionary<int, Enhanced_Data>  GetDictionary()
         {{
            if (isLoaded == false) Load();
-           return DataMap;
+           return Enhanced_DataMap;
         }}
 
     
@@ -57,8 +57,6 @@ namespace APOM_Data
 /* Fields. */
 
 		public System.Int32 index;
-		public System.Int32 intValue;
-		public System.String strValue;
   
 
 #region fuctions
@@ -69,7 +67,7 @@ namespace APOM_Data
             if(isLoaded && forceReload == false)
             {
 #if UGS_DEBUG
-                 Debug.Log("Data is already loaded! if you want reload then, forceReload parameter set true");
+                 Debug.Log("Enhanced_Data is already loaded! if you want reload then, forceReload parameter set true");
 #endif
                  return;
             }
@@ -85,7 +83,7 @@ namespace APOM_Data
         }
  
 
-        public static void LoadFromGoogle(System.Action<List<Data>, Dictionary<int, Data>> onLoaded, bool updateCurrentData = false)
+        public static void LoadFromGoogle(System.Action<List<Enhanced_Data>, Dictionary<int, Enhanced_Data>> onLoaded, bool updateCurrentData = false)
         {      
                 IHttpProtcol webInstance = null;
     #if UNITY_EDITOR
@@ -113,14 +111,14 @@ namespace APOM_Data
                
 
 
-    public static (List<Data> list, Dictionary<int, Data> map) CommonLoad(Dictionary<string, Dictionary<string, List<string>>> jsonObject, bool forceReload){
-            Dictionary<int, Data> Map = new Dictionary<int, Data>();
-            List<Data> List = new List<Data>();     
+    public static (List<Enhanced_Data> list, Dictionary<int, Enhanced_Data> map) CommonLoad(Dictionary<string, Dictionary<string, List<string>>> jsonObject, bool forceReload){
+            Dictionary<int, Enhanced_Data> Map = new Dictionary<int, Enhanced_Data>();
+            List<Enhanced_Data> List = new List<Enhanced_Data>();     
             TypeMap.Init();
-            FieldInfo[] fields = typeof(Data).GetFields(BindingFlags.Public | BindingFlags.Instance);
+            FieldInfo[] fields = typeof(Enhanced_Data).GetFields(BindingFlags.Public | BindingFlags.Instance);
             List<(string original, string propertyName, string type)> typeInfos = new List<(string, string, string)>(); 
             List<List<string>> rows = new List<List<string>>();
-            var sheet = jsonObject["Data"];
+            var sheet = jsonObject["Enhanced_Data"];
 
             foreach (var column in sheet.Keys)
             {
@@ -139,7 +137,7 @@ namespace APOM_Data
                         int rowCount = rows[0].Count;
                         for (int i = 0; i < rowCount; i++)
                         {
-                            Data instance = new Data();
+                            Enhanced_Data instance = new Enhanced_Data();
                             for (int j = 0; j < typeInfos.Count; j++)
                             {
                                 try
@@ -180,8 +178,8 @@ namespace APOM_Data
                         }
                         if(isLoaded == false || forceReload)
                         { 
-                            DataList = List;
-                            DataMap = Map;
+                            Enhanced_DataList = List;
+                            Enhanced_DataMap = Map;
                             isLoaded = true;
                         }
                     } 
@@ -191,10 +189,10 @@ namespace APOM_Data
 
  
 
-        public static void Write(Data data, System.Action<WriteObjectResult> onWriteCallback = null)
+        public static void Write(Enhanced_Data data, System.Action<WriteObjectResult> onWriteCallback = null)
         { 
             TypeMap.Init();
-            FieldInfo[] fields = typeof(Data).GetFields(BindingFlags.Public | BindingFlags.Instance);
+            FieldInfo[] fields = typeof(Enhanced_Data).GetFields(BindingFlags.Public | BindingFlags.Instance);
             var datas = new string[fields.Length];
             for (int i = 0; i < fields.Length; i++)
             {

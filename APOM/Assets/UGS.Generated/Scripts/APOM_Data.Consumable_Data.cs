@@ -17,39 +17,39 @@ using UnityEngine;
 namespace APOM_Data
 {
     [GoogleSheet.Attribute.TableStruct]
-    public partial class Item_Data : ITable
+    public partial class Consumable_Data : ITable
     { 
 
-        public delegate void OnLoadedFromGoogleSheets(List<Item_Data> loadedList, Dictionary<int, Item_Data> loadedDictionary);
+        public delegate void OnLoadedFromGoogleSheets(List<Consumable_Data> loadedList, Dictionary<int, Consumable_Data> loadedDictionary);
 
         static bool isLoaded = false;
         static string spreadSheetID = "1vtDMZth01VidgPCcacKCi6XieVUPtxoWthe8_SqFrec"; // it is file id
-        static string sheetID = "724889271"; // it is sheet id
+        static string sheetID = "1932956224"; // it is sheet id
         static UnityFileReader reader = new UnityFileReader();
 
 /* Your Loaded Data Storage. */
     
-        public static Dictionary<int, Item_Data> Item_DataMap = new Dictionary<int, Item_Data>();  
-        public static List<Item_Data> Item_DataList = new List<Item_Data>();   
+        public static Dictionary<int, Consumable_Data> Consumable_DataMap = new Dictionary<int, Consumable_Data>();  
+        public static List<Consumable_Data> Consumable_DataList = new List<Consumable_Data>();   
 
         /// <summary>
-        /// Get Item_Data List 
+        /// Get Consumable_Data List 
         /// Auto Load
         /// </summary>
-        public static List<Item_Data> GetList()
+        public static List<Consumable_Data> GetList()
         {{
            if (isLoaded == false) Load();
-           return Item_DataList;
+           return Consumable_DataList;
         }}
 
         /// <summary>
-        /// Get Item_Data Dictionary, keyType is your sheet A1 field type.
+        /// Get Consumable_Data Dictionary, keyType is your sheet A1 field type.
         /// - Auto Load
         /// </summary>
-        public static Dictionary<int, Item_Data>  GetDictionary()
+        public static Dictionary<int, Consumable_Data>  GetDictionary()
         {{
            if (isLoaded == false) Load();
-           return Item_DataMap;
+           return Consumable_DataMap;
         }}
 
     
@@ -57,9 +57,8 @@ namespace APOM_Data
 /* Fields. */
 
 		public System.Int32 index;
-		public System.String name;
-		public System.Int32 count;
-		public EItemType itemType;
+		public System.Int32 intValue;
+		public System.String strValue;
   
 
 #region fuctions
@@ -70,7 +69,7 @@ namespace APOM_Data
             if(isLoaded && forceReload == false)
             {
 #if UGS_DEBUG
-                 Debug.Log("Item_Data is already loaded! if you want reload then, forceReload parameter set true");
+                 Debug.Log("Consumable_Data is already loaded! if you want reload then, forceReload parameter set true");
 #endif
                  return;
             }
@@ -86,7 +85,7 @@ namespace APOM_Data
         }
  
 
-        public static void LoadFromGoogle(System.Action<List<Item_Data>, Dictionary<int, Item_Data>> onLoaded, bool updateCurrentData = false)
+        public static void LoadFromGoogle(System.Action<List<Consumable_Data>, Dictionary<int, Consumable_Data>> onLoaded, bool updateCurrentData = false)
         {      
                 IHttpProtcol webInstance = null;
     #if UNITY_EDITOR
@@ -114,14 +113,14 @@ namespace APOM_Data
                
 
 
-    public static (List<Item_Data> list, Dictionary<int, Item_Data> map) CommonLoad(Dictionary<string, Dictionary<string, List<string>>> jsonObject, bool forceReload){
-            Dictionary<int, Item_Data> Map = new Dictionary<int, Item_Data>();
-            List<Item_Data> List = new List<Item_Data>();     
+    public static (List<Consumable_Data> list, Dictionary<int, Consumable_Data> map) CommonLoad(Dictionary<string, Dictionary<string, List<string>>> jsonObject, bool forceReload){
+            Dictionary<int, Consumable_Data> Map = new Dictionary<int, Consumable_Data>();
+            List<Consumable_Data> List = new List<Consumable_Data>();     
             TypeMap.Init();
-            FieldInfo[] fields = typeof(Item_Data).GetFields(BindingFlags.Public | BindingFlags.Instance);
+            FieldInfo[] fields = typeof(Consumable_Data).GetFields(BindingFlags.Public | BindingFlags.Instance);
             List<(string original, string propertyName, string type)> typeInfos = new List<(string, string, string)>(); 
             List<List<string>> rows = new List<List<string>>();
-            var sheet = jsonObject["Item_Data"];
+            var sheet = jsonObject["Consumable_Data"];
 
             foreach (var column in sheet.Keys)
             {
@@ -140,7 +139,7 @@ namespace APOM_Data
                         int rowCount = rows[0].Count;
                         for (int i = 0; i < rowCount; i++)
                         {
-                            Item_Data instance = new Item_Data();
+                            Consumable_Data instance = new Consumable_Data();
                             for (int j = 0; j < typeInfos.Count; j++)
                             {
                                 try
@@ -181,8 +180,8 @@ namespace APOM_Data
                         }
                         if(isLoaded == false || forceReload)
                         { 
-                            Item_DataList = List;
-                            Item_DataMap = Map;
+                            Consumable_DataList = List;
+                            Consumable_DataMap = Map;
                             isLoaded = true;
                         }
                     } 
@@ -192,10 +191,10 @@ namespace APOM_Data
 
  
 
-        public static void Write(Item_Data data, System.Action<WriteObjectResult> onWriteCallback = null)
+        public static void Write(Consumable_Data data, System.Action<WriteObjectResult> onWriteCallback = null)
         { 
             TypeMap.Init();
-            FieldInfo[] fields = typeof(Item_Data).GetFields(BindingFlags.Public | BindingFlags.Instance);
+            FieldInfo[] fields = typeof(Consumable_Data).GetFields(BindingFlags.Public | BindingFlags.Instance);
             var datas = new string[fields.Length];
             for (int i = 0; i < fields.Length; i++)
             {
