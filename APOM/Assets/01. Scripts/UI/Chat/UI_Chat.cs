@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Game;
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -134,12 +135,28 @@ public class UI_Chat : UI_Scene, IPointerDownHandler, IDragHandler, IPointerUpHa
     {
         if (string.IsNullOrWhiteSpace(inputField.text)) return;
 
+        string strChatText = ComposeChatText();
+
+        // 서버에 채팅 메시지 전송
+        CS_CHAT ptk = new CS_CHAT();
+        ptk.Message = strChatText;
+        ptk.Channel = string.Empty;
+        Managers.Network.Send(ptk);
+
+        // 필드 초기화
+        inputField.text = string.Empty;
+
+
+    }
+
+
+    public void ServerByChat(string message, string channel)
+    {
         var chatCell = Instantiate(ChatCell, parentContent).GetComponent<ChatCell>();
-        chatCell.Setup(currentInputType, currentTextColor, ComposeChatText());
+        chatCell.Setup(currentInputType, currentTextColor, message);
         chatCell.GetComponent<TextMeshProUGUI>().fontSize = CalculateChatFontSize();
 
         chatList.Add(chatCell);
-        inputField.text = string.Empty;
     }
 
     /// <summary>

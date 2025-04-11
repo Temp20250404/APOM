@@ -13,6 +13,10 @@ class PacketHandler
         SC_CHAT chatPacket = packet as SC_CHAT;
 
         // TODO: SC_Chat 패킷 처리 로직을 여기에 구현
+
+
+        // UI_CHAT을 찾아서 ServerByChat 함수를 호출
+        //Managers.UI.UI_CHAT.ServerByChat(chatPacket.Message, chatPacket.Channel);
     }
 
     // SC_KEYINFO 패킷을 처리하는 함수
