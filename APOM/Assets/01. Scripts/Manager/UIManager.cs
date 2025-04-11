@@ -29,7 +29,8 @@ public class UIManager : IManager
 
     private int _order = 10;
 
-    private UI_Scene _sceneUI = null;
+    public UI_Scene _sceneUI = null;
+
     private Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
     private List<UI_Follow> _followList = new List<UI_Follow>();
 
@@ -111,6 +112,7 @@ public class UIManager : IManager
 		go.transform.SetParent(_sceneUIParent.transform, false);
 
         sceneUI.Init();
+
         return sceneUI; 
 	}
 

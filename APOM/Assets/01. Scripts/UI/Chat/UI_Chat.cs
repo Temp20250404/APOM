@@ -89,6 +89,7 @@ public class UI_Chat : UI_Scene, IPointerDownHandler, IDragHandler, IPointerUpHa
     /// </summary>
     public override void Init()
     {
+        
         Bind<GameObject>(typeof(ChatObjects)); // GameObject만 바인딩하고, 컴포넌트는 직접 꺼냄
 
         ChatCell = Managers.Resource.Load<GameObject>("UI/Scene/ChatCell"); // 채팅 셀 프리팹 로드
@@ -145,8 +146,6 @@ public class UI_Chat : UI_Scene, IPointerDownHandler, IDragHandler, IPointerUpHa
 
         // 필드 초기화
         inputField.text = string.Empty;
-
-
     }
 
 

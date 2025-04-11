@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class UI_Scene : UI_Base
 {
+    public UI_Chat UI_Chat { get; private set; } = null;
     public override void Init()
     {
         Managers.UI.SetCanvas(gameObject, false);
+
+        UI_Chat = GetComponentInChildren<UI_Chat>(true);
 
         UI_Scene[] children = GetComponentsInChildren<UI_Scene>(true);
 
@@ -16,4 +19,12 @@ public class UI_Scene : UI_Base
                 ui.Init();
         }
     }
+
+    //public GameObject Find(GameObject _gameObject)
+    //{
+    //    // 자식 중 UI_Chat 찾기
+    //    UI_Chat = GetComponentInChildren<UI_Chat>(true);
+
+    //    return gameObject;
+    //}
 }
