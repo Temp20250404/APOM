@@ -15,8 +15,6 @@ public enum ItemCategory // 아이템 카테고리
     Etc
 }
 
-
-
 [Serializable]
 public class UIManager : IManager
 {
@@ -25,7 +23,6 @@ public class UIManager : IManager
     [SerializeField] private Transform _followUIParent;
 
     public List<Item> inventoryItems = new List<Item>();
-
 
     private int _order = 10;
 
