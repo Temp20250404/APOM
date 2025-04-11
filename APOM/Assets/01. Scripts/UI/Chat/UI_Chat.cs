@@ -1,5 +1,6 @@
 ﻿using Game;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -14,7 +15,8 @@ public enum ChatObjects
     ParentContent,     // 채팅 메시지를 출력할 ScrollView의 Content 영역
     InputField,        // 채팅 입력 필드 (TMP_InputField)
     ChatTypeText,      // 채팅 타입 (Normal, Party 등) 표시 텍스트
-    TextInput          // 채팅 입력 텍스트 색상용 텍스트 오브젝트
+    TextInput,          // 채팅 입력 텍스트 색상용 텍스트 오브젝트
+    RectTransform,    // 채팅창 RectTransform
 }
 
 /// <summary>
@@ -58,7 +60,7 @@ public class UI_Chat : UI_Scene, IPointerDownHandler, IDragHandler, IPointerUpHa
     private Vector2 currentSize;
 
     // 채팅창 사이즈 및 폰트 제한
-    private const float MinWidth = 500f;
+    private const float MinWidth = 400;
     private const float MaxWidth = 1600f;
     private const float MinHeight = 200f;
     private const float MaxHeight = 800f;
@@ -97,25 +99,39 @@ public class UI_Chat : UI_Scene, IPointerDownHandler, IDragHandler, IPointerUpHa
         chatTypeText = GetObject((int)ChatObjects.ChatTypeText)?.GetComponent<TextMeshProUGUI>();
         inputField = GetObject((int)ChatObjects.InputField)?.GetComponent<TMP_InputField>();
         textInput = GetObject((int)ChatObjects.TextInput)?.GetComponent<TextMeshProUGUI>();
+        rectTransform = GetObject((int)ChatObjects.RectTransform)?.GetComponent<RectTransform>();
 
         currentInputType = ChatType.Normal;
         SetChatInputType(currentInputType); // 기본 채팅 타입 설정
-
-        rectTransform = GetComponent<RectTransform>();
+        
         originalSize = rectTransform.sizeDelta;
         currentSize = originalSize;
     }
+
+    private bool justClosed = false;
 
     /// <summary>
     /// 키 입력 핸들링 (엔터, 탭)
     /// </summary>
     private void Update()
     {
+        if (justClosed)
+        {
+            justClosed = false;
+            return; // 한 프레임 동안 Enter 무시
+
+        }
         if (Input.GetKeyDown(KeyCode.Return) && !inputField.isFocused)
+        {
+
+            rectTransform.gameObject.SetActive(true);
             inputField.ActivateInputField(); // 포커스 없을 때 엔터 → 입력창 활성화
+            Debug.Log("InputField activated");
+        }
 
         if (Input.GetKeyDown(KeyCode.Tab) && inputField.isFocused)
             SetNextInputType(); // 포커스 있을 때 탭 → 입력 채팅 타입 순환
+
     }
 
     /// <summary>
@@ -123,8 +139,24 @@ public class UI_Chat : UI_Scene, IPointerDownHandler, IDragHandler, IPointerUpHa
     /// </summary>
     public void OnEndEditEventMethod()
     {
+        if (Input.GetKeyDown(KeyCode.Return) && inputField.text == string.Empty)
+        {
+            inputField.DeactivateInputField(); // 먼저 비활성화
+            rectTransform.gameObject.SetActive(false); // 채팅 타입 텍스트 활성화
+            StartCoroutine(EnterDelay());
+        }
+
         if (Input.GetKeyDown(KeyCode.Return))
             UpdateChat();
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+            inputField.DeactivateInputField(); // 입력창 비활성화
+    }
+    
+    IEnumerator EnterDelay()
+    {
+        justClosed = true;
+        yield return null; // 1프레임 쉬기
     }
 
     /// <summary>

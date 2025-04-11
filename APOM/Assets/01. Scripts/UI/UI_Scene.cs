@@ -7,7 +7,7 @@ public class UI_Scene : UI_Base
     public UI_Chat UI_Chat { get; private set; } = null;
     public override void Init()
     {
-        Managers.UI.SetCanvas(gameObject, false);
+        Managers.UI.SetCanvas(gameObject, true);
 
         UI_Chat = GetComponentInChildren<UI_Chat>(true);
 

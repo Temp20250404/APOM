@@ -46,6 +46,7 @@ public class Managers : Singleton<Managers>
             gameManager = new GameManager();
         }
 
+        Screen.SetResolution(1920, 1080, false); // 해상도 설정    
         Application.targetFrameRate = 60;   // 최대 프레임 60으로 조정
         JobQueue.Push(() => { });           // 잡큐 enq 시작
 
