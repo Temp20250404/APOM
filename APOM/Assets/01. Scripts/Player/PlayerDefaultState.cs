@@ -40,10 +40,15 @@ public class PlayerDefaultState : PlayerBaseState
 
     protected override void OnMoveCanceled(InputAction.CallbackContext context)
     {
-        if (stateMachine.movementInput == Vector2.zero)
-        {
-            return;
-        }
+        //if (stateMachine.movementInput == Vector2.zero)
+        //{
+        //    return;
+        //}
+        stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.W] = false;
+        stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.S] = false;
+        stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.A] = false;
+        stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.D] = false;
+        stateMachine.movementInput = Vector2.zero;
 
         stateMachine.ChangeState(stateMachine.idleState);
 

@@ -45,6 +45,15 @@ public class ServerSession : PacketSession
         ushort bySize = (ushort)packet.CalculateSize();
         ushort byType = id;
 
+
+        if(bySize == 0)
+        {
+            Debug.LogError($"패킷 Send 실패: {enumName}의 사이즈가 0 byte");
+            return;
+        }
+
+
+
         byte[] sendBuffer = new byte[bySize + 3];
         Array.Copy(BitConverter.GetBytes(byCode), 0, sendBuffer, 0, sizeof(ushort));
         Array.Copy(BitConverter.GetBytes(bySize), 0, sendBuffer, 1, sizeof(ushort));
@@ -63,6 +72,10 @@ public class ServerSession : PacketSession
         {
             PacketQueue.Instance.Push(i, m);
         };
+
+        CS_REGISTER_REQUEST ptk = new CS_REGISTER_REQUEST();
+        ptk.UserName = "Default_UserName";
+        Managers.Network.Send(ptk);
     }
 
     public override void OnDisconnected(EndPoint endPoint)

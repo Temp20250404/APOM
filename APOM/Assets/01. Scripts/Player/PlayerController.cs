@@ -1,39 +1,46 @@
 using Cinemachine;
+using Game;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public enum EKEYINPUT
+{
+    W = 0,
+    A = 1,
+    S = 2,
+    D = 3,
+    SPACE,
+    END
+}
+
 public class PlayerController : MonoBehaviour
 {
-    public enum EKEYINPUT
-    {
-        W = 0,
-        A = 1,
-        S = 2,
-        D = 3,
-        END
-    }
 
+    public bool isMainPlayer = false;
     public PlayerInputs playerInputs { get; private set; }
     public PlayerInputs.PlayerActions playerActions { get; private set; }
     public CinemachineFreeLook cinemachineFreeLook { get; private set; }
+    GameObject pivot;
 
     private bool isMoving = false;
 
-    private bool[] previousWASD = new bool[(int)EKEYINPUT.END];
-    private bool[] currentWASD = new bool[(int)EKEYINPUT.END];
+    private uint previousKeyInputs = 0;
+    private bool[] currentKeyInputs = new bool[(int)EKEYINPUT.END];
+    private uint ucurrentKeyInputs = 0;
 
-    private bool[] sendPacketWASD = new bool[(int)EKEYINPUT.END];
-    public bool[] recivePacketWASD = new bool[(int)EKEYINPUT.END];
+    private uint sendKeyInputs = 0;
+    [HideInInspector] public bool[] reciveKeyInputs = new bool[(int)EKEYINPUT.END];
 
     private float previousRotation;
     private float currentRotation;
 
     private float sendPacketRotation;
-    public float recivePacketRotation;
+    [HideInInspector] public float recivePacketRotation;
 
+    bool rotationChanged;
     private void Awake()
     {
         playerInputs = new PlayerInputs();
@@ -43,17 +50,39 @@ public class PlayerController : MonoBehaviour
         {
             cinemachineFreeLook = GameObject.Find("Player Camera").GetComponent<CinemachineFreeLook>();
         }
+
+        Transform _pivot = transform.Find("Pivot");
+        if (_pivot != null)
+        {
+            pivot = _pivot.gameObject;
+        }
+        
+    }
+
+    private void Start()
+    {
+        if (cinemachineFreeLook.Follow == null || cinemachineFreeLook.Follow.parent != this.transform)
+        {
+            cinemachineFreeLook = null;
+        }
     }
 
     public void Update()
     {
-        InputWASD();
-        CheckIsMoving();
-        if (isMoving)
+        KeyInput();
+        CheckMoveRotationChange();
+
+        rotationChanged = (ucurrentKeyInputs != 0) && (currentRotation != previousRotation);
+        if (ucurrentKeyInputs != previousKeyInputs || rotationChanged)
         {
-            SendRotationPacket();
+            previousKeyInputs = ucurrentKeyInputs;
+            previousRotation = currentRotation;
+            Util.SendPacket<CS_KEYINFO>(packet =>
+            {
+                packet.KeyInfo = sendKeyInputs;
+                packet.CameraYaw = sendPacketRotation;
+            });
         }
-        RecivePacket(sendPacketWASD, sendPacketRotation);
     }
 
     private void OnEnable()
@@ -66,74 +95,61 @@ public class PlayerController : MonoBehaviour
         playerInputs.Disable();
     }
 
-    void CheckIsMoving()
+    public void SetMainPlayer()
     {
-        if (currentWASD.Contains(true))
+        isMainPlayer = true;
+
+        cinemachineFreeLook.Follow = pivot.transform;
+        cinemachineFreeLook.LookAt = pivot.transform;
+    }
+
+    void KeyInput()
+    {
+        currentKeyInputs[(int)EKEYINPUT.W] = Input.GetKey(KeyCode.W);
+        currentKeyInputs[(int)EKEYINPUT.S] = Input.GetKey(KeyCode.S);
+        currentKeyInputs[(int)EKEYINPUT.A] = Input.GetKey(KeyCode.A);
+        currentKeyInputs[(int)EKEYINPUT.D] = Input.GetKey(KeyCode.D);
+
+        ucurrentKeyInputs = ChnageToUint(currentKeyInputs);
+
+        if (previousKeyInputs != ucurrentKeyInputs)
         {
-            isMoving = true;
-            currentRotation = cinemachineFreeLook.m_XAxis.Value;
-        }
-        else
-        {
-            isMoving = false;
+            sendKeyInputs = ucurrentKeyInputs;
         }
     }
 
-    void InputWASD()
+    private uint ChnageToUint(bool[] _keyInputs)
     {
-        Vector2 move = playerInputs.Player.Move.ReadValue<Vector2>();
-
-        // WASD 상태 업데이트
-        currentWASD[(int)EKEYINPUT.W] = move.y > 0.5f;   // W
-        currentWASD[(int)EKEYINPUT.S] = move.y < -0.5f;  // S
-        currentWASD[(int)EKEYINPUT.A] = move.x < -0.5f;  // A
-        currentWASD[(int)EKEYINPUT.D] = move.x > 0.5f;   // D
-
-        bool stateChanged = false;
+        uint uintKetyInput = 0;
         for (int i = 0; i < (int)EKEYINPUT.END; i++)
         {
-            if (previousWASD[i] != currentWASD[i])
-            {
-                stateChanged = true;
-                break;
-            }
+            uintKetyInput |= _keyInputs[i] ? (1u << i) : 0;
         }
 
-        if (stateChanged)
+        return uintKetyInput;
+    }
+
+    private void CheckMoveRotationChange()
+    {
+        if (isMainPlayer == false)
         {
-            SendInputPacket();
-
-            for (int i = 0; i < (int)EKEYINPUT.END; i++)
-            {
-                previousWASD[i] = currentWASD[i];
-            }
+            return;
         }
-    }
+        currentRotation = cinemachineFreeLook.m_XAxis.Value;
 
-    private void SendInputPacket()
-    {
-        sendPacketWASD = currentWASD;
-        Debug.Log("Send Input Packet: " + string.Join(", ", sendPacketWASD));
-    }
-
-    private void SendRotationPacket()
-    {
         if (previousRotation != currentRotation)
         {
             sendPacketRotation = currentRotation;
-            previousRotation = currentRotation;
-            Debug.Log("Send Rotation Packet: " + sendPacketRotation);
         }
     }
 
-    public void RecivePacket(bool[] _PacketWASD, float _PacketRotation)
+    public void RecivePacket(uint _PacketKeyInputs, float _PacketRotation)
     {
-        if (_PacketWASD == null || _PacketWASD.Length != (int)EKEYINPUT.END)
+        for (int i = 0; i < (int)EKEYINPUT.END; i++)
         {
-            Debug.LogError("Invalid packet data received.");
-            return;
+            reciveKeyInputs[i] = (_PacketKeyInputs & (1u << i)) != 0;
         }
-        recivePacketWASD = _PacketWASD;
+
         recivePacketRotation = _PacketRotation;
     }
 }

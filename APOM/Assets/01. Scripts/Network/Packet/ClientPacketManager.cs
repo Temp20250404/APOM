@@ -39,6 +39,9 @@ public class PacketManager : IManager
         _onRecv.Add((ushort)Game.PacketID.ScRegisterResponse, MakePacket<SC_REGISTER_RESPONSE>);
         _handler.Add((ushort)Game.PacketID.ScRegisterResponse, PacketHandler.SC_RegisterResponse);
 
+        _onRecv.Add((ushort)Game.PacketID.ScRemoveCharacter, MakePacket<SC_REMOVE_CHARACTER>);
+        _handler.Add((ushort)Game.PacketID.ScRemoveCharacter, PacketHandler.SC_RemoveCharacter);
+
         _onRecv.Add((ushort)Game.PacketID.ScSpawnCharacter, MakePacket<SC_SPAWN_CHARACTER>);
         _handler.Add((ushort)Game.PacketID.ScSpawnCharacter, PacketHandler.SC_SpawnCharacter);
     } 
@@ -56,7 +59,7 @@ public class PacketManager : IManager
 
         // Protobuf 메시지를 buffer 전체에서 파싱
         pkt.MergeFrom(buffer.Array, buffer.Offset, buffer.Count);
-        Debug.Log($"PacketHandler 호출: {id}");
+        //Debug.Log($"PacketHandler 호출: {id}");
 
         if (CustomHandler != null)
         {
