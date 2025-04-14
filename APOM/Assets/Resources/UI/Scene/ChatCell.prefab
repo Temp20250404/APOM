@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3099044148449676719}
   - component: {fileID: 6293310899193976478}
   m_Layer: 5
-  m_Name: TextChat
+  m_Name: ChatCell
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

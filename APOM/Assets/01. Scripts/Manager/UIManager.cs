@@ -15,8 +15,6 @@ public enum ItemCategory // 아이템 카테고리
     Etc
 }
 
-
-
 [Serializable]
 public class UIManager : IManager
 {
@@ -26,10 +24,10 @@ public class UIManager : IManager
 
     public List<Item> inventoryItems = new List<Item>();
 
-
     private int _order = 10;
 
-    private UI_Scene _sceneUI = null;
+    public UI_Scene _sceneUI = null;
+
     private Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
     private List<UI_Follow> _followList = new List<UI_Follow>();
 
@@ -110,7 +108,9 @@ public class UIManager : IManager
   
 		go.transform.SetParent(_sceneUIParent.transform, false);
 
-		return sceneUI; 
+        sceneUI.Init();
+
+        return sceneUI; 
 	}
 
 	public T ShowPopupUI<T>(string name = null) where T : UI_Popup

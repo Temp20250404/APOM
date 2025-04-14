@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5680982438526351248}
   - component: {fileID: 1348710587645002420}
   m_Layer: 5
-  m_Name: Content
+  m_Name: ParentContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -847,7 +847,7 @@ GameObject:
   - component: {fileID: 3658299928415060977}
   - component: {fileID: 2320065867549212515}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: ChatTypeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -982,7 +982,7 @@ GameObject:
   - component: {fileID: 1032110659018860524}
   - component: {fileID: 6077868884029693097}
   m_Layer: 5
-  m_Name: ChatingPanel
+  m_Name: UI_Chat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1010,8 +1010,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 100, y: 100}
-  m_SizeDelta: {x: 500, y: 500}
+  m_AnchoredPosition: {x: 50, y: 50}
+  m_SizeDelta: {x: 333.8022, y: 441.8307}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &5386937271001238843
 CanvasRenderer:
@@ -1063,11 +1063,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8eb9dfa76be1ed04f88ec51157414121, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  textChatPrefab: {fileID: 74340946964371636, guid: 2839b78b7a9d0b64f99ff40eb3dddeb1, type: 3}
-  parentContent: {fileID: 6648207988723760785}
-  inputField: {fileID: 5190298639150971663}
-  chatTypeText: {fileID: 2320065867549212515}
-  textInput: {fileID: 5586956384523797453}
 --- !u!1 &2796489251258682583
 GameObject:
   m_ObjectHideFlags: 0
@@ -1730,8 +1725,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000030517578, y: 0}
-  m_SizeDelta: {x: 80, y: 50}
+  m_AnchoredPosition: {x: -5, y: 0}
+  m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &7850258073371080966
 MonoBehaviour:
@@ -2394,7 +2389,7 @@ GameObject:
   - component: {fileID: 2402486721538584474}
   - component: {fileID: 5586956384523797453}
   m_Layer: 5
-  m_Name: Text
+  m_Name: TextInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2819,7 +2814,7 @@ MonoBehaviour:
   m_ChildAlignment: 3
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 80, y: 50}
+  m_CellSize: {x: 50, y: 50}
   m_Spacing: {x: 10, y: 0}
   m_Constraint: 2
   m_ConstraintCount: 1
@@ -2957,7 +2952,7 @@ GameObject:
   - component: {fileID: 6201848464681561600}
   - component: {fileID: 5190298639150971663}
   m_Layer: 5
-  m_Name: ChatArea
+  m_Name: InputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3144,7 +3139,7 @@ GameObject:
   - component: {fileID: 4198807158154134447}
   - component: {fileID: 4878546819982585396}
   m_Layer: 5
-  m_Name: ChatingCanvas
+  m_Name: UI_Scene_UIChat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

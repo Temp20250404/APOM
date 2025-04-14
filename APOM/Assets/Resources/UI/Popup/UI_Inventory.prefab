@@ -178,8 +178,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f48cddf064bc1440acf8cb7015dd162, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Potion
-  category: 1
 --- !u!1 &667401153549815355
 GameObject:
   m_ObjectHideFlags: 0
@@ -224,8 +222,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f48cddf064bc1440acf8cb7015dd162, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Sword
-  category: 0
 --- !u!1 &806172634401881454
 GameObject:
   m_ObjectHideFlags: 0
@@ -244,7 +240,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3871197635387166931
 RectTransform:
   m_ObjectHideFlags: 0
