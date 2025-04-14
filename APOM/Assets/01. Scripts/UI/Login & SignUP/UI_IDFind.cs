@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public enum IDFindType
 {
-    EMail_Input,
+    Email_Input,
     ID_Find_Button,
     FindResult_Text,
     Exit_Button
@@ -25,12 +25,12 @@ public class UI_IDFind : UI_Popup
         popupType = PopupType.Login;
 
         // enum 이름 기준으로 자동 바인딩
-        Bind<InputField>(typeof(IDFindType));      // EMail_Input
+        Bind<TMP_InputField>(typeof(IDFindType));      // EMail_Input
         Bind<Button>(typeof(IDFindType));          // 모든 버튼류
         Bind<TextMeshProUGUI>(typeof(IDFindType)); // FindResult_Text
 
         // enum 인덱스로 실제 변수에 할당
-        emailInputField = Get<TMP_InputField>((int)IDFindType.EMail_Input);
+        emailInputField = Get<TMP_InputField>((int)IDFindType.Email_Input);
         idFindButton = Get<Button>((int)IDFindType.ID_Find_Button);
         findResultText = Get<TextMeshProUGUI>((int)IDFindType.FindResult_Text);
         exitButton = Get<Button>((int)IDFindType.Exit_Button);
@@ -38,16 +38,57 @@ public class UI_IDFind : UI_Popup
         // 버튼 이벤트 연결
         idFindButton.onClick.AddListener(OnClickIDFind);
         exitButton.onClick.AddListener(ClosePopupUI);
+
+        TextEmpty();
     }
 
     public void OnClickIDFind()
     {
-        Debug.Log("ID Find Button Clicked");
+        string email = emailInputField.text;
+        string id = IsIDFind(email);
+
+        if (!string.IsNullOrEmpty(id))
+        {
+            findResultText.text = $"ID: {id}";
+        }
+        else
+        {
+            findResultText.text = "등록된 ID가 없습니다.";
+        }
+
+        if (email == string.Empty)
+        {
+            findResultText.text = "Email 입력해 주세요";
+        }
+
+
+        TextEmpty();
+    }
+
+    private string IsIDFind(string email)
+    {
+        int count = PlayerPrefs.GetInt("IDCount", 0);
+
+        for (int i = 0; i < count; i++)
+        {
+            string existingEmail = PlayerPrefs.GetString($"User_{i}_Email", "");
+
+            if (existingEmail == email)
+            {
+                return PlayerPrefs.GetString($"User_{i}_ID", ""); ;
+            }
+        }
+        return null;
     }
 
     public override void ClosePopupUI()
     {
         base.ClosePopupUI();
         Managers.UI.ShowPopupUI<UI_Login>();
+    }
+
+    public void TextEmpty()
+    {
+        emailInputField.text = "";
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public enum LoginType
 {
-    Login_Error_Text,
+    Login_Result_Text,
     ID_Input,
     PW_Input,
     Login_Button,
@@ -18,7 +18,7 @@ public enum LoginType
 }
 public class UI_Login : UI_Popup
 {
-    private TextMeshProUGUI loginErrorText;
+    private TextMeshProUGUI loginResultText;
     private TMP_InputField idInputField;
     private TMP_InputField pwInputField;
     private Button loginButton;
@@ -42,7 +42,7 @@ public class UI_Login : UI_Popup
         Bind<Toggle>(typeof(LoginType));            // ID_Check_Toggle
 
         // enum 인덱스로 실제 변수에 할당
-        loginErrorText = Get<TextMeshProUGUI>((int)LoginType.Login_Error_Text);
+        loginResultText = Get<TextMeshProUGUI>((int)LoginType.Login_Result_Text);
         idInputField = Get<TMP_InputField>((int)LoginType.ID_Input);
         pwInputField = Get<TMP_InputField>((int)LoginType.PW_Input);
         loginButton = Get<Button>((int)LoginType.Login_Button);
@@ -53,13 +53,80 @@ public class UI_Login : UI_Popup
         customerServiceButton = Get<Button>((int)LoginType.CustomerService_Button);
 
         // 버튼 이벤트 연결
-        //loginButton.onClick.AddListener(OnClickLogin);
+        loginButton.onClick.AddListener(OnClickLogin);
         signUpButton.onClick.AddListener(OnClickSignUp);
-        //customerServiceButton.onClick.AddListener(OnClickCustomerService);
+        customerServiceButton.onClick.AddListener(OnClickCustomerService);
         idFindButton.onClick.AddListener(OnClickIDFind);
         pwFindButton.onClick.AddListener(OnClickPWFind);
+
+        GetID();
     }
 
+    public void OnClickLogin()
+    {
+        string id = idInputField.text;
+        string pw = pwInputField.text;
+
+        int count = PlayerPrefs.GetInt("IDCount", 0);
+
+        for(int i = 0; i < count; i++)
+        {
+            string savedID = PlayerPrefs.GetString($"User_{i}_ID");
+            string savedPW = PlayerPrefs.GetString($"User_{i}_PW");
+
+            if (id == savedID && pw == savedPW)
+            {
+                loginResultText.text = "로그인 성공";
+
+                TextEmpty(id);
+                return;
+            }
+        }
+
+        loginResultText.text = "ID 또는 비밀번호가 틀렸습니다.";
+        idInputField.text = "";
+        pwInputField.text = "";
+    }
+
+    public void TextEmpty(string id)
+    {
+        if (idCheckToggle.isOn)
+        {
+            PlayerPrefs.SetInt("SaveIDToggle", 1);
+            PlayerPrefs.SetString("SavedID", id);
+            PlayerPrefs.Save();
+            pwInputField.text = "";
+        }
+        else
+        {
+            PlayerPrefs.SetInt("SaveIDToggle", 0);
+            idInputField.text = "";
+            pwInputField.text = "";
+        }
+    }
+
+    public void GetID()
+    {
+        bool isToggleOn = PlayerPrefs.GetInt("SaveIDToggle", 0) == 1;
+        idCheckToggle.isOn = isToggleOn;
+
+        if (isToggleOn)
+        {
+            idInputField.text = PlayerPrefs.GetString("SavedID", "");
+            pwInputField.text = "";
+        }
+        else
+        {
+            idInputField.text = "";
+            pwInputField.text = "";
+        }
+    }
+
+    public void OnClickCustomerService()
+    {
+        ClosePopupUI();
+        Debug.Log("Customer Service Button Clicked");
+    }
     public void OnClickSignUp()
     {
         ClosePopupUI();
@@ -77,4 +144,6 @@ public class UI_Login : UI_Popup
         ClosePopupUI();
         Managers.UI.ShowPopupUI<UI_PWFind>();
     }
+
+
 }
