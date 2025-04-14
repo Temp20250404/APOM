@@ -275,7 +275,7 @@ GameObject:
   - component: {fileID: 7173174943199548705}
   - component: {fileID: 2297134015601006985}
   m_Layer: 5
-  m_Name: UI_Scene_UICondition
+  m_Name: UI_Condition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -322,7 +322,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!114 &7173174943199548705
 MonoBehaviour:

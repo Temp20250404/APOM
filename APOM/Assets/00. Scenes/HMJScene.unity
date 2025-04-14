@@ -624,6 +624,7 @@ MonoBehaviour:
     _popupUIParent: {fileID: 0}
     _followUIParent: {fileID: 0}
     inventoryItems: []
+    _sceneUI: {fileID: 0}
 --- !u!4 &2019785070
 Transform:
   m_ObjectHideFlags: 0
