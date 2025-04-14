@@ -275,7 +275,7 @@ GameObject:
   - component: {fileID: 7173174943199548705}
   - component: {fileID: 2297134015601006985}
   m_Layer: 5
-  m_Name: UI_Scene_UICondition
+  m_Name: UI_UICondition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

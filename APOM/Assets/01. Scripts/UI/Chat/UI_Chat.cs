@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using static UnityEngine.EventSystems.PointerEventData;
 
 /// <summary>
 /// 바인딩할 UI 오브젝트 이름 정의 (이름은 Hierarchy 오브젝트 이름과 1:1 매칭돼야 함)
@@ -17,6 +18,12 @@ public enum ChatObjects
     ChatTypeText,      // 채팅 타입 (Normal, Party 등) 표시 텍스트
     TextInput,          // 채팅 입력 텍스트 색상용 텍스트 오브젝트
     RectTransform,    // 채팅창 RectTransform
+    ToggleCollapse, // 채팅창 접기/펼치기 버튼
+    InputButton, // 채팅 입력 버튼
+    AllViewToggle, // 전체 보기 전용 토글
+    NormalViewToggle, // 일반 채팅 보기 전용 토글
+    PartyViewToggle, // 파티 채팅 보기 전용 토글
+    WhisperViewToggle, // 귓속말 보기 전용 토글
 }
 
 /// <summary>
@@ -37,10 +44,16 @@ public class UI_Chat : UI_Scene, IPointerDownHandler, IDragHandler, IPointerUpHa
     private GameObject ChatCell;
 
     // UI 요소들
-    private Transform parentContent;
-    private TMP_InputField inputField;
-    private TextMeshProUGUI chatTypeText;
-    private TextMeshProUGUI textInput;
+    private Transform parentContent; // 채팅 메시지를 출력할 ScrollView의 Content 영역
+    private TMP_InputField inputField; // 채팅 입력 필드
+    private TextMeshProUGUI chatTypeText; // 채팅 타입 (Normal, Party 등) 표시 텍스트
+    private TextMeshProUGUI textInput;  // 채팅 입력 필드의 텍스트
+    private Toggle toggleCollapse; // 채팅창 접기/펼치기 버튼
+    private Button inputButton; // 채팅 입력 버튼
+    private Toggle allViewToggle; // 전체 보기 전용 토글
+    private Toggle normalViewToggle; // 일반 채팅 보기 전용 토글
+    private Toggle partyViewToggle; // 파티 채팅 보기 전용 토글
+    private Toggle whisperViewToggle; // 귓속말 보기 전용 토글
 
     // 현재 채팅 타입과 색상
     private ChatType currentInputType = ChatType.Normal;
@@ -89,7 +102,8 @@ public class UI_Chat : UI_Scene, IPointerDownHandler, IDragHandler, IPointerUpHa
     /// </summary>
     public override void Init()
     {
-        
+        base.Init(); // UI_Scene Init 호출
+
         Bind<GameObject>(typeof(ChatObjects)); // GameObject만 바인딩하고, 컴포넌트는 직접 꺼냄
 
         ChatCell = Managers.Resource.Load<GameObject>("UI/Scene/ChatCell"); // 채팅 셀 프리팹 로드
@@ -100,10 +114,25 @@ public class UI_Chat : UI_Scene, IPointerDownHandler, IDragHandler, IPointerUpHa
         inputField = GetObject((int)ChatObjects.InputField)?.GetComponent<TMP_InputField>();
         textInput = GetObject((int)ChatObjects.TextInput)?.GetComponent<TextMeshProUGUI>();
         rectTransform = GetObject((int)ChatObjects.RectTransform)?.GetComponent<RectTransform>();
+        toggleCollapse = GetObject((int)ChatObjects.ToggleCollapse)?.GetComponent<Toggle>();
+        inputButton = GetObject((int)ChatObjects.InputButton)?.GetComponent<Button>();
+        allViewToggle = GetObject((int)ChatObjects.AllViewToggle)?.GetComponent<Toggle>();
+        normalViewToggle = GetObject((int)ChatObjects.NormalViewToggle)?.GetComponent<Toggle>();
+        partyViewToggle = GetObject((int)ChatObjects.PartyViewToggle)?.GetComponent<Toggle>();
+        whisperViewToggle = GetObject((int)ChatObjects.WhisperViewToggle)?.GetComponent<Toggle>();
+
+        // UI 요소들에 이벤트 리스너 추가
+        toggleCollapse.onValueChanged.AddListener(ToggleCollapseChatWindow);
+        inputButton.onClick.AddListener(UpdateChat); // 버튼 클릭 시 채팅 전송
+        inputField.onEndEdit.AddListener(OnEndEditEventMethod); // 입력 필드에서 엔터 입력 시 처리
+        allViewToggle.onValueChanged.AddListener((isOn) => SetCurrentViewType((int)ChatType.All));
+        normalViewToggle.onValueChanged.AddListener((isOn) => SetCurrentViewType((int)ChatType.Normal));
+        partyViewToggle.onValueChanged.AddListener((isOn) => SetCurrentViewType((int)ChatType.Party));
+        whisperViewToggle.onValueChanged.AddListener((isOn) => SetCurrentViewType((int)ChatType.Whisper));
 
         currentInputType = ChatType.Normal;
         SetChatInputType(currentInputType); // 기본 채팅 타입 설정
-        
+
         originalSize = rectTransform.sizeDelta;
         currentSize = originalSize;
     }
@@ -137,16 +166,15 @@ public class UI_Chat : UI_Scene, IPointerDownHandler, IDragHandler, IPointerUpHa
     /// <summary>
     /// 엔터 입력 후 채팅 전송 처리
     /// </summary>
-    public void OnEndEditEventMethod()
+    public void OnEndEditEventMethod(string text)
     {
-        if (Input.GetKeyDown(KeyCode.Return) && inputField.text == string.Empty)
+        if (Input.GetKeyDown(KeyCode.Return) && text == string.Empty)
         {
             inputField.DeactivateInputField(); // 먼저 비활성화
             rectTransform.gameObject.SetActive(false); // 채팅 타입 텍스트 활성화
             StartCoroutine(EnterDelay());
         }
-
-        if (Input.GetKeyDown(KeyCode.Return))
+        else if (Input.GetKeyDown(KeyCode.Return))
             UpdateChat();
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -238,11 +266,10 @@ public class UI_Chat : UI_Scene, IPointerDownHandler, IDragHandler, IPointerUpHa
     /// <summary>
     /// 채팅창 접기/펼치기 토글
     /// </summary>
-    public void ToggleCollapseChatWindow()
+    public void ToggleCollapseChatWindow(bool isOn)
     {
         isToggleCollapse = !isToggleCollapse;
-        bool isExpanded = rectTransform.sizeDelta.y < currentSize.y;
-        rectTransform.sizeDelta = isExpanded ? currentSize : new Vector2(originalSize.x, 200);
+        rectTransform.sizeDelta = isOn ? currentSize : new Vector2(originalSize.x, 200);
     }
 
 

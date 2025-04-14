@@ -11,13 +11,13 @@ public class UI_Scene : UI_Base
 
         UI_Chat = GetComponentInChildren<UI_Chat>(true);
 
-        UI_Scene[] children = GetComponentsInChildren<UI_Scene>(true);
+        //UI_Scene[] children = GetComponentsInChildren<UI_Scene>(true);
 
-        foreach (var ui in children)
-        {
-            if (ui != this)
-                ui.Init();
-        }
+        //foreach (var ui in children)
+        //{
+        //    if (ui != this)
+        //        ui.Init();
+        //}
     }
 
     //public GameObject Find(GameObject _gameObject)
