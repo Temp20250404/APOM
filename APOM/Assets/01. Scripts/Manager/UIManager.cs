@@ -140,6 +140,7 @@ public class UIManager : IManager
         popup.Init();
         _popupStack.Push(popup);
 
+
         switch (popup.popupType)
         {
             case PopupType.Login:
@@ -152,7 +153,8 @@ public class UIManager : IManager
                 go.transform.SetParent(_popupUIParent.transform, false);
                 break;
         }
-		return popup; 
+
+        return popup; 
     }
 
     public void ClosePopupUI(UI_Popup popup)
