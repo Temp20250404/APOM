@@ -17,6 +17,7 @@ public class ItemEnums : MonoBehaviour // 아이템 분류용
     public enum ItemSubType
     {
         Weapon,
+        Helmet,
         Armor,
         Shoes,
         Gloves,
