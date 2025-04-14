@@ -55,8 +55,6 @@ public class Managers : Singleton<Managers>
     }
     private void Start()
     {
-        UI.ShowSceneUI<UI_Chat>();
-
         UI.ShowPopupUI<UI_Login>();
         //UI.ShowPopupUI<UI_IDFind>();
         //UI.ShowPopupUI<UI_SignUp>();

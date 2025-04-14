@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public enum LoginType
@@ -77,12 +78,14 @@ public class UI_Login : UI_Popup
             if (id == savedID && pw == savedPW)
             {
                 loginResultText.text = "로그인 성공";
+                SceneManager.LoadScene("HMJScene");
 
                 TextEmpty(id);
                 return;
             }
         }
 
+        CheckToggle();
         loginResultText.text = "ID 또는 비밀번호가 틀렸습니다.";
         idInputField.text = "";
         pwInputField.text = "";
@@ -99,12 +102,18 @@ public class UI_Login : UI_Popup
         }
         else
         {
-            PlayerPrefs.SetInt("SaveIDToggle", 0);
+            CheckToggle();
             idInputField.text = "";
             pwInputField.text = "";
         }
     }
 
+    public void CheckToggle()
+    {
+        if (idCheckToggle.isOn) return;
+        PlayerPrefs.DeleteKey("SavedID");
+        PlayerPrefs.DeleteKey("SaveIDToggle");
+    }
     public void GetID()
     {
         bool isToggleOn = PlayerPrefs.GetInt("SaveIDToggle", 0) == 1;
