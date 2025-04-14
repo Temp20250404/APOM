@@ -7,7 +7,7 @@ public class UI_Login : UI_Popup
     // Start is called before the first frame update
     void Start()
     {
-        
+        popupType = PopupType.Login;
     }
 
     // Update is called once per frame

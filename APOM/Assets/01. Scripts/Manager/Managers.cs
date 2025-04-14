@@ -55,12 +55,13 @@ public class Managers : Singleton<Managers>
     }
     private void Start()
     {
-        //UI.ShowSceneUI<UI_Scene>("UI_Scene_UIQuickSlot");
-        //UI.ShowSceneUI<UI_Scene>("UI_Scene_UIMiniMap");
-        //UI.ShowSceneUI<UI_Scene>("UI_Scene_UICondition");
         UI.ShowSceneUI<UI_Chat>();
-        //UI.ShowSceneUI<UI_SceneTest>(); // ShowSceneUI<UI_SceneTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
-        //UI.ShowSceneUI<UI_SceneTest>("UI_SceneTest 1");
+
+        UI.ShowPopupUI<UI_IDFind>();
+        UI.ShowPopupUI<UI_SignUp>();
+        UI.ShowPopupUI<UI_Login>();
+        UI.ShowPopupUI<UI_PWFind>();
+
         UI.ShowPopupUI<UI_Inventory>(); // ShowPopupUI<UI_PopupTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
                                         //UI.ShowPopupUI<UI_PopupTest>(); // ShowPopupUI<UI_PopupTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
                                         //UI.ShowPopupUI<SkillPopupUI>(); 

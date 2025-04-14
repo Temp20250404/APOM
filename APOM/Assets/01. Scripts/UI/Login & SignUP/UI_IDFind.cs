@@ -2,9 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI_SignUp : UI_Popup
+public class UI_IDFind : UI_Popup
 {
-    
     // Start is called before the first frame update
     void Start()
     {

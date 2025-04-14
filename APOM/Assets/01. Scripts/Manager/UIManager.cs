@@ -21,6 +21,9 @@ public class UIManager : IManager
     [SerializeField] private Transform _sceneUIParent;
     [SerializeField] private Transform _popupUIParent;
     [SerializeField] private Transform _followUIParent;
+    [SerializeField] private Transform _LoginUIParent;
+    [SerializeField] private Transform _inventoryUIParent;
+
 
     public List<Item> inventoryItems = new List<Item>();
 
@@ -49,6 +52,19 @@ public class UIManager : IManager
         {
             GameObject followParent = new GameObject("FollowUIParent");
             _followUIParent = followParent.transform;
+        }
+
+        if (_LoginUIParent == null)
+        {
+            GameObject loginParent = new GameObject("LoginUIParent");
+            loginParent.transform.parent = _popupUIParent.transform;
+            _LoginUIParent = loginParent.transform;
+        }
+        if (_inventoryUIParent == null)
+        {
+            GameObject inventoryParent = new GameObject("InventoryUIParent");
+            inventoryParent.transform.parent = _popupUIParent.transform;
+            _inventoryUIParent = inventoryParent.transform;
         }
     } 
   
@@ -124,9 +140,18 @@ public class UIManager : IManager
         popup.Init();
         _popupStack.Push(popup);
 
-        go.transform.SetParent(_popupUIParent.transform, false);
-
-
+        switch (popup.popupType)
+        {
+            case PopupType.Login:
+                go.transform.SetParent(_LoginUIParent.transform, false);
+                break;
+            case PopupType.Inventory:
+                go.transform.SetParent(_inventoryUIParent.transform, false);
+                break;
+            default:
+                go.transform.SetParent(_popupUIParent.transform, false);
+                break;
+        }
 		return popup; 
     }
 
