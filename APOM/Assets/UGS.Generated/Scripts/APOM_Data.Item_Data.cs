@@ -14,42 +14,42 @@ using System.Reflection;
 using UnityEngine;
 
 
-namespace DefaultTable
+namespace APOM_Data
 {
     [GoogleSheet.Attribute.TableStruct]
-    public partial class Data : ITable
+    public partial class Item_Data : ITable
     { 
 
-        public delegate void OnLoadedFromGoogleSheets(List<Data> loadedList, Dictionary<int, Data> loadedDictionary);
+        public delegate void OnLoadedFromGoogleSheets(List<Item_Data> loadedList, Dictionary<int, Item_Data> loadedDictionary);
 
         static bool isLoaded = false;
-        static string spreadSheetID = "1S92PA3zlzy_Cq7bPiaDvcHGo0nTrP-OUhc4P8FygsQ8"; // it is file id
-        static string sheetID = "0"; // it is sheet id
+        static string spreadSheetID = "1vtDMZth01VidgPCcacKCi6XieVUPtxoWthe8_SqFrec"; // it is file id
+        static string sheetID = "724889271"; // it is sheet id
         static UnityFileReader reader = new UnityFileReader();
 
 /* Your Loaded Data Storage. */
     
-        public static Dictionary<int, Data> DataMap = new Dictionary<int, Data>();  
-        public static List<Data> DataList = new List<Data>();   
+        public static Dictionary<int, Item_Data> Item_DataMap = new Dictionary<int, Item_Data>();  
+        public static List<Item_Data> Item_DataList = new List<Item_Data>();   
 
         /// <summary>
-        /// Get Data List 
+        /// Get Item_Data List 
         /// Auto Load
         /// </summary>
-        public static List<Data> GetList()
+        public static List<Item_Data> GetList()
         {{
            if (isLoaded == false) Load();
-           return DataList;
+           return Item_DataList;
         }}
 
         /// <summary>
-        /// Get Data Dictionary, keyType is your sheet A1 field type.
+        /// Get Item_Data Dictionary, keyType is your sheet A1 field type.
         /// - Auto Load
         /// </summary>
-        public static Dictionary<int, Data>  GetDictionary()
+        public static Dictionary<int, Item_Data>  GetDictionary()
         {{
            if (isLoaded == false) Load();
-           return DataMap;
+           return Item_DataMap;
         }}
 
     
@@ -57,8 +57,9 @@ namespace DefaultTable
 /* Fields. */
 
 		public System.Int32 index;
-		public System.Int32 intValue;
-		public System.String strValue;
+		public System.String name;
+		public System.Int32 count;
+		public EItemType itemType;
   
 
 #region fuctions
@@ -69,12 +70,12 @@ namespace DefaultTable
             if(isLoaded && forceReload == false)
             {
 #if UGS_DEBUG
-                 Debug.Log("Data is already loaded! if you want reload then, forceReload parameter set true");
+                 Debug.Log("Item_Data is already loaded! if you want reload then, forceReload parameter set true");
 #endif
                  return;
             }
 
-            string text = reader.ReadData("DefaultTable"); 
+            string text = reader.ReadData("APOM_Data"); 
             if (text != null)
             {
                 var result = Newtonsoft.Json.JsonConvert.DeserializeObject<ReadSpreadSheetResult>(text);
@@ -85,7 +86,7 @@ namespace DefaultTable
         }
  
 
-        public static void LoadFromGoogle(System.Action<List<Data>, Dictionary<int, Data>> onLoaded, bool updateCurrentData = false)
+        public static void LoadFromGoogle(System.Action<List<Item_Data>, Dictionary<int, Item_Data>> onLoaded, bool updateCurrentData = false)
         {      
                 IHttpProtcol webInstance = null;
     #if UNITY_EDITOR
@@ -113,14 +114,14 @@ namespace DefaultTable
                
 
 
-    public static (List<Data> list, Dictionary<int, Data> map) CommonLoad(Dictionary<string, Dictionary<string, List<string>>> jsonObject, bool forceReload){
-            Dictionary<int, Data> Map = new Dictionary<int, Data>();
-            List<Data> List = new List<Data>();     
+    public static (List<Item_Data> list, Dictionary<int, Item_Data> map) CommonLoad(Dictionary<string, Dictionary<string, List<string>>> jsonObject, bool forceReload){
+            Dictionary<int, Item_Data> Map = new Dictionary<int, Item_Data>();
+            List<Item_Data> List = new List<Item_Data>();     
             TypeMap.Init();
-            FieldInfo[] fields = typeof(Data).GetFields(BindingFlags.Public | BindingFlags.Instance);
+            FieldInfo[] fields = typeof(Item_Data).GetFields(BindingFlags.Public | BindingFlags.Instance);
             List<(string original, string propertyName, string type)> typeInfos = new List<(string, string, string)>(); 
             List<List<string>> rows = new List<List<string>>();
-            var sheet = jsonObject["Data"];
+            var sheet = jsonObject["Item_Data"];
 
             foreach (var column in sheet.Keys)
             {
@@ -139,7 +140,7 @@ namespace DefaultTable
                         int rowCount = rows[0].Count;
                         for (int i = 0; i < rowCount; i++)
                         {
-                            Data instance = new Data();
+                            Item_Data instance = new Item_Data();
                             for (int j = 0; j < typeInfos.Count; j++)
                             {
                                 try
@@ -180,8 +181,8 @@ namespace DefaultTable
                         }
                         if(isLoaded == false || forceReload)
                         { 
-                            DataList = List;
-                            DataMap = Map;
+                            Item_DataList = List;
+                            Item_DataMap = Map;
                             isLoaded = true;
                         }
                     } 
@@ -191,10 +192,10 @@ namespace DefaultTable
 
  
 
-        public static void Write(Data data, System.Action<WriteObjectResult> onWriteCallback = null)
+        public static void Write(Item_Data data, System.Action<WriteObjectResult> onWriteCallback = null)
         { 
             TypeMap.Init();
-            FieldInfo[] fields = typeof(Data).GetFields(BindingFlags.Public | BindingFlags.Instance);
+            FieldInfo[] fields = typeof(Item_Data).GetFields(BindingFlags.Public | BindingFlags.Instance);
             var datas = new string[fields.Length];
             for (int i = 0; i < fields.Length; i++)
             {
