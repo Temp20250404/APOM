@@ -1,6 +1,7 @@
 using Game;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Diagnostics;
 using UnityEngine.InputSystem;
@@ -25,7 +26,16 @@ public class PlayerBaseState : IState
 
     public virtual void StateUpdate()
     {
-
+        if (!stateMachine.player.inputController.isMainPlayer)
+        {
+            stateMachine.player.transform.rotation = stateMachine.player.inputController.TargetSyncRotation;
+            
+            Vector3 lerpPosition = Vector3.Lerp(stateMachine.player.transform.position, stateMachine.player.inputController.TargetSyncPosition, Time.deltaTime / 0.1f);
+            Vector3 delta = lerpPosition - stateMachine.player.transform.position;
+            stateMachine.player.characterController.Move(delta);
+            
+            Debug.Log($"{stateMachine.player.playerID}: {stateMachine.player.inputController.TargetSyncPosition}, {stateMachine.player.inputController.TargetSyncRotation}");
+        }
     }
 
     public virtual void StateExit()
@@ -76,7 +86,7 @@ public class PlayerBaseState : IState
     protected Vector3 GetMovementDirection()
     {
         float radian = stateMachine.player.inputController.recivePacketRotation * Mathf.Deg2Rad;
-
+        Debug.Log($"reciveRotation ID {stateMachine.player.playerID} : {stateMachine.player.inputController.recivePacketRotation}");
         Vector3 forward = new Vector3(Mathf.Sin(radian), 0f, Mathf.Cos(radian));
         Vector3 right = new Vector3(Mathf.Cos(radian), 0f, -Mathf.Sin(radian));
 
@@ -86,7 +96,7 @@ public class PlayerBaseState : IState
         forward.Normalize();
         right.Normalize();
 
-        return forward * GetInputWASD().y + right * GetInputWASD().x;
+        return forward * stateMachine.movementInput.y + right * stateMachine.movementInput.x;
     }
 
     private float GetMovementSpeed()
@@ -137,24 +147,12 @@ public class PlayerBaseState : IState
     {
         PlayerController input = stateMachine.player.inputController;
         input.playerActions.Move.canceled += OnMoveCanceled;
-        //input.playerActions.Move.performed += OnMovePerformed;
     }
 
     protected virtual void RemoveInputActionsCallbacks()
     {
         PlayerController input = stateMachine.player.inputController;
         input.playerActions.Move.canceled -= OnMoveCanceled;
-        //input.playerActions.Move.performed -= OnMovePerformed;
-    }
-
-    protected virtual void OnMovePerformed(InputAction.CallbackContext context)
-    {
-        Util.SendPacket<CS_POSITION_SYNC>(packet =>
-        {
-            packet.PosX = stateMachine.player.transform.position.x;
-            packet.PosY = stateMachine.player.transform.position.z;
-        });
-        Debug.Log($"OnMovePerformed: {stateMachine.player.transform.position.x}, {stateMachine.player.transform.position.z}");
     }
 
     protected virtual void OnMoveCanceled(InputAction.CallbackContext context)

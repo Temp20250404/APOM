@@ -41,6 +41,10 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public float recivePacketRotation;
 
     bool rotationChanged;
+
+    public Vector3 TargetSyncPosition;
+    public Quaternion TargetSyncRotation;
+
     private void Awake()
     {
         playerInputs = new PlayerInputs();
@@ -73,6 +77,7 @@ public class PlayerController : MonoBehaviour
         CheckMoveRotationChange();
 
         rotationChanged = (ucurrentKeyInputs != 0) && (currentRotation != previousRotation);
+
         if (ucurrentKeyInputs != previousKeyInputs || rotationChanged)
         {
             previousKeyInputs = ucurrentKeyInputs;
@@ -82,6 +87,17 @@ public class PlayerController : MonoBehaviour
                 packet.KeyInfo = sendKeyInputs;
                 packet.CameraYaw = sendPacketRotation;
             });
+        }
+
+        if (isMainPlayer)
+        {
+            Util.SendPacket<CS_POSITION_SYNC>(packet =>
+            {
+                packet.PosX = transform.position.x;
+                packet.PosY = transform.position.z;
+                packet.CameraYaw = transform.rotation.eulerAngles.y;
+            });
+            Debug.Log($"Send Position Packet: {transform.position.x}, {transform.position.z}, {transform.rotation.eulerAngles.y}");
         }
     }
 
@@ -115,10 +131,6 @@ public class PlayerController : MonoBehaviour
         if (ucurrentKeyInputs != 0)
         {
             isMoving = true;
-        }
-        else
-        {
-            isMoving = false;
         }
 
         if (previousKeyInputs != ucurrentKeyInputs)
@@ -160,5 +172,16 @@ public class PlayerController : MonoBehaviour
         }
 
         recivePacketRotation = _PacketRotation;
+    }
+
+    public void ReciveTransformSyncPosition(SC_POSITION_SYNC packet)
+    {
+        TargetSyncPosition = new Vector3(packet.PosX, 0f, packet.PosY);
+        Debug.Log($"Recive Position Packet {packet.PlayerID} : {packet.PosX}, {packet.PosY}");
+    }
+
+    public void ReciveTransformSyncRotation(SC_POSITION_SYNC packet)
+    {
+        TargetSyncRotation = Quaternion.Euler(0f, packet.CameraYaw, 0f);
     }
 }

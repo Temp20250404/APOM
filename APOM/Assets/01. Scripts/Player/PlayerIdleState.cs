@@ -13,6 +13,7 @@ public class PlayerIdleState : PlayerDefaultState
         Debug.Log("Idle State");
         stateMachine.movementSpeedModifier = 0f;
         stateMachine.movementInput = Vector2.zero;
+        stateMachine.player.inputController.isMoving = false;
 
         base.StateEnter();
         StartAnimation(stateMachine.player.animationData.idleParameterHash);
