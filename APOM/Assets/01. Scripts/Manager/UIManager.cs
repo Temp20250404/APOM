@@ -21,12 +21,16 @@ public class UIManager : IManager
     [SerializeField] private Transform _sceneUIParent;
     [SerializeField] private Transform _popupUIParent;
     [SerializeField] private Transform _followUIParent;
+    [SerializeField] private Transform _LoginUIParent;
+    [SerializeField] private Transform _inventoryUIParent;
+
 
     public List<Item> inventoryItems = new List<Item>();
 
     private int _order = 10;
 
-    private UI_Scene _sceneUI = null;
+    public UI_Scene _sceneUI = null;
+
     private Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
     private List<UI_Follow> _followList = new List<UI_Follow>();
 
@@ -48,6 +52,19 @@ public class UIManager : IManager
         {
             GameObject followParent = new GameObject("FollowUIParent");
             _followUIParent = followParent.transform;
+        }
+
+        if (_LoginUIParent == null)
+        {
+            GameObject loginParent = new GameObject("LoginUIParent");
+            loginParent.transform.parent = _popupUIParent.transform;
+            _LoginUIParent = loginParent.transform;
+        }
+        if (_inventoryUIParent == null)
+        {
+            GameObject inventoryParent = new GameObject("InventoryUIParent");
+            inventoryParent.transform.parent = _popupUIParent.transform;
+            _inventoryUIParent = inventoryParent.transform;
         }
     } 
   
@@ -107,7 +124,9 @@ public class UIManager : IManager
   
 		go.transform.SetParent(_sceneUIParent.transform, false);
 
-		return sceneUI; 
+        sceneUI.Init();
+
+        return sceneUI; 
 	}
 
 	public T ShowPopupUI<T>(string name = null) where T : UI_Popup
@@ -121,9 +140,18 @@ public class UIManager : IManager
         popup.Init();
         _popupStack.Push(popup);
 
-        go.transform.SetParent(_popupUIParent.transform, false);
-
-
+        switch (popup.popupType)
+        {
+            case PopupType.Login:
+                go.transform.SetParent(_LoginUIParent.transform, false);
+                break;
+            case PopupType.Inventory:
+                go.transform.SetParent(_inventoryUIParent.transform, false);
+                break;
+            default:
+                go.transform.SetParent(_popupUIParent.transform, false);
+                break;
+        }
 		return popup; 
     }
 

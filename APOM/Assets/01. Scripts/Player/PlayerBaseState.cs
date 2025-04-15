@@ -1,6 +1,9 @@
+using Game;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 using static PlayerController;
@@ -23,7 +26,16 @@ public class PlayerBaseState : IState
 
     public virtual void StateUpdate()
     {
-
+        if (!stateMachine.player.inputController.isMainPlayer)
+        {
+            stateMachine.player.transform.rotation = stateMachine.player.inputController.TargetSyncRotation;
+            
+            Vector3 lerpPosition = Vector3.Lerp(stateMachine.player.transform.position, stateMachine.player.inputController.TargetSyncPosition, Time.deltaTime / 0.1f);
+            Vector3 delta = lerpPosition - stateMachine.player.transform.position;
+            stateMachine.player.characterController.Move(delta);
+            
+            Debug.Log($"{stateMachine.player.playerID}: {stateMachine.player.inputController.TargetSyncPosition}, {stateMachine.player.inputController.TargetSyncRotation}");
+        }
     }
 
     public virtual void StateExit()
@@ -74,7 +86,7 @@ public class PlayerBaseState : IState
     protected Vector3 GetMovementDirection()
     {
         float radian = stateMachine.player.inputController.recivePacketRotation * Mathf.Deg2Rad;
-
+        Debug.Log($"reciveRotation ID {stateMachine.player.playerID} : {stateMachine.player.inputController.recivePacketRotation}");
         Vector3 forward = new Vector3(Mathf.Sin(radian), 0f, Mathf.Cos(radian));
         Vector3 right = new Vector3(Mathf.Cos(radian), 0f, -Mathf.Sin(radian));
 
@@ -84,7 +96,7 @@ public class PlayerBaseState : IState
         forward.Normalize();
         right.Normalize();
 
-        return forward * GetInputWASD().y + right * GetInputWASD().x;
+        return forward * stateMachine.movementInput.y + right * stateMachine.movementInput.x;
     }
 
     private float GetMovementSpeed()
@@ -145,6 +157,10 @@ public class PlayerBaseState : IState
 
     protected virtual void OnMoveCanceled(InputAction.CallbackContext context)
     {
+        stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.W] = false;
+        stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.S] = false;
+        stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.A] = false;
+        stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.D] = false;
         stateMachine.movementInput = Vector2.zero;
     }
 }

@@ -60,7 +60,7 @@ public class PlayerManager : IManager
         if (loginPlayerList.TryGetValue(_id, out Player _player))
         {
             loginPlayerList.Remove(_id);
-            GameObject.Destroy(_player);
+            GameObject.Destroy(_player.gameObject);
 
             Debug.Log($"플레이어 {_id} 삭제 성공");
         }
