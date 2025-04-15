@@ -1,102 +1,59 @@
+using Newtonsoft.Json.Linq;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UI_Setting : MonoBehaviour
 {
-    public Slider sliderMaster; // 전체음량
-    public InputField inputMaster; // 전체음량 숫자키 조절
+    [Header("슬라이더")]
+    public Slider masterSlider;
+    public Slider bgmSlider;
+    public Slider sfxSlider;
+    public Slider uiSlider;
 
-    public Slider sliderBGM; // 배경음
-    public Slider sliderSFX; // 효과음
-    public Slider sliderCombat; // 캐릭터스킬, 몬스터 타격음
+    [Header("텍스트")]
+    public TMP_Text masterPercentText;
+    public TMP_Text bgmPercentText;
+    public TMP_Text sfxPercentText;
+    public TMP_Text uiPercentText;
 
+    [Header("음소거")]
     public Toggle muteToggle;
-    public Button VideoButton;
-    public Button AudioButton;
-    public Button applyButton;
-    public Button resetButton;
-    public Button confirmButton;
-    public Button closeButton;
 
-    private float defaultVolum = 1f;
+    [Header("버튼")]
+    public Button applyButton;
+    public Button confirmButton;
+    public Button resetButton;
+
+    private float defaultMasterVoulume = 1f;
+    private float defaultOtherVolume = 0.6f;
 
     private void Start()
     {
-        sliderMaster.value = 1f;
-        inputMaster.text = "100%";
+        LoadSettings();
 
-        sliderBGM.value = 0.6f;
-        sliderSFX.value = 0.6f;
-        sliderCombat.value = 0.6f;
+        masterSlider.onValueChanged.AddListener(UpdateMasterVolume);
+        masterSlider.onValueChanged.AddListener(UpdateMasterVolume);
+        bgmSlider.onValueChanged.AddListener(value => UpdateSliderText(bgmPercentText, value));
+        sfxSlider.onValueChanged.AddListener(value => UpdateSliderText(sfxPercentText, value));
+        uiSlider.onValueChanged.AddListener(value => UpdateSliderText(uiPercentText, value));
 
-        muteToggle.isOn = false;
+        muteToggle.onValueChanged.AddListener(ToggleMute);
 
-        sliderMaster.onValueChanged.AddListener(OnMasterSliderChanged);
-        inputMaster.onEndEdit.AddListener(OnMasterInputChanged);
-        muteToggle.onValueChanged.AddListener(OnMuteToggled);
+        applyButton.onClick.AddListener(ApplySettings);
+        confirmButton.onClick.AddListener(() => {
+            ApplySettings();
+            gameObject.SetActive(false);
+        });
 
-        AudioButton.onClick.AddListener(OnAudioClicked);
-        applyButton.onClick.AddListener(OnApplyClicked);
-        resetButton.onClick.AddListener(OnResetClicked);
-        confirmButton.onClick.AddListener(OnConfirmClicked);
-        closeButton.onClick.AddListener(OnCloseClicked);
+        resetButton.onClick.AddListener(ResetCurrentTab);
     }
 
-    void OnMasterSliderChanged(float value)
+    private void UpdateMasterVolumee(float value)
     {
-        inputMaster.text = (value*100).ToString("F0");
-        if (!muteToggle.isOn)
-            AudioListener.volume = value;
+        UpdateSliderText
     }
-
-    void OnMasterInputChanged(string input)
-    {
-        if (float.TryParse(input, out float value))
-        {
-            value = Mathf.Clamp(value, 0, 100);
-            sliderMaster.value = value / 100f;
-            if (!muteToggle.isOn)
-                AudioListener.volume = sliderMaster.value;
-        }
-    }
-
-    void OnMuteToggled(bool isMuted)
-    {
-        AudioListener.volume = isMuted ? 0 : sliderMaster.value;
-    }
-
-    void OnAudioClicked()
-    {
-
-    }
-    
-    void OnApplyClicked()
-    {
-        Debug.Log("설정 적용됨");
-    }
-
-    void OnResetClicked()
-    {
-        sliderMaster.value = 1;
-        inputMaster.text = "100%";
-        muteToggle.isOn = false;
-
-        sliderBGM.value = 0.6f;
-        sliderSFX.value = 0.6f;
-        sliderCombat.value = 0.6f;
-    }
-    
-    void OnConfirmClicked()
-    {
-        Debug.Log("설정 적용완료");
-        // 저장 로직 자리
-    }
-
-    void OnCloseClicked()
-    {
-        gameObject.SetActive(false);
-    }
-}
+}    
