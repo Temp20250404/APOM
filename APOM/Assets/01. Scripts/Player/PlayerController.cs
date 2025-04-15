@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
     public CinemachineFreeLook cinemachineFreeLook { get; private set; }
     GameObject pivot;
 
-    private bool isMoving = false;
+    public bool isMoving = false;
 
     private uint previousKeyInputs = 0;
     private bool[] currentKeyInputs = new bool[(int)EKEYINPUT.END];
@@ -112,6 +112,15 @@ public class PlayerController : MonoBehaviour
 
         ucurrentKeyInputs = ChnageToUint(currentKeyInputs);
 
+        if (ucurrentKeyInputs != 0)
+        {
+            isMoving = true;
+        }
+        else
+        {
+            isMoving = false;
+        }
+
         if (previousKeyInputs != ucurrentKeyInputs)
         {
             sendKeyInputs = ucurrentKeyInputs;
@@ -143,7 +152,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void RecivePacket(uint _PacketKeyInputs, float _PacketRotation)
+    public void ReciveKeyInfoPacket(uint _PacketKeyInputs, float _PacketRotation)
     {
         for (int i = 0; i < (int)EKEYINPUT.END; i++)
         {

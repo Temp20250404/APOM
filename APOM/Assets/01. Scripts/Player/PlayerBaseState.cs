@@ -1,6 +1,8 @@
+using Game;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
 using static PlayerController;
@@ -135,16 +137,32 @@ public class PlayerBaseState : IState
     {
         PlayerController input = stateMachine.player.inputController;
         input.playerActions.Move.canceled += OnMoveCanceled;
+        //input.playerActions.Move.performed += OnMovePerformed;
     }
 
     protected virtual void RemoveInputActionsCallbacks()
     {
         PlayerController input = stateMachine.player.inputController;
         input.playerActions.Move.canceled -= OnMoveCanceled;
+        //input.playerActions.Move.performed -= OnMovePerformed;
+    }
+
+    protected virtual void OnMovePerformed(InputAction.CallbackContext context)
+    {
+        Util.SendPacket<CS_POSITION_SYNC>(packet =>
+        {
+            packet.PosX = stateMachine.player.transform.position.x;
+            packet.PosY = stateMachine.player.transform.position.z;
+        });
+        Debug.Log($"OnMovePerformed: {stateMachine.player.transform.position.x}, {stateMachine.player.transform.position.z}");
     }
 
     protected virtual void OnMoveCanceled(InputAction.CallbackContext context)
     {
+        stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.W] = false;
+        stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.S] = false;
+        stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.A] = false;
+        stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.D] = false;
         stateMachine.movementInput = Vector2.zero;
     }
 }

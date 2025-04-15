@@ -21,6 +21,7 @@ public class PlayerMoveState : PlayerDefaultState
     public override void StateUpdate()
     {
         base.StateUpdate();
+        CheckMove();
     }
 
     public override void StateExit()
@@ -37,5 +38,13 @@ public class PlayerMoveState : PlayerDefaultState
     public override void StatePhysicsUpdate()
     {
         base.StatePhysicsUpdate();
+    }
+
+    private void CheckMove()
+    {
+        if (!stateMachine.player.inputController.isMoving)
+        {
+            stateMachine.ChangeState(stateMachine.idleState);
+        }
     }
 }

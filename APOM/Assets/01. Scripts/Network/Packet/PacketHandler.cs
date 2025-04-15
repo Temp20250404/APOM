@@ -30,7 +30,7 @@ class PacketHandler
 
         Player player = Managers.Player.GetPlayer(keyinfoPacket.PlayerID);
         player.playerID = keyinfoPacket.PlayerID;
-        player.inputController.RecivePacket(keyinfoPacket.KeyInfo, keyinfoPacket.CameraYaw);
+        player.inputController.ReciveKeyInfoPacket(keyinfoPacket.KeyInfo, keyinfoPacket.CameraYaw);
     }
 
     // SC_LOGIN_RESPONSE 패킷을 처리하는 함수

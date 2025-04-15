@@ -12,9 +12,10 @@ public class PlayerIdleState : PlayerDefaultState
     {
         Debug.Log("Idle State");
         stateMachine.movementSpeedModifier = 0f;
+        stateMachine.movementInput = Vector2.zero;
 
         base.StateEnter();
-        StartAnimation(stateMachine.player.animationData.defaultParameterHash);
+        StartAnimation(stateMachine.player.animationData.idleParameterHash);
     }
 
     public override void StateUpdate()
@@ -32,7 +33,7 @@ public class PlayerIdleState : PlayerDefaultState
     public override void StateExit()
     {
         base.StateExit();
-        StopAnimation(stateMachine.player.animationData.defaultParameterHash);
+        StopAnimation(stateMachine.player.animationData.idleParameterHash);
     }
 
     public override void StateHandleInput()
