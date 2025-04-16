@@ -8,38 +8,9 @@ using UGS;
 using Unity.Jobs;
 using UnityEngine;
 
-[UGS(typeof(EGRADE))]
-public enum EGRADE
-{
-    COMMON,
-    UNCOMMON,
-    RARE,
-    LEGENDARY
-}
-
-[UGS(typeof(EEQUIPTYPE))]
-public enum EEQUIPTYPE
-{
-    WEAPON,
-    HELMET,
-    ARMOR,
-    GLOVES,
-    SHOES,
-    PENDANT,
-    EARING,
-    RING
-}
-
-[UGS(typeof(EJOB))]
-public enum EJOB
-{
-    ARCHER,
-    LANCE
-}
-
 public class DataManager : IManager
 {
-    public EquipmentData equipmentData { get; private set; } = new EquipmentData();
+    //public EquipmentData equipmentData { get; private set; } = new EquipmentData();
 
     public void Init()
     {
