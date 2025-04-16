@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossSkillState : BossBaseState
+public class BossSkillState2 : BossBaseState
 {
     //public BossSkill bossSkill;
 
-    public BossSkillState(BossStateMachine stateMachine) : base(stateMachine)
+    public BossSkillState2(BossStateMachine stateMachine) : base(stateMachine)
     {
 
     }
@@ -16,14 +16,14 @@ public class BossSkillState : BossBaseState
         //stateMachine.MoveMentSpeedModifier = 0f;
         base.StateEnter();
         StartAnimation(stateMachine.Boss.BossAnimationData.BossSkill_ParameterHash);
-        StartAnimation(stateMachine.Boss.BossAnimationData.BossSkill1ParameterHash);
+        StartAnimation(stateMachine.Boss.BossAnimationData.BossSkill3ParameterHash);
     }
 
     public override void StateExit()
     {
         base.StateExit();
 
-        StopAnimation(stateMachine.Boss.BossAnimationData.BossSkill1ParameterHash);
+        StopAnimation(stateMachine.Boss.BossAnimationData.BossSkill3ParameterHash);
         StopAnimation(stateMachine.Boss.BossAnimationData.BossSkill_ParameterHash);
     }
 
@@ -32,9 +32,8 @@ public class BossSkillState : BossBaseState
         //AnimatorStateInfo animStateInfo = stateMachine.Boss.Anim.GetCurrentAnimatorStateInfo(0);
         //if (animStateInfo.normalizedTime >= 1f && animStateInfo.IsTag("Skills"))
         //{
-        //    Debug.Log("[Skill 종료] Idle로 전환합니다.");
-        //    stateMachine.ChangeState(BossState.Idle);
-        //    stateMachine.Boss.bossAI.ClearSkill();
+        //    //stateMachine.ChangeState(BossState.Idle);
+        //    //stateMachine.Boss.bossAI.ClearSkill();
 
         //    // 서버에 상태 변경을 요청하는 메서드 호출
         //}

@@ -12,6 +12,8 @@ public class Boss : MonoBehaviour
     public CharacterController Controller { get; private set; }
 
     private BossStateMachine stateMachine;
+
+    public BossStateMachine StateMachine { get { return stateMachine; } }
     public BossAI bossAI;
 
     [Header("Condition")]
@@ -23,7 +25,7 @@ public class Boss : MonoBehaviour
         bossAI = GetComponent<BossAI>();
         Controller = GetComponent<CharacterController>();
         BossAnimationData.Initialize();
-        bossAI.InitSkillsAnimationHash(BossAnimationData);
+        //bossAI.InitSkillsAnimationHash(BossAnimationData);
         stateMachine = new BossStateMachine(this);
     }
     void Start()

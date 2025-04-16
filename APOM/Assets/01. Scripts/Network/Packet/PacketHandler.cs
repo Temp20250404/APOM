@@ -110,5 +110,16 @@ class PacketHandler
         SC_BOSS_PHASE bossPhasePacket = packet as SC_BOSS_PHASE;
 
         // TODO: SC_BossPhase 패킷 처리 로직을 여기에 구현
+
+        BossState state = (BossState)bossPhasePacket.BossState;
+        Boss boss = Managers.BossManager.GetBoss(bossPhasePacket.BossID);
+
+        Vector3 target = new Vector3(bossPhasePacket.BossPos.PosX, bossPhasePacket.BossPos.PosY, bossPhasePacket.BossPos.PosZ);
+        if (boss != null)
+        {
+            boss.StateMachine.ChangeState(state);
+            boss.bossAI.MoveSpeed(bossPhasePacket.CurSpeed);
+            boss.bossAI.ChaseTarget(target);
+        }
     }
 }

@@ -25,7 +25,8 @@ public enum BossState
     Walk,
     Chase,
     Attack,
-    Skill
+    Skill1, Skill2, Skill3,
+    Die,
 }
 
 public enum BossPhase

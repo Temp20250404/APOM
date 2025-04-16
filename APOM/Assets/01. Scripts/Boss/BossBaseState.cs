@@ -16,23 +16,25 @@ public class BossBaseState : IState
 
     public virtual void StateEnter()
     {
-        stateMachine.Boss.bossAI.MoveSpeed(stateMachine.MoveMentSpeedModifier);
+        //stateMachine.Boss.bossAI.MoveSpeed(stateMachine.MoveMentSpeedModifier);
     }
 
     public virtual void StateUpdate()
     {
-        stateMachine.Boss.bossAI.HandleSkills();
+        //stateMachine.Boss.bossAI.HandleSkills();
 
-        if (stateMachine.Boss.bossAI.NextSkillToUse == null) return;
+        //if (stateMachine.Boss.bossAI.NextSkillToUse == null) return;
 
-        BossSkill skill = stateMachine.Boss.bossAI.NextSkillToUse;
+        //BossSkill skill = stateMachine.Boss.bossAI.NextSkillToUse;
 
-        if (skill != null)
-        {
-            Debug.Log("[Skill 시작] Skill로 전환합니다.");
-            stateMachine.BossSkillState.SetSkill(skill);
-            stateMachine.ChangeState(BossState.Skill);
-        }
+        //if (skill != null)
+        //{
+        //    Debug.Log("[Skill 시작] Skill로 전환합니다.");
+        //    stateMachine.BossSkillState.SetSkill(skill);
+        //    stateMachine.ChangeState(BossState.Skill1);
+        //}
+
+        // 서버에 상태 변경을 요청하는 메서드 호출
     }
 
     public virtual void StateExit()

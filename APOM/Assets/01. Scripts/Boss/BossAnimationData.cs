@@ -16,6 +16,7 @@ public class BossAnimationData
     [SerializeField] private string BossSkill2ParameterName = "BossSkill2";
     [SerializeField] private string BossSkill3ParameterName = "BossSkill3";
     [SerializeField] private string BossSkill_ParameterName = "@BossSkill";
+    [SerializeField] private string BossDie_ParameterName = "Die";
 
     public int ChasingParameterHash { get; private set; }
     public int IdleParameterHash { get; private set; }
@@ -27,6 +28,7 @@ public class BossAnimationData
     public int BossSkill2ParameterHash { get; private set; }
     public int BossSkill3ParameterHash { get; private set; }
     public int BossSkill_ParameterHash { get; private set; }
+    public int BossDie_ParameterHash { get; private set; }
 
     public void Initialize()
     {
@@ -39,6 +41,6 @@ public class BossAnimationData
         BossSkill1ParameterHash = Animator.StringToHash(BossSkill1ParameterName);
         BossSkill2ParameterHash = Animator.StringToHash(BossSkill2ParameterName);
         BossSkill3ParameterHash = Animator.StringToHash(BossSkill3ParameterName);
-        BossSkill_ParameterHash = Animator.StringToHash(BossSkill_ParameterName);
+        BossDie_ParameterHash = Animator.StringToHash(BossDie_ParameterName);
     }
 }

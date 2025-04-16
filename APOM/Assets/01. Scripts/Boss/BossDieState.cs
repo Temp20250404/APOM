@@ -2,27 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossChaseState : BossBaseState
+public class BossDieState : BossBaseState
 {
-    public BossChaseState(BossStateMachine stateMachine) : base(stateMachine)
+    public BossDieState(BossStateMachine stateMachine) : base(stateMachine)
     {
-
     }
 
-    // Walk 상태로 전환되었을 때
     public override void StateEnter()
     {
         // BaseSpeed에 곱해줄 값 세팅
         //stateMachine.MoveMentSpeedModifier = groundData.ChasingSpeedModifier * groundData.BaseSpeed;
         base.StateEnter();
-        StartAnimation(stateMachine.Boss.BossAnimationData.ChasingParameterHash);
+        StartAnimation(stateMachine.Boss.BossAnimationData.BossDie_ParameterHash);
     }
 
     // Walk 상태에서 다른 상태로 전환될 때
     public override void StateExit()
     {
         base.StateExit();
-        StopAnimation(stateMachine.Boss.BossAnimationData.ChasingParameterHash);
+        StopAnimation(stateMachine.Boss.BossAnimationData.BossDie_ParameterHash);
     }
 
     public override void StateUpdate()

@@ -11,10 +11,10 @@ public class BossWalkState : BossBaseState
     public override void StateEnter()
     {
         // BaseSpeed에 곱해줄 값 세팅
-        stateMachine.MoveMentSpeedModifier = groundData.WalkSpeedModifier;
+        //stateMachine.MoveMentSpeedModifier = groundData.WalkSpeedModifier;
         base.StateEnter();
         StartAnimation(stateMachine.Boss.BossAnimationData.WalkParameterHash);
-        stateMachine.Boss.bossAI.StartWalk();
+        //stateMachine.Boss.bossAI.StartWalk();
     }
 
     // Walk 상태에서 다른 상태로 전환될 때
@@ -28,17 +28,17 @@ public class BossWalkState : BossBaseState
     {
         base.StateUpdate();
 
-        if (stateMachine.Boss.bossAI.DetectTargets())
-        {
-            stateMachine.ChangeState(BossState.Chase);
-            Debug.Log("Chase State");
-            return;
-        }
+        //if (stateMachine.Boss.bossAI.DetectTargets())
+        //{
+        //    stateMachine.ChangeState(BossState.Chase);
+        //    Debug.Log("Chase State");
+        //    return;
+        //}
 
-        if (stateMachine.Boss.bossAI.EndWalk())
-        {
-            stateMachine.ChangeState(BossState.Idle); // 도착 시 Idle 상태로 전환
-            return;
-        }
+        //if (stateMachine.Boss.bossAI.EndWalk())
+        //{
+        //    stateMachine.ChangeState(BossState.Idle); // 도착 시 Idle 상태로 전환
+        //    return;
+        //}
     }
 }

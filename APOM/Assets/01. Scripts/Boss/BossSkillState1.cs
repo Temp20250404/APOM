@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossSkillState : BossBaseState
+public class BossSkillState1 : BossBaseState
 {
     //public BossSkill bossSkill;
 
-    public BossSkillState(BossStateMachine stateMachine) : base(stateMachine)
+    public BossSkillState1(BossStateMachine stateMachine) : base(stateMachine)
     {
 
     }
@@ -16,14 +16,14 @@ public class BossSkillState : BossBaseState
         //stateMachine.MoveMentSpeedModifier = 0f;
         base.StateEnter();
         StartAnimation(stateMachine.Boss.BossAnimationData.BossSkill_ParameterHash);
-        StartAnimation(stateMachine.Boss.BossAnimationData.BossSkill1ParameterHash);
+        StartAnimation(stateMachine.Boss.BossAnimationData.BossSkill2ParameterHash);
     }
 
     public override void StateExit()
     {
         base.StateExit();
 
-        StopAnimation(stateMachine.Boss.BossAnimationData.BossSkill1ParameterHash);
+        StopAnimation(stateMachine.Boss.BossAnimationData.BossSkill2ParameterHash);
         StopAnimation(stateMachine.Boss.BossAnimationData.BossSkill_ParameterHash);
     }
 

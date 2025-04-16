@@ -108,6 +108,7 @@ MonoBehaviour:
     BossSkill2ParameterName: BossSkill2
     BossSkill3ParameterName: BossSkill3
     BossSkill_ParameterName: '@BossSkill'
+    BossDie_ParameterName: BossDie
   bossAI: {fileID: 0}
   currentHealth: 0
 --- !u!114 &7858075829981708637
@@ -123,7 +124,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   viewDistance: 10
-  viewAngle: 360
   targetMask:
     serializedVersion: 2
     m_Bits: 16384
@@ -132,24 +132,6 @@ MonoBehaviour:
     m_Bits: 0
   target: {fileID: 0}
   phase: 3
-  skillList:
-  - skillTimer: 0
-    skillDelay: 5
-    phase: 1
-    skillType: 0
-    animationHash: 0
-  - skillTimer: 0
-    skillDelay: 5
-    phase: 2
-    skillType: 1
-    animationHash: 0
-  - skillTimer: 0
-    skillDelay: 5
-    phase: 3
-    skillType: 2
-    animationHash: 0
-  postSkillCooldown: 1
-  postSkillCooldownTimer: 0
 --- !u!1001 &2257265788215747606
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -205,7 +187,7 @@ PrefabInstance:
     - target: {fileID: 7439186059543906664, guid: 318830e16c9af9a449459f9b35ed0179, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 28fee84e43af73548898dc8344c23df6, type: 2}
+      objectReference: {fileID: 9100000, guid: 40302a8333685284196cafbfa5ba830e, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
