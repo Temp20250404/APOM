@@ -72,10 +72,6 @@ public class ServerSession : PacketSession
         {
             PacketQueue.Instance.Push(i, m);
         };
-
-        CS_REGISTER_REQUEST ptk = new CS_REGISTER_REQUEST();
-        ptk.UserName = "Default_UserName";
-        Managers.Network.Send(ptk);
     }
 
     public override void OnDisconnected(EndPoint endPoint)
