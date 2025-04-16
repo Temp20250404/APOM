@@ -140,19 +140,19 @@ public class BossAI : MonoBehaviour
 
 
     // 보스의 현재 HP 상태에 따라 페이즈 전환
-    public void UpdatePhase(float currentHP, float maxHP)
-    {
-        float hpRatio = currentHP / maxHP;
+    //public void UpdatePhase(float currentHP, float maxHP)
+    //{
+    //    float hpRatio = currentHP / maxHP;
 
-        if (hpRatio <= 0.2f)
-            phase = BossPhase.Phase4;
-        else if (hpRatio <= 0.7f)
-            phase = BossPhase.Phase3;
-        else if (hpRatio <= 0.8f)
-            phase = BossPhase.Phase2;
-        else
-            phase = BossPhase.Phase1;
-    }
+    //    if (hpRatio <= 0.2f)
+    //        phase = BossPhase.Phase4;
+    //    else if (hpRatio <= 0.7f)
+    //        phase = BossPhase.Phase3;
+    //    else if (hpRatio <= 0.8f)
+    //        phase = BossPhase.Phase2;
+    //    else
+    //        phase = BossPhase.Phase1;
+    //}
 
     // 360도 시야 범위 내에서 타겟을 탐지
     //public bool DetectTargets()
@@ -185,14 +185,14 @@ public class BossAI : MonoBehaviour
         }
     }
 
-    // 시각적으로 시야 범위를 확인하기 위한 Gizmo
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, viewDistance); // 시야 범위
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(transform.position, transform.position + transform.forward * viewDistance); // 시야의 앞쪽 (시작선)
-    }
+    //// 시각적으로 시야 범위를 확인하기 위한 Gizmo
+    //void OnDrawGizmosSelected()
+    //{
+    //    Gizmos.color = Color.yellow;
+    //    Gizmos.DrawWireSphere(transform.position, viewDistance); // 시야 범위
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawLine(transform.position, transform.position + transform.forward * viewDistance); // 시야의 앞쪽 (시작선)
+    //}
 
     //public bool IsAttackRange(BossData data)
     //{
@@ -223,8 +223,8 @@ public class BossAI : MonoBehaviour
     //    return transform.position; // 기본 위치 반환
     //}
 
-    public bool EndWalk()
-    {
-        return !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance;
-    }
+    //public bool EndWalk()
+    //{
+    //    return !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance;
+    //}
 }

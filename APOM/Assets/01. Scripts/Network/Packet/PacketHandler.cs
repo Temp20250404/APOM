@@ -113,8 +113,29 @@ class PacketHandler
 
         BossState state = (BossState)bossPhasePacket.BossState;
         Boss boss = Managers.BossManager.GetBoss(bossPhasePacket.BossID);
-
         Vector3 target = new Vector3(bossPhasePacket.BossPos.PosX, bossPhasePacket.BossPos.PosY, bossPhasePacket.BossPos.PosZ);
+
+        //switch(state)
+        //{
+        //    case BossState.Idle:
+        //        break;
+        //    case BossState.Walk:
+        //        break;
+        //    case BossState.Chase:
+        //        break;
+        //    case BossState.Attack:
+        //        break;
+        //    case BossState.Skill1:
+        //        break;
+        //    case BossState.Skill2:
+        //        break;
+        //    case BossState.Skill3:
+        //        break;
+        //    case BossState.Die:
+        //        break;
+        //    default:
+        //        break;
+        //}
         if (boss != null)
         {
             boss.StateMachine.ChangeState(state);
