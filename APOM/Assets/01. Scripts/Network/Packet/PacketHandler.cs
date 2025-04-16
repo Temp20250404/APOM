@@ -30,7 +30,7 @@ class PacketHandler
 
         Player player = Managers.Player.GetPlayer(keyinfoPacket.PlayerID);
         player.playerID = keyinfoPacket.PlayerID;
-        player.inputController.RecivePacket(keyinfoPacket.KeyInfo, keyinfoPacket.CameraYaw);
+        player.inputController.ReciveKeyInfoPacket(keyinfoPacket.KeyInfo, keyinfoPacket.CameraYaw);
     }
 
     // SC_LOGIN_RESPONSE 패킷을 처리하는 함수
@@ -47,6 +47,10 @@ class PacketHandler
         SC_POSITION_SYNC positionSyncPacket = packet as SC_POSITION_SYNC;
 
         // TODO: SC_PositionSync 패킷 처리 로직을 여기에 구현
+
+        Player player = Managers.Player.GetPlayer(positionSyncPacket.PlayerID);
+        player.inputController.ReciveTransformSyncPosition(positionSyncPacket);
+        player.inputController.ReciveTransformSyncRotation(positionSyncPacket);
     }
 
     // SC_REGISTER_RESPONSE 패킷을 처리하는 함수

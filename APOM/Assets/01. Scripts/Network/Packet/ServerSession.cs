@@ -48,7 +48,7 @@ public class ServerSession : PacketSession
 
         if(bySize == 0)
         {
-            Debug.LogError($"패킷 Send 실패: {enumName}의 사이즈가 0 byte");
+            Debug.Log($"패킷 Send 실패: {enumName}의 사이즈가 0 byte");
             return;
         }
 

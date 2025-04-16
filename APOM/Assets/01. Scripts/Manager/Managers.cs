@@ -115,4 +115,9 @@ public class Managers : Singleton<Managers>
             yield return new WaitForSeconds(4f);
         }
     }
+
+    public void PacketTestMethed(SC_POSITION_SYNC _packet)
+    {
+        Debug.Log($"ID: {_packet.PlayerID} - {_packet.PosX}, {_packet.PosY}, {_packet.CameraYaw}");
+    }
 }
