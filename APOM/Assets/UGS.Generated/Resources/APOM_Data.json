@@ -1,0 +1,1 @@
+{"jsonObject":{"Enhanced_Data":{"index : int":["1001","1002"],"name : string":["1번","2번"],"grade : Enum<EGRADE>":["COMMON","RARE"],"enhanceValue : int":["1","10"],"testFloat : float":["2","3.5"]}},"spreadSheetName":"APOM_Data","spreadSheetID":"1vtDMZth01VidgPCcacKCi6XieVUPtxoWthe8_SqFrec","sheetIDList":["1054479324"],"tableTypes":[0],"instruction":1,"error":null}

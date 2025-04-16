@@ -3,6 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[UGS(typeof(EBOOL))]
+public enum EBOOL
+{
+    FALSE,
+    TRUE
+}
+
 [UGS(typeof(EGRADE))]
 public enum EGRADE
 {

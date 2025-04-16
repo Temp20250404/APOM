@@ -26,16 +26,7 @@ public class PlayerBaseState : IState
 
     public virtual void StateUpdate()
     {
-        if (!stateMachine.player.inputController.isMainPlayer)
-        {
-            stateMachine.player.transform.rotation = stateMachine.player.inputController.TargetSyncRotation;
-            
-            Vector3 lerpPosition = Vector3.Lerp(stateMachine.player.transform.position, stateMachine.player.inputController.TargetSyncPosition, Time.deltaTime / 0.1f);
-            Vector3 delta = lerpPosition - stateMachine.player.transform.position;
-            stateMachine.player.characterController.Move(delta);
-            
-            Debug.Log($"{stateMachine.player.playerID}: {stateMachine.player.inputController.TargetSyncPosition}, {stateMachine.player.inputController.TargetSyncRotation}");
-        }
+        RemotePlayerSync();
     }
 
     public virtual void StateExit()
@@ -68,6 +59,20 @@ public class PlayerBaseState : IState
         //stateMachine.movementInput = stateMachine.player.inputController.playerActions.Move.ReadValue<Vector2>();
     }
 
+    private void RemotePlayerSync()
+    {
+        if (!stateMachine.player.inputController.isMainPlayer)
+        {
+            stateMachine.player.transform.rotation = stateMachine.player.inputController.TargetSyncRotation;
+
+            Vector3 lerpPosition = Vector3.Lerp(stateMachine.player.transform.position, stateMachine.player.inputController.TargetSyncPosition, Time.deltaTime / 0.1f);
+            Vector3 delta = lerpPosition - stateMachine.player.transform.position;
+            stateMachine.player.characterController.Move(delta);
+
+            //Debug.Log($"{stateMachine.player.playerID}: {stateMachine.player.inputController.TargetSyncPosition}, {stateMachine.player.inputController.TargetSyncRotation}");
+        }
+    }
+
     protected virtual void Move()
     {
         Vector3 movementDirection = GetMovementDirection();
@@ -86,7 +91,9 @@ public class PlayerBaseState : IState
     protected Vector3 GetMovementDirection()
     {
         float radian = stateMachine.player.inputController.recivePacketRotation * Mathf.Deg2Rad;
+        
         Debug.Log($"reciveRotation ID {stateMachine.player.playerID} : {stateMachine.player.inputController.recivePacketRotation}");
+        
         Vector3 forward = new Vector3(Mathf.Sin(radian), 0f, Mathf.Cos(radian));
         Vector3 right = new Vector3(Mathf.Cos(radian), 0f, -Mathf.Sin(radian));
 
@@ -157,10 +164,10 @@ public class PlayerBaseState : IState
 
     protected virtual void OnMoveCanceled(InputAction.CallbackContext context)
     {
-        stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.W] = false;
-        stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.S] = false;
-        stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.A] = false;
-        stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.D] = false;
-        stateMachine.movementInput = Vector2.zero;
+        //stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.W] = false;
+        //stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.S] = false;
+        //stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.A] = false;
+        //stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.D] = false;
+        //stateMachine.movementInput = Vector2.zero;
     }
 }
