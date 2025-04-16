@@ -17,59 +17,54 @@ using UnityEngine;
 namespace APOM_Data
 {
     [GoogleSheet.Attribute.TableStruct]
-    public partial class Equipment_Data : ITable
+    public partial class EnhancementRate_Data : ITable
     { 
 
-        public delegate void OnLoadedFromGoogleSheets(List<Equipment_Data> loadedList, Dictionary<int, Equipment_Data> loadedDictionary);
+        public delegate void OnLoadedFromGoogleSheets(List<EnhancementRate_Data> loadedList, Dictionary<int, EnhancementRate_Data> loadedDictionary);
 
         static bool isLoaded = false;
         static string spreadSheetID = "1vtDMZth01VidgPCcacKCi6XieVUPtxoWthe8_SqFrec"; // it is file id
-        static string sheetID = "724889271"; // it is sheet id
+        static string sheetID = "302174176"; // it is sheet id
         static UnityFileReader reader = new UnityFileReader();
 
 /* Your Loaded Data Storage. */
     
-        public static Dictionary<int, Equipment_Data> Equipment_DataMap = new Dictionary<int, Equipment_Data>();  
-        public static List<Equipment_Data> Equipment_DataList = new List<Equipment_Data>();   
+        public static Dictionary<int, EnhancementRate_Data> EnhancementRate_DataMap = new Dictionary<int, EnhancementRate_Data>();  
+        public static List<EnhancementRate_Data> EnhancementRate_DataList = new List<EnhancementRate_Data>();   
 
         /// <summary>
-        /// Get Equipment_Data List 
+        /// Get EnhancementRate_Data List 
         /// Auto Load
         /// </summary>
-        public static List<Equipment_Data> GetList()
+        public static List<EnhancementRate_Data> GetList()
         {{
            if (isLoaded == false) Load();
-           return Equipment_DataList;
+           return EnhancementRate_DataList;
         }}
 
         /// <summary>
-        /// Get Equipment_Data Dictionary, keyType is your sheet A1 field type.
+        /// Get EnhancementRate_Data Dictionary, keyType is your sheet A1 field type.
         /// - Auto Load
         /// </summary>
-        public static Dictionary<int, Equipment_Data>  GetDictionary()
+        public static Dictionary<int, EnhancementRate_Data>  GetDictionary()
         {{
            if (isLoaded == false) Load();
-           return Equipment_DataMap;
+           return EnhancementRate_DataMap;
         }}
 
     
 
 /* Fields. */
 
-		public System.Int32 itemID;
-		public System.String name;
-		public System.String type;
-		public EGRADE grade;
-		public System.Int32 isUpgradable;
-		public System.Int32 currentUpgrade;
-		public System.Int32 maxUpgradeLevel;
-		public System.String jobLimit;
-		public System.String description;
-		public System.String iconPath;
-		public System.Int32 str;
-		public System.Int32 defense;
-		public System.Int32 weaponATK;
-		public System.Int32 requiredLevel;
+		public System.Int32 index;
+		public System.Int32 TargetLevel;
+		public System.Single successRate;
+		public System.Int32 canDropLevel;
+		public System.Int32 dropToLevel;
+		public System.String Test;
+		public System.Single ATKBonus;
+		public System.Single DEFBonus;
+		public System.Single STRBonus;
   
 
 #region fuctions
@@ -80,7 +75,7 @@ namespace APOM_Data
             if(isLoaded && forceReload == false)
             {
 #if UGS_DEBUG
-                 Debug.Log("Equipment_Data is already loaded! if you want reload then, forceReload parameter set true");
+                 Debug.Log("EnhancementRate_Data is already loaded! if you want reload then, forceReload parameter set true");
 #endif
                  return;
             }
@@ -96,7 +91,7 @@ namespace APOM_Data
         }
  
 
-        public static void LoadFromGoogle(System.Action<List<Equipment_Data>, Dictionary<int, Equipment_Data>> onLoaded, bool updateCurrentData = false)
+        public static void LoadFromGoogle(System.Action<List<EnhancementRate_Data>, Dictionary<int, EnhancementRate_Data>> onLoaded, bool updateCurrentData = false)
         {      
                 IHttpProtcol webInstance = null;
     #if UNITY_EDITOR
@@ -124,14 +119,14 @@ namespace APOM_Data
                
 
 
-    public static (List<Equipment_Data> list, Dictionary<int, Equipment_Data> map) CommonLoad(Dictionary<string, Dictionary<string, List<string>>> jsonObject, bool forceReload){
-            Dictionary<int, Equipment_Data> Map = new Dictionary<int, Equipment_Data>();
-            List<Equipment_Data> List = new List<Equipment_Data>();     
+    public static (List<EnhancementRate_Data> list, Dictionary<int, EnhancementRate_Data> map) CommonLoad(Dictionary<string, Dictionary<string, List<string>>> jsonObject, bool forceReload){
+            Dictionary<int, EnhancementRate_Data> Map = new Dictionary<int, EnhancementRate_Data>();
+            List<EnhancementRate_Data> List = new List<EnhancementRate_Data>();     
             TypeMap.Init();
-            FieldInfo[] fields = typeof(Equipment_Data).GetFields(BindingFlags.Public | BindingFlags.Instance);
+            FieldInfo[] fields = typeof(EnhancementRate_Data).GetFields(BindingFlags.Public | BindingFlags.Instance);
             List<(string original, string propertyName, string type)> typeInfos = new List<(string, string, string)>(); 
             List<List<string>> rows = new List<List<string>>();
-            var sheet = jsonObject["Equipment_Data"];
+            var sheet = jsonObject["EnhancementRate_Data"];
 
             foreach (var column in sheet.Keys)
             {
@@ -150,7 +145,7 @@ namespace APOM_Data
                         int rowCount = rows[0].Count;
                         for (int i = 0; i < rowCount; i++)
                         {
-                            Equipment_Data instance = new Equipment_Data();
+                            EnhancementRate_Data instance = new EnhancementRate_Data();
                             for (int j = 0; j < typeInfos.Count; j++)
                             {
                                 try
@@ -187,12 +182,12 @@ namespace APOM_Data
                               
                             }
                             List.Add(instance); 
-                            Map.Add(instance.itemID, instance);
+                            Map.Add(instance.index, instance);
                         }
                         if(isLoaded == false || forceReload)
                         { 
-                            Equipment_DataList = List;
-                            Equipment_DataMap = Map;
+                            EnhancementRate_DataList = List;
+                            EnhancementRate_DataMap = Map;
                             isLoaded = true;
                         }
                     } 
@@ -202,10 +197,10 @@ namespace APOM_Data
 
  
 
-        public static void Write(Equipment_Data data, System.Action<WriteObjectResult> onWriteCallback = null)
+        public static void Write(EnhancementRate_Data data, System.Action<WriteObjectResult> onWriteCallback = null)
         { 
             TypeMap.Init();
-            FieldInfo[] fields = typeof(Equipment_Data).GetFields(BindingFlags.Public | BindingFlags.Instance);
+            FieldInfo[] fields = typeof(EnhancementRate_Data).GetFields(BindingFlags.Public | BindingFlags.Instance);
             var datas = new string[fields.Length];
             for (int i = 0; i < fields.Length; i++)
             {

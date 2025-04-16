@@ -56,7 +56,10 @@ namespace APOM_Data
 
 /* Fields. */
 
-		public System.Int32 index;
+		public System.Int32 itemID;
+		public System.String name;
+		public EGRADE grade;
+		public System.Int32 enhanceValue;
   
 
 #region fuctions
@@ -174,7 +177,7 @@ namespace APOM_Data
                               
                             }
                             List.Add(instance); 
-                            Map.Add(instance.index, instance);
+                            Map.Add(instance.itemID, instance);
                         }
                         if(isLoaded == false || forceReload)
                         { 

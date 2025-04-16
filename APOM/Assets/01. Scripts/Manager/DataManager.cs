@@ -44,12 +44,12 @@ public class DataManager : IManager
     public void Init()
     {
         UnityGoogleSheet.LoadAllData();
-        EGRADE grades;
-        if (EquipmentData.GetDictionary().TryGetValue(3, out APOM_Data.Equipment_Data foundItem))
-        {
-            grades = foundItem.grade;
-        }
-        SaveAllSheetDataToSDD("Test");
+        //EGRADE grades;
+        //if (EquipmentData.GetDictionary().TryGetValue(3, out APOM_Data.Equipment_Data foundItem))
+        //{
+        //    grades = foundItem.grade;
+        //}
+        //SaveAllSheetDataToSDD("EnhancementRate_Data");
         Debug.Log("DataManager Initialized");
     }
     public void Clear()
@@ -84,7 +84,7 @@ public class DataManager : IManager
 
         foreach (var type in sheetTypes)
         {
-            // GetDictionary() 정적 메서드를 찾습니다.
+            // GetDictionary() 메서드를 찾음
             MethodInfo getDictMethod = type.GetMethod("GetDictionary", BindingFlags.Public | BindingFlags.Static);
 
             if (getDictMethod == null)

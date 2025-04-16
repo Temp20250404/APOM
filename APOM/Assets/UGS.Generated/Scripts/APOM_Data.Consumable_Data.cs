@@ -12,6 +12,7 @@ using System.IO;
 using GoogleSheet.Type;
 using System.Reflection;
 using UnityEngine;
+using SheetEnum;
 
 
 namespace APOM_Data
@@ -56,9 +57,18 @@ namespace APOM_Data
 
 /* Fields. */
 
-		public System.Int32 index;
-		public System.Int32 intValue;
-		public System.String strValue;
+		public System.Int32 ItemID;
+		public System.String ItemName;
+		public ECTYPE type;
+		public System.Single recoveryAmount;
+		public System.Int32 requiredLevel;
+		public System.Single cooldown;
+		public System.Single castTime;
+		public System.Int32 isPercent;
+		public System.Int32 isStackable;
+		public System.Int32 maxStack;
+		public System.Int32 sellPrice;
+		public System.Int32 buyPrice;
   
 
 #region fuctions
@@ -176,7 +186,7 @@ namespace APOM_Data
                               
                             }
                             List.Add(instance); 
-                            Map.Add(instance.index, instance);
+                            Map.Add(instance.ItemID, instance);
                         }
                         if(isLoaded == false || forceReload)
                         { 

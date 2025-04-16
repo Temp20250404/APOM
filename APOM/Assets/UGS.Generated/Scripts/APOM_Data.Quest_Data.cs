@@ -17,59 +17,46 @@ using UnityEngine;
 namespace APOM_Data
 {
     [GoogleSheet.Attribute.TableStruct]
-    public partial class Equipment_Data : ITable
+    public partial class Quest_Data : ITable
     { 
 
-        public delegate void OnLoadedFromGoogleSheets(List<Equipment_Data> loadedList, Dictionary<int, Equipment_Data> loadedDictionary);
+        public delegate void OnLoadedFromGoogleSheets(List<Quest_Data> loadedList, Dictionary<int, Quest_Data> loadedDictionary);
 
         static bool isLoaded = false;
         static string spreadSheetID = "1vtDMZth01VidgPCcacKCi6XieVUPtxoWthe8_SqFrec"; // it is file id
-        static string sheetID = "724889271"; // it is sheet id
+        static string sheetID = "128846552"; // it is sheet id
         static UnityFileReader reader = new UnityFileReader();
 
 /* Your Loaded Data Storage. */
     
-        public static Dictionary<int, Equipment_Data> Equipment_DataMap = new Dictionary<int, Equipment_Data>();  
-        public static List<Equipment_Data> Equipment_DataList = new List<Equipment_Data>();   
+        public static Dictionary<int, Quest_Data> Quest_DataMap = new Dictionary<int, Quest_Data>();  
+        public static List<Quest_Data> Quest_DataList = new List<Quest_Data>();   
 
         /// <summary>
-        /// Get Equipment_Data List 
+        /// Get Quest_Data List 
         /// Auto Load
         /// </summary>
-        public static List<Equipment_Data> GetList()
+        public static List<Quest_Data> GetList()
         {{
            if (isLoaded == false) Load();
-           return Equipment_DataList;
+           return Quest_DataList;
         }}
 
         /// <summary>
-        /// Get Equipment_Data Dictionary, keyType is your sheet A1 field type.
+        /// Get Quest_Data Dictionary, keyType is your sheet A1 field type.
         /// - Auto Load
         /// </summary>
-        public static Dictionary<int, Equipment_Data>  GetDictionary()
+        public static Dictionary<int, Quest_Data>  GetDictionary()
         {{
            if (isLoaded == false) Load();
-           return Equipment_DataMap;
+           return Quest_DataMap;
         }}
 
     
 
 /* Fields. */
 
-		public System.Int32 itemID;
-		public System.String name;
-		public System.String type;
-		public EGRADE grade;
-		public System.Int32 isUpgradable;
-		public System.Int32 currentUpgrade;
-		public System.Int32 maxUpgradeLevel;
-		public System.String jobLimit;
-		public System.String description;
-		public System.String iconPath;
-		public System.Int32 str;
-		public System.Int32 defense;
-		public System.Int32 weaponATK;
-		public System.Int32 requiredLevel;
+		public System.Int32 ItemID;
   
 
 #region fuctions
@@ -80,7 +67,7 @@ namespace APOM_Data
             if(isLoaded && forceReload == false)
             {
 #if UGS_DEBUG
-                 Debug.Log("Equipment_Data is already loaded! if you want reload then, forceReload parameter set true");
+                 Debug.Log("Quest_Data is already loaded! if you want reload then, forceReload parameter set true");
 #endif
                  return;
             }
@@ -96,7 +83,7 @@ namespace APOM_Data
         }
  
 
-        public static void LoadFromGoogle(System.Action<List<Equipment_Data>, Dictionary<int, Equipment_Data>> onLoaded, bool updateCurrentData = false)
+        public static void LoadFromGoogle(System.Action<List<Quest_Data>, Dictionary<int, Quest_Data>> onLoaded, bool updateCurrentData = false)
         {      
                 IHttpProtcol webInstance = null;
     #if UNITY_EDITOR
@@ -124,14 +111,14 @@ namespace APOM_Data
                
 
 
-    public static (List<Equipment_Data> list, Dictionary<int, Equipment_Data> map) CommonLoad(Dictionary<string, Dictionary<string, List<string>>> jsonObject, bool forceReload){
-            Dictionary<int, Equipment_Data> Map = new Dictionary<int, Equipment_Data>();
-            List<Equipment_Data> List = new List<Equipment_Data>();     
+    public static (List<Quest_Data> list, Dictionary<int, Quest_Data> map) CommonLoad(Dictionary<string, Dictionary<string, List<string>>> jsonObject, bool forceReload){
+            Dictionary<int, Quest_Data> Map = new Dictionary<int, Quest_Data>();
+            List<Quest_Data> List = new List<Quest_Data>();     
             TypeMap.Init();
-            FieldInfo[] fields = typeof(Equipment_Data).GetFields(BindingFlags.Public | BindingFlags.Instance);
+            FieldInfo[] fields = typeof(Quest_Data).GetFields(BindingFlags.Public | BindingFlags.Instance);
             List<(string original, string propertyName, string type)> typeInfos = new List<(string, string, string)>(); 
             List<List<string>> rows = new List<List<string>>();
-            var sheet = jsonObject["Equipment_Data"];
+            var sheet = jsonObject["Quest_Data"];
 
             foreach (var column in sheet.Keys)
             {
@@ -150,7 +137,7 @@ namespace APOM_Data
                         int rowCount = rows[0].Count;
                         for (int i = 0; i < rowCount; i++)
                         {
-                            Equipment_Data instance = new Equipment_Data();
+                            Quest_Data instance = new Quest_Data();
                             for (int j = 0; j < typeInfos.Count; j++)
                             {
                                 try
@@ -187,12 +174,12 @@ namespace APOM_Data
                               
                             }
                             List.Add(instance); 
-                            Map.Add(instance.itemID, instance);
+                            Map.Add(instance.ItemID, instance);
                         }
                         if(isLoaded == false || forceReload)
                         { 
-                            Equipment_DataList = List;
-                            Equipment_DataMap = Map;
+                            Quest_DataList = List;
+                            Quest_DataMap = Map;
                             isLoaded = true;
                         }
                     } 
@@ -202,10 +189,10 @@ namespace APOM_Data
 
  
 
-        public static void Write(Equipment_Data data, System.Action<WriteObjectResult> onWriteCallback = null)
+        public static void Write(Quest_Data data, System.Action<WriteObjectResult> onWriteCallback = null)
         { 
             TypeMap.Init();
-            FieldInfo[] fields = typeof(Equipment_Data).GetFields(BindingFlags.Public | BindingFlags.Instance);
+            FieldInfo[] fields = typeof(Quest_Data).GetFields(BindingFlags.Public | BindingFlags.Instance);
             var datas = new string[fields.Length];
             for (int i = 0; i < fields.Length; i++)
             {
