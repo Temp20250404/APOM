@@ -29,6 +29,10 @@ public class BossAI : MonoBehaviour
     [Header("페이즈 설정")]
     public BossPhase phase = BossPhase.Phase1;
 
+    private Vector3 _targetPosition;
+    private bool _isMoving = false;
+    private float _moveSpeed = 0f;
+
     //[Header("스킬 리스트")]
     //public List<BossSkill> skillList;
     //private BossSkill nextSkillToUse; // 다음 사용할 스킬
@@ -172,16 +176,33 @@ public class BossAI : MonoBehaviour
 
     public void MoveSpeed(float Modifier)
     {
-        agent.speed = Modifier;
+        _moveSpeed = Modifier;
     }
 
     // 플레이어 추적
     public void ChaseTarget(Vector3 target)
     {
+        _targetPosition = target;
+        _isMoving = true;
+    }
 
-            //타겟 위치로 네브메시 에이전트가 이동
-            agent.SetDestination(target);
+    private void Update()
+    {
+        if (_isMoving)
+        {
+            float step = _moveSpeed * Time.deltaTime;
 
+            // 타겟에 도달하면 멈춤
+            if (Vector3.Distance(transform.position, _targetPosition) <= step)
+            {
+                transform.position = _targetPosition;
+                _isMoving = false;
+            }
+            else
+            {
+                transform.position = Vector3.MoveTowards(transform.position, _targetPosition, step);
+            }
+        }
     }
 
     //// 시각적으로 시야 범위를 확인하기 위한 Gizmo

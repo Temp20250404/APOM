@@ -5,6 +5,7 @@ using System.Collections;
 using System.Runtime.InteropServices;
 using UGS;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public interface IManager
 {
@@ -12,6 +13,11 @@ public interface IManager
     void Clear();
 }
 
+public enum SceneType
+{
+    Title,
+    Game,
+}
 public class Managers : Singleton<Managers>
 {
     [field: SerializeField] private GameManager gameManager = new GameManager();
@@ -53,16 +59,19 @@ public class Managers : Singleton<Managers>
         Application.targetFrameRate = 60;   // 최대 프레임 60으로 조정
         JobQueue.Push(() => { });           // 잡큐 enq 시작
 
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
         Init();
+
     }
     private void Start()
     {
-        //UI.ShowPopupUI<UI_Login>();
-        UI.ShowSceneUI<UI_Condition>();
-        UI.ShowSceneUI<UI_MiniMap>();
-        UI.ShowSceneUI<UI_QuickSlot>();
-        UI.ShowSceneUI<UI_Chat>();
+        // 초기 타이틀 씬이라면 로그인 UI만 보여주기
+        //SetupUI(SceneType.Title);
 
+        //UI.ShowPopupUI<UI_Login>();
+
+        //UI.ShowSceneUI<UI_Main>();
         //UI.ShowPopupUI<UI_Inventory>(); // ShowPopupUI<UI_PopupTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
         //UI.ShowPopupUI<UI_PopupTest>(); // ShowPopupUI<UI_PopupTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
         //UI.ShowPopupUI<SkillPopupUI>(); 
@@ -121,5 +130,35 @@ public class Managers : Singleton<Managers>
     public void PacketTestMethed(SC_POSITION_SYNC _packet)
     {
         Debug.Log($"ID: {_packet.PlayerID} - {_packet.PosX}, {_packet.PosY}, {_packet.CameraYaw}");
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 씬 이름 기준으로 UI 자동 설정
+        switch (scene.name)
+        {
+            case "Title":
+                SetupUI(SceneType.Title);
+                break;
+            case "HMJScene":
+                SetupUI(SceneType.Game);
+                break;
+        }
+    }
+
+    public void SetupUI(SceneType sceneType)
+    {
+        UI.ClearSceneUI();
+
+        switch (sceneType)
+        {
+            case SceneType.Title:
+                UI.ShowPopupUI<UI_Login>();
+                break;
+            case SceneType.Game:
+                UI.ShowSceneUI<UI_Main>();
+                UI.ShowPopupUI<UI_Login>();
+                break;
+        }
     }
 }

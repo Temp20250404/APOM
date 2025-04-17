@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 class PacketHandler
 {
@@ -15,10 +16,10 @@ class PacketHandler
 
         // TODO: SC_Chat 패킷 처리 로직을 여기에 구현
 
-        
+
         //UI_CHAT을 찾아서 ServerByChat 함수를 호출
         //Managers.UI._sceneUI.UI_Chat.ServerByChat(chatPacket.Message, chatPacket.Channel);
-        Managers.UI._sceneUI.UI_Chat.ServerByChat(chatPacket.Message, chatPacket.Channel);
+        (Managers.UI._sceneUI as IChat)?.ReceiveChat(chatPacket.Message, chatPacket.Channel);
     }
 
     // SC_KEYINFO 패킷을 처리하는 함수
@@ -97,6 +98,7 @@ class PacketHandler
             if (uI_Login != null)
             {
                 uI_Login.loginResultText.text = "로그인 성공";
+                SceneManager.LoadScene("HMJScene");
             }
         }
         else
@@ -217,33 +219,14 @@ class PacketHandler
         Boss boss = Managers.BossManager.GetBoss(bossPhasePacket.BossID);
         Vector3 target = new Vector3(bossPhasePacket.BossPos.PosX, bossPhasePacket.BossPos.PosY, bossPhasePacket.BossPos.PosZ);
 
-        //switch(state)
-        //{
-        //    case BossState.Idle:
-        //        break;
-        //    case BossState.Walk:
-        //        break;
-        //    case BossState.Chase:
-        //        break;
-        //    case BossState.Attack:
-        //        break;
-        //    case BossState.Skill1:
-        //        break;
-        //    case BossState.Skill2:
-        //        break;
-        //    case BossState.Skill3:
-        //        break;
-        //    case BossState.Die:
-        //        break;
-        //    default:
-        //        break;
-        //}
         if (boss != null)
         {
             boss.StateMachine.ChangeState(state);
             boss.bossAI.MoveSpeed(bossPhasePacket.CurSpeed);
             boss.bossAI.ChaseTarget(target);
             Debug.Log($"보스 {bossPhasePacket.BossID} 상태 변경: {state}");
+            Debug.Log($"보스 {bossPhasePacket.BossID} 위치 변경: {target}");
+            Debug.Log($"보스 {bossPhasePacket.BossID} 속도 변경: {bossPhasePacket.CurSpeed}");
         }
     }
 }
