@@ -39,7 +39,8 @@ public class BossStateMachine : StateMachine
             { BossState.Walk, BossWalkState },
             { BossState.Skill1, BossSkillState },
             { BossState.Skill2, BossSkillState1 },
-            { BossState.Skill3, BossSkillState2 }
+            { BossState.Skill3, BossSkillState2 },
+            { BossState.Die, BossIdleState }
         };
     }
 }
