@@ -55,9 +55,9 @@ public class BossManager : IManager
             bossList.Remove(_id);
             GameObject.Destroy(boss);
 
-            Debug.Log($"플레이어 {_id} 삭제 성공");
+            Debug.Log($"몬스터 {_id} 삭제 성공");
         }
         else
-            Debug.Log($"플레이어 {_id} 삭제 실패");
+            Debug.Log($"몬스터 {_id} 삭제 실패");
     }
 }

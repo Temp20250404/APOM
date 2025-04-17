@@ -79,6 +79,8 @@ class PacketHandler
         SC_CREATE_MONSTER createMonsterPacket = packet as SC_CREATE_MONSTER;
 
         // TODO: SC_CreateMonster 패킷 처리 로직을 여기에 구현
+
+        Managers.BossManager.SpawnBoss(createMonsterPacket);
     }
 
     // SC_PLAYER_ATTACK 패킷을 처리하는 함수
@@ -174,14 +176,5 @@ class PacketHandler
             boss.bossAI.MoveSpeed(bossPhasePacket.CurSpeed);
             boss.bossAI.ChaseTarget(target);
         }
-    }
-
-    public static void SC_BossCreate(PacketSession session, IMessage packet)
-    {
-        SC_CREATE_MONSTER bossCreatePacket = packet as SC_CREATE_MONSTER;
-
-        // TODO: SC_BossPhase 패킷 처리 로직을 여기에 구현
-
-        Managers.BossManager.SpawnBoss(bossCreatePacket);
     }
 }
