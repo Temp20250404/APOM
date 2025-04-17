@@ -41,6 +41,7 @@ public class BossAnimationData
         BossSkill1ParameterHash = Animator.StringToHash(BossSkill1ParameterName);
         BossSkill2ParameterHash = Animator.StringToHash(BossSkill2ParameterName);
         BossSkill3ParameterHash = Animator.StringToHash(BossSkill3ParameterName);
+        BossSkill_ParameterHash = Animator.StringToHash(BossSkill_ParameterName);
         BossDie_ParameterHash = Animator.StringToHash(BossDie_ParameterName);
     }
 }

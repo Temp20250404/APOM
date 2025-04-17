@@ -20,19 +20,19 @@ public class BossManager : IManager
         bossList.Clear();
     }
 
-    //public void SpawnBoss(SC_SPAWN_BOSS _packet)
-    //{
-    //    if (bossList.ContainsKey(_packet.BOSSID))
-    //    {
-    //        return;
-    //    }
+    public void SpawnBoss(SC_CREATE_MONSTER _packet)
+    {
+        if (bossList.ContainsKey(_packet.AiID))
+        {
+            return;
+        }
 
-    //    Vector3 spawnPosition = new Vector3(_packet.PosX, 0f, _packet.PosY);
-    //    GameObject go = Object.Instantiate(BossPrefab, spawnPosition, Quaternion.identity);
-    //    Boss boss = Util.GetOrAddComponent<Boss>(go);
-    //    boss.myBossID = _packet.BossID;
-    //    AddBoss(_packet.PlayerID, boss);
-    //}
+        Vector3 spawnPosition = new Vector3(_packet.MonsterPos.PosX, _packet.MonsterPos.PosY, _packet.MonsterPos.PosZ);
+        GameObject go = Object.Instantiate(BossPrefab, spawnPosition, Quaternion.identity);
+        Boss boss = Util.GetOrAddComponent<Boss>(go);
+        boss.bossID = _packet.AiID;
+        AddBoss(_packet.AiID, boss);
+    }
 
     public Boss GetBoss(uint id)
     {

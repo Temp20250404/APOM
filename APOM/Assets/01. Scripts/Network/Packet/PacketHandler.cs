@@ -175,4 +175,13 @@ class PacketHandler
             boss.bossAI.ChaseTarget(target);
         }
     }
+
+    public static void SC_BossCreate(PacketSession session, IMessage packet)
+    {
+        SC_CREATE_MONSTER bossCreatePacket = packet as SC_CREATE_MONSTER;
+
+        // TODO: SC_BossPhase 패킷 처리 로직을 여기에 구현
+
+        Managers.BossManager.SpawnBoss(bossCreatePacket);
+    }
 }

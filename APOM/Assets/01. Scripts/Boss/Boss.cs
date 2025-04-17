@@ -16,6 +16,8 @@ public class Boss : MonoBehaviour
     public BossStateMachine StateMachine { get { return stateMachine; } }
     public BossAI bossAI;
 
+    public uint bossID { get; set; } = 0;
+
     [Header("Condition")]
     [SerializeField] private float currentHealth;
 
