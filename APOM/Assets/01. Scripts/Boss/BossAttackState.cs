@@ -11,20 +11,20 @@ public class BossAttackState : BossBaseState
     public override void StateEnter()
     {
         // 가만히 있는 상태이기 때문에 Speed를 0으로
-        stateMachine.MoveMentSpeedModifier = 0f;
+        //stateMachine.MoveMentSpeedModifier = 0f;
         base.StateEnter();
         // Animation 전환
-        int rand = Random.Range(0, 2);
-        if (rand == 0)
-        {
+        //int rand = Random.Range(0, 2);
+        //if (rand == 0)
+        //{
             StartAnimation(stateMachine.Boss.BossAnimationData.Attack_ParameterHash);
             StartAnimation(stateMachine.Boss.BossAnimationData.AttackParameterHash);
-        }
-        else
-        {
-            StartAnimation(stateMachine.Boss.BossAnimationData.Attack_ParameterHash);
-            StartAnimation(stateMachine.Boss.BossAnimationData.Attack2ParameterHash);
-        }
+        //}
+        //else
+        //{
+            //StartAnimation(stateMachine.Boss.BossAnimationData.Attack_ParameterHash);
+            //StartAnimation(stateMachine.Boss.BossAnimationData.Attack2ParameterHash);
+        //}
 
     }
 
@@ -35,22 +35,22 @@ public class BossAttackState : BossBaseState
 
         StopAnimation(stateMachine.Boss.BossAnimationData.Attack_ParameterHash);
         StopAnimation(stateMachine.Boss.BossAnimationData.AttackParameterHash);
-        StopAnimation(stateMachine.Boss.BossAnimationData.Attack2ParameterHash);
+        //StopAnimation(stateMachine.Boss.BossAnimationData.Attack2ParameterHash);
     }
 
     public override void StateUpdate()
     {
         base.StateUpdate();
 
-        AnimatorStateInfo animStateInfo = stateMachine.Boss.Anim.GetCurrentAnimatorStateInfo(0);
-        if (animStateInfo.IsTag("Attack") && animStateInfo.normalizedTime >= 0.8f)
-        {
-            stateMachine.ChangeState(BossState.Idle);
-        }
+        //AnimatorStateInfo animStateInfo = stateMachine.Boss.Anim.GetCurrentAnimatorStateInfo(0);
+        //if (animStateInfo.IsTag("Attack") && animStateInfo.normalizedTime >= 0.8f)
+        //{
+        //    stateMachine.ChangeState(BossState.Idle);
+        //}
 
-        if (!stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData))
-        {
-            stateMachine.ChangeState(BossState.Chase);
-        }
+        //if (!stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData))
+        //{
+        //    stateMachine.ChangeState(BossState.Chase);
+        //}
     }
 }

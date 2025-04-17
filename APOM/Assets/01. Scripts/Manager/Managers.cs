@@ -25,6 +25,7 @@ public class Managers : Singleton<Managers>
     [field: SerializeField] private PlayerManager @player = new PlayerManager();
     [field: SerializeField] private NetworkManager network = new NetworkManager();
     [field: SerializeField] private PacketManager packet = new PacketManager();
+    [field: SerializeField] private BossManager bossManager = new BossManager();
 
     public static GameManager GameManager => Instance.gameManager;
     public static DataManager Data => Instance.data;
@@ -37,6 +38,7 @@ public class Managers : Singleton<Managers>
     public static PlayerManager Player => Instance.@player;
     public static NetworkManager Network => Instance.network;
     public static PacketManager Packet => Instance.packet;
+    public static BossManager BossManager => Instance.bossManager;
 
     protected override void Awake()
     {
@@ -55,14 +57,13 @@ public class Managers : Singleton<Managers>
     }
     private void Start()
     {
-        UI.ShowSceneUI<UI_Chat>();
-
-        UI.ShowPopupUI<UI_IDFind>();
-        UI.ShowPopupUI<UI_SignUp>();
         UI.ShowPopupUI<UI_Login>();
-        UI.ShowPopupUI<UI_PWFind>();
+        //UI.ShowPopupUI<UI_IDFind>();
+        //UI.ShowPopupUI<UI_SignUp>();
 
-        UI.ShowPopupUI<UI_Inventory>(); // ShowPopupUI<UI_PopupTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
+        //UI.ShowPopupUI<UI_PWFind>();
+
+        //UI.ShowPopupUI<UI_Inventory>(); // ShowPopupUI<UI_PopupTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
                                         //UI.ShowPopupUI<UI_PopupTest>(); // ShowPopupUI<UI_PopupTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
                                         //UI.ShowPopupUI<SkillPopupUI>(); 
 
@@ -86,6 +87,7 @@ public class Managers : Singleton<Managers>
         Player.Init();
         Network.Init();
         Packet.Init();
+        BossManager.Init();
     }
 
     public static void Clear()

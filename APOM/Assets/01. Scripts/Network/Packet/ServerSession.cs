@@ -74,7 +74,8 @@ public class ServerSession : PacketSession
         };
 
         CS_REGISTER_REQUEST ptk = new CS_REGISTER_REQUEST();
-        ptk.UserName = "Default_UserName";
+        ptk.UserName = "default";
+
         Managers.Network.Send(ptk);
     }
 

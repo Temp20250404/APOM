@@ -31,7 +31,7 @@ public class UIManager : IManager
 
     public UI_Scene _sceneUI = null;
 
-    private Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
+    public Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
     private List<UI_Follow> _followList = new List<UI_Follow>();
 
     public void Init()
@@ -140,6 +140,7 @@ public class UIManager : IManager
         popup.Init();
         _popupStack.Push(popup);
 
+
         switch (popup.popupType)
         {
             case PopupType.Login:
@@ -152,7 +153,8 @@ public class UIManager : IManager
                 go.transform.SetParent(_popupUIParent.transform, false);
                 break;
         }
-		return popup; 
+
+        return popup; 
     }
 
     public void ClosePopupUI(UI_Popup popup)
