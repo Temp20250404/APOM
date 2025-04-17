@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -21,7 +22,7 @@ public class BossAI : MonoBehaviour
     public LayerMask targetMask;
     public LayerMask obstacleMask; // 장애물 레이어 (벽 등)
 
-    private Vector3 wanderTarget;
+    //private Vector3 wanderTarget;
 
     private NavMeshAgent agent;
     public Transform target;
@@ -32,6 +33,8 @@ public class BossAI : MonoBehaviour
     private Vector3 _targetPosition;
     private bool _isMoving = false;
     private float _moveSpeed = 0f;
+
+   // private CharacterController characterController;
 
     //[Header("스킬 리스트")]
     //public List<BossSkill> skillList;
@@ -50,6 +53,7 @@ public class BossAI : MonoBehaviour
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        //characterController = GetComponent<CharacterController>();
         //InitializeSkillDictionary();
     }
 
@@ -176,33 +180,18 @@ public class BossAI : MonoBehaviour
 
     public void MoveSpeed(float Modifier)
     {
-        _moveSpeed = Modifier;
+        agent.speed = Modifier * 5;
     }
 
     // 플레이어 추적
     public void ChaseTarget(Vector3 target)
     {
-        _targetPosition = target;
-        _isMoving = true;
+        agent.SetDestination(target);
     }
 
     private void Update()
     {
-        if (_isMoving)
-        {
-            float step = _moveSpeed * Time.deltaTime;
-
-            // 타겟에 도달하면 멈춤
-            if (Vector3.Distance(transform.position, _targetPosition) <= step)
-            {
-                transform.position = _targetPosition;
-                _isMoving = false;
-            }
-            else
-            {
-                transform.position = Vector3.MoveTowards(transform.position, _targetPosition, step);
-            }
-        }
+        //transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _moveSpeed * Time.deltaTime);
     }
 
     //// 시각적으로 시야 범위를 확인하기 위한 Gizmo

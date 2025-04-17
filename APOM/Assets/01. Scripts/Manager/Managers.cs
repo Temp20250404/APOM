@@ -157,7 +157,7 @@ public class Managers : Singleton<Managers>
                 break;
             case SceneType.Game:
                 UI.ShowSceneUI<UI_Main>();
-                UI.ShowPopupUI<UI_Login>();
+                //UI.ShowPopupUI<UI_Login>();
                 break;
         }
     }

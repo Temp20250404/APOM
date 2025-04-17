@@ -205,7 +205,6 @@ class PacketHandler
 
         // TODO: SC_SpawnCharacter 패킷 처리 로직을 여기에 구현
         Managers.Player.SpawnPlayer(spawnCharacterPacket);
-
     }
 
     // SC_BOSS_PHASE 패킷을 처리하는 함수
@@ -217,16 +216,24 @@ class PacketHandler
 
         BossState state = (BossState)bossPhasePacket.BossState;
         Boss boss = Managers.BossManager.GetBoss(bossPhasePacket.BossID);
-        Vector3 target = new Vector3(bossPhasePacket.BossPos.PosX, bossPhasePacket.BossPos.PosY, bossPhasePacket.BossPos.PosZ);
+        Vector3 bossPos = new Vector3(bossPhasePacket.BossPos.PosX, bossPhasePacket.BossPos.PosY, bossPhasePacket.BossPos.PosZ);
+        Vector3 target = new Vector3(bossPhasePacket.TargetMovementPos.PosX, bossPhasePacket.TargetMovementPos.PosY, bossPhasePacket.TargetMovementPos.PosZ);
 
         if (boss != null)
         {
             boss.StateMachine.ChangeState(state);
-            boss.bossAI.MoveSpeed(bossPhasePacket.CurSpeed);
             boss.bossAI.ChaseTarget(target);
-            Debug.Log($"보스 {bossPhasePacket.BossID} 상태 변경: {state}");
-            Debug.Log($"보스 {bossPhasePacket.BossID} 위치 변경: {target}");
-            Debug.Log($"보스 {bossPhasePacket.BossID} 속도 변경: {bossPhasePacket.CurSpeed}");
+
+            if (state == BossState.Attack)
+            {
+                boss.bossAI.MoveSpeed(0f);
+                return;
+            }
+            boss.bossAI.MoveSpeed(bossPhasePacket.CurSpeed);
+
+            //Debug.Log($"보스 {bossPhasePacket.BossID} 상태 변경: {state}");
+            //Debug.Log($"보스 {bossPhasePacket.BossID} 위치 변경: {target}");
+            //Debug.Log($"보스 {bossPhasePacket.BossID} 속도 변경: {bossPhasePacket.CurSpeed}");
         }
     }
 }

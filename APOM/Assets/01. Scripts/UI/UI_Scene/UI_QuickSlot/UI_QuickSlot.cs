@@ -2,8 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UI_QuickSlot : UI_Scene
+public class UI_QuickSlot : UI_Base
 {
+    public override void Init()
+    {
+
+    }
+
     // Start is called before the first frame update
     void Start()
     {
