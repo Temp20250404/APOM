@@ -1,3 +1,4 @@
+using Game;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -19,7 +20,7 @@ public enum LoginType
 }
 public class UI_Login : UI_Popup
 {
-    private TextMeshProUGUI loginResultText;
+    public TextMeshProUGUI loginResultText;
     private TMP_InputField idInputField;
     private TMP_InputField pwInputField;
     private Button loginButton;
@@ -68,51 +69,73 @@ public class UI_Login : UI_Popup
         string id = idInputField.text;
         string pw = pwInputField.text;
 
-        int count = PlayerPrefs.GetInt("IDCount", 0);
-
-        for(int i = 0; i < count; i++)
+        if(string.IsNullOrEmpty(id) || string.IsNullOrEmpty(pw))
         {
-            string savedID = PlayerPrefs.GetString($"User_{i}_ID");
-            string savedPW = PlayerPrefs.GetString($"User_{i}_PW");
-
-            if (id == savedID && pw == savedPW)
-            {
-                loginResultText.text = "로그인 성공";
-                SceneManager.LoadScene("HMJScene");
-
-                TextEmpty(id);
-                return;
-            }
+            loginResultText.text = "ID 또는 비밀번호를 입력해 주세요";
+            return;
         }
 
-        CheckToggle();
-        loginResultText.text = "ID 또는 비밀번호가 틀렸습니다.";
-        idInputField.text = "";
-        pwInputField.text = "";
+        CS_LOGIN_REQUEST ptk = new CS_LOGIN_REQUEST();
+        ptk.Id = id;
+        ptk.Password = pw;
+        Managers.Network.Send(ptk);
+
+        CheckToggle(id);
+        //loginResultText.text = "ID 또는 비밀번호가 틀렸습니다.";
+        //idInputField.text = "";
+        //pwInputField.text = "";
+
+        //int count = PlayerPrefs.GetInt("IDCount", 0);
+
+        //for(int i = 0; i < count; i++)
+        //{
+        //    string savedID = PlayerPrefs.GetString($"User_{i}_ID");
+        //    string savedPW = PlayerPrefs.GetString($"User_{i}_PW");
+
+        //    if (id == savedID && pw == savedPW)
+        //    {
+        //        loginResultText.text = "로그인 성공";
+        //        SceneManager.LoadScene("HMJScene");
+
+        //        TextEmpty(id);
+        //        return;
+        //    }
+        //}
     }
 
-    public void TextEmpty(string id)
+    //public void TextEmpty(string id)
+    //{
+    //    if (idCheckToggle.isOn)
+    //    {
+    //        PlayerPrefs.SetInt("SaveIDToggle", 1);
+    //        PlayerPrefs.SetString("SavedID", id);
+    //        PlayerPrefs.Save();
+    //        pwInputField.text = "";
+    //    }
+    //    else
+    //    {
+    //        CheckToggle();
+    //        idInputField.text = "";
+    //        pwInputField.text = "";
+    //    }
+    //}
+
+    public void CheckToggle(string id)
     {
         if (idCheckToggle.isOn)
         {
             PlayerPrefs.SetInt("SaveIDToggle", 1);
             PlayerPrefs.SetString("SavedID", id);
             PlayerPrefs.Save();
-            pwInputField.text = "";
         }
         else
         {
-            CheckToggle();
-            idInputField.text = "";
-            pwInputField.text = "";
+            PlayerPrefs.DeleteKey("SavedID");
+            PlayerPrefs.DeleteKey("SaveIDToggle");
         }
-    }
 
-    public void CheckToggle()
-    {
-        if (idCheckToggle.isOn) return;
-        PlayerPrefs.DeleteKey("SavedID");
-        PlayerPrefs.DeleteKey("SaveIDToggle");
+        idInputField.text = "";
+        pwInputField.text = "";
     }
     public void GetID()
     {

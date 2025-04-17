@@ -3,6 +3,7 @@ using Google.Protobuf;
 using ServerCore;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 class PacketHandler
@@ -39,6 +40,23 @@ class PacketHandler
         SC_FIND_ID_RESPONSE findIdResponsePacket = packet as SC_FIND_ID_RESPONSE;
 
         // TODO: SC_FindIdResponse 패킷 처리 로직을 여기에 구현
+
+        UI_IDFind uI_IDFind = Managers.UI._popupStack.OfType<UI_IDFind>().FirstOrDefault();
+
+        if (findIdResponsePacket.Success)
+        {
+            if (uI_IDFind != null)
+            {
+                uI_IDFind.findResultText.text = $"ID: {findIdResponsePacket.Id}";
+            }
+        }
+        else
+        {
+            if (uI_IDFind != null)
+            {
+                uI_IDFind.findResultText.text = "등록된 ID가 없습니다.";
+            }
+        }
     }
 
     // SC_FIND_PW_RESPONSE 패킷을 처리하는 함수
@@ -47,6 +65,22 @@ class PacketHandler
         SC_FIND_PW_RESPONSE findPwResponsePacket = packet as SC_FIND_PW_RESPONSE;
 
         // TODO: SC_FindPwResponse 패킷 처리 로직을 여기에 구현
+
+        UI_PWFind uI_PWFind = Managers.UI._popupStack.OfType<UI_PWFind>().FirstOrDefault();
+        if (findPwResponsePacket.Success)
+        {
+            if (uI_PWFind != null)
+            {
+                uI_PWFind.findResultText.text = $"PW: {findPwResponsePacket.Id}";
+            }
+        }
+        else
+        {
+            if (uI_PWFind != null)
+            {
+                uI_PWFind.findResultText.text = "등록된 ID가 없습니다. \nID와 Email을 확인해주세요";
+            }
+        }
     }
 
     // SC_LOGIN_RESPONSE 패킷을 처리하는 함수
@@ -54,7 +88,24 @@ class PacketHandler
     {
         SC_LOGIN_RESPONSE loginResponsePacket = packet as SC_LOGIN_RESPONSE;
 
-        // TODO: SC_LoginResponse 패킷 처리 로직을 여기에 구현
+        // TODO: SC_LoginResponse 패킷 처리 로직을 여기에 구현\
+
+        UI_Login uI_Login = Managers.UI._popupStack.OfType<UI_Login>().FirstOrDefault();
+
+        if (loginResponsePacket.Success)
+        {
+            if (uI_Login != null)
+            {
+                uI_Login.loginResultText.text = "로그인 성공";
+            }
+        }
+        else
+        {
+            if (uI_Login != null)
+            {
+                uI_Login.loginResultText.text = loginResponsePacket.ErrorCode.ToString();
+            }
+        }
     }
 
     // SC_SIGNUP_RESPONSE 패킷을 처리하는 함수
@@ -63,6 +114,23 @@ class PacketHandler
         SC_SIGNUP_RESPONSE signupResponsePacket = packet as SC_SIGNUP_RESPONSE;
 
         // TODO: SC_SignupResponse 패킷 처리 로직을 여기에 구현
+
+        UI_SignUp uI_SignUp = Managers.UI._popupStack.OfType<UI_SignUp>().FirstOrDefault();
+
+        if (signupResponsePacket.Success)
+        {
+            if(uI_SignUp != null)
+            {
+                uI_SignUp.signUpResultText.text = "회원가입 성공";
+            }
+        }
+        else
+        {
+            if (uI_SignUp != null)
+            {
+                uI_SignUp.signUpResultText.text = signupResponsePacket.ErrorCode.ToString();
+            }
+        }
     }
 
     // SC_TRANSFER_CHARACTER_INFO 패킷을 처리하는 함수

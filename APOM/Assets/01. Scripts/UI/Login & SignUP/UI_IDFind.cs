@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Game;
 
 public enum IDFindType
 {
@@ -15,7 +16,7 @@ public class UI_IDFind : UI_Popup
 {
     private TMP_InputField emailInputField;
     private Button idFindButton;
-    private TextMeshProUGUI findResultText;
+    public TextMeshProUGUI findResultText;
     private Button exitButton;
 
     public override void Init()
@@ -45,41 +46,46 @@ public class UI_IDFind : UI_Popup
     public void OnClickIDFind()
     {
         string email = emailInputField.text;
-        string id = IsIDFind(email);
-
-        if (!string.IsNullOrEmpty(id))
-        {
-            findResultText.text = $"ID: {id}";
-        }
-        else
-        {
-            findResultText.text = "등록된 ID가 없습니다.";
-        }
+        //string id = IsIDFind(email);
 
         if (email == string.Empty)
         {
             findResultText.text = "Email 입력해 주세요";
+            return;
         }
 
+        CS_FIND_ID_REQUEST ptk = new CS_FIND_ID_REQUEST();
+        ptk.Email = email;
+
+        Managers.Network.Send(ptk);
+
+        //if (!string.IsNullOrEmpty(id))
+        //{
+        //    findResultText.text = $"ID: {id}";
+        //}
+        //else
+        //{
+        //    findResultText.text = "등록된 ID가 없습니다.";
+        //}
 
         TextEmpty();
     }
 
-    private string IsIDFind(string email)
-    {
-        int count = PlayerPrefs.GetInt("IDCount", 0);
+    //private string IsIDFind(string email)
+    //{
+    //    int count = PlayerPrefs.GetInt("IDCount", 0);
 
-        for (int i = 0; i < count; i++)
-        {
-            string existingEmail = PlayerPrefs.GetString($"User_{i}_Email", "");
+    //    for (int i = 0; i < count; i++)
+    //    {
+    //        string existingEmail = PlayerPrefs.GetString($"User_{i}_Email", "");
 
-            if (existingEmail == email)
-            {
-                return PlayerPrefs.GetString($"User_{i}_ID", ""); ;
-            }
-        }
-        return null;
-    }
+    //        if (existingEmail == email)
+    //        {
+    //            return PlayerPrefs.GetString($"User_{i}_ID", ""); ;
+    //        }
+    //    }
+    //    return null;
+    //}
 
     public override void ClosePopupUI()
     {

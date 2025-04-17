@@ -1,3 +1,4 @@
+using Game;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -18,7 +19,7 @@ public class UI_PWFind : UI_Popup
     private TMP_InputField idInputField;
     private TMP_InputField emailInputField;
     private Button pwFindButton;
-    private TextMeshProUGUI findResultText;
+    public TextMeshProUGUI findResultText;
     private Button exitButton;
 
     public override void Init()
@@ -50,41 +51,36 @@ public class UI_PWFind : UI_Popup
     {
         string id = idInputField.text;
         string email = emailInputField.text;
-        string pw = IsPWFind(id, email);
-
-        if (!string.IsNullOrEmpty(pw))
-        {
-            findResultText.text = $"PW: {pw}";
-        }
-        else
-        {
-            findResultText.text = "ID가 없습니다, \n ID와 Email을 확인해주세요.";
-        }
-
+        //string pw = IsPWFind(id, email);
         if (email == string.Empty || id == string.Empty)
         {
             findResultText.text = "ID와 Email을 입력해 주세요";
         }
 
+        CS_FIND_PW_REQUEST ptk = new CS_FIND_PW_REQUEST();
+        ptk.Pw = id;
+        ptk.Email = email;
+        Managers.Network.Send(ptk);
+
         TextEmpty();
     }
 
-    private string IsPWFind(string id, string email)
-    {
-        int count = PlayerPrefs.GetInt("IDCount", 0);
+    //private string IsPWFind(string id, string email)
+    //{
+    //    int count = PlayerPrefs.GetInt("IDCount", 0);
 
-        for (int i = 0; i < count; i++)
-        {
-            string existingEmail = PlayerPrefs.GetString($"User_{i}_Email", "");
-            string existingID = PlayerPrefs.GetString($"User_{i}_ID", "");
+    //    for (int i = 0; i < count; i++)
+    //    {
+    //        string existingEmail = PlayerPrefs.GetString($"User_{i}_Email", "");
+    //        string existingID = PlayerPrefs.GetString($"User_{i}_ID", "");
 
-            if (existingEmail == email && existingID == id)
-            {
-                return PlayerPrefs.GetString($"User_{i}_PW", ""); ;
-            }
-        }
-        return null;
-    }
+    //        if (existingEmail == email && existingID == id)
+    //        {
+    //            return PlayerPrefs.GetString($"User_{i}_PW", ""); ;
+    //        }
+    //    }
+    //    return null;
+    //}
 
     public void TextEmpty()
     {

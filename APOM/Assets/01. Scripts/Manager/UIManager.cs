@@ -31,7 +31,7 @@ public class UIManager : IManager
 
     public UI_Scene _sceneUI = null;
 
-    private Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
+    public Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
     private List<UI_Follow> _followList = new List<UI_Follow>();
 
     public void Init()

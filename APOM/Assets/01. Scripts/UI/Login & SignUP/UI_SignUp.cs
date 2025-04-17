@@ -1,3 +1,4 @@
+using Game;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -24,7 +25,7 @@ public class UI_SignUp : UI_Popup
     private TMP_InputField pwCheckInputField;
 
     private Button signUpButton;
-    private TextMeshProUGUI signUpResultText;
+    public TextMeshProUGUI signUpResultText;
 
     private Button exitButton;
 
@@ -61,52 +62,48 @@ public class UI_SignUp : UI_Popup
         string pw = pwInputField.text;
         string email = emailInputField.text;
 
-        if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(pw))
+        if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(pw) || string.IsNullOrEmpty(email))
         {
-            signUpResultText.text = "원하는 ID와 비밀번호를 입력하세요.";
+            signUpResultText.text = "원하는 ID와 Email, 비밀번호를 입력하세요.";
             return;
         }
 
-        if (IsIDDuplicated(id))
-        {
-            signUpResultText.text = "이미 존재하는 ID입니다.";
-            return;
-        }
+        //if (IsIDDuplicated(id))
+        //{
+        //    signUpResultText.text = "이미 존재하는 ID입니다.";
+        //    return;
+        //}
 
-        if (pwInputField.text != pwCheckInputField.text)
-        {
-            signUpResultText.text = "비밀번호가 일치하지 않습니다.";
-            return;
-        }
+        //if (pwInputField.text != pwCheckInputField.text)
+        //{
+        //    signUpResultText.text = "비밀번호가 일치하지 않습니다.";
+        //    return;
+        //}
 
-        int count = PlayerPrefs.GetInt("IDCount", 0);
-        PlayerPrefs.SetString($"User_{count}_ID", id);
-        PlayerPrefs.SetString($"User_{count}_PW", pw);
-        PlayerPrefs.SetString($"User_{count}_Email", email);
-        PlayerPrefs.SetInt("IDCount", count + 1);
-        PlayerPrefs.Save();
+        CS_SIGNUP_REQUEST ptk = new CS_SIGNUP_REQUEST();
+        ptk.Id = id;
+        ptk.Password = pw;
+        ptk.Email = email;
 
-        Debug.Log("회원가입 성공!");
-        signUpResultText.text = "회원가입 성공!";
-
+        Managers.Network.Send(ptk);
         TextEmpty();
     }
 
-    private bool IsIDDuplicated(string id)
-    {
-        int count = PlayerPrefs.GetInt("IDCount", 0);
+    //private bool IsIDDuplicated(string id)
+    //{
+    //    int count = PlayerPrefs.GetInt("IDCount", 0);
 
-        for(int i = 0; i < count; i++)
-        {
-            string existingID = PlayerPrefs.GetString($"User_{i}_ID", "");
+    //    for(int i = 0; i < count; i++)
+    //    {
+    //        string existingID = PlayerPrefs.GetString($"User_{i}_ID", "");
 
-            if (existingID == id)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
+    //        if (existingID == id)
+    //        {
+    //            return true;
+    //        }
+    //    }
+    //    return false;
+    //}
 
     public void TextEmpty()
     {

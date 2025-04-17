@@ -21,12 +21,14 @@ public enum EnemyState
 
 public enum BossState
 {
-    Idle,
-    Walk,
-    Chase,
-    Attack,
-    Skill1, Skill2, Skill3,
-    Die,
+    Idle = Game.BOSS_STATE.Idle,
+    Walk = Game.BOSS_STATE.Walk,
+    Chase = Game.BOSS_STATE.Chase,
+    Attack = Game.BOSS_STATE.Attack,
+    Skill1 = Game.BOSS_STATE.Skill1,
+    Skill2 = Game.BOSS_STATE.Skill2,
+    Skill3 = Game.BOSS_STATE.Skill3,
+    Die = Game.BOSS_STATE.Die,
 }
 
 public enum BossPhase
