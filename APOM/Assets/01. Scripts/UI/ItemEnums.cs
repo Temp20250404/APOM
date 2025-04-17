@@ -6,13 +6,13 @@ using UnityEngine;
 [Serializable]
 public class ItemEnums : MonoBehaviour // 아이템 분류용
 {
-    public enum ItemCategory
+    /*public enum ItemCategory
     {
         Weapon,
         Expendable,
         Ingredient,
         Etc
-    }
+    }*/
 
     public enum ItemSubType
     {
