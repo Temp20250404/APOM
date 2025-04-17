@@ -175,6 +175,7 @@ class PacketHandler
             boss.StateMachine.ChangeState(state);
             boss.bossAI.MoveSpeed(bossPhasePacket.CurSpeed);
             boss.bossAI.ChaseTarget(target);
+            Debug.Log($"보스 {bossPhasePacket.BossID} 상태 변경: {state}");
         }
     }
 }

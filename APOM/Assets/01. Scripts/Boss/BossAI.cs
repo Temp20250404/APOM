@@ -178,11 +178,10 @@ public class BossAI : MonoBehaviour
     // 플레이어 추적
     public void ChaseTarget(Vector3 target)
     {
-        if (target != null)
-        {
+
             //타겟 위치로 네브메시 에이전트가 이동
             agent.SetDestination(target);
-        }
+
     }
 
     //// 시각적으로 시야 범위를 확인하기 위한 Gizmo
