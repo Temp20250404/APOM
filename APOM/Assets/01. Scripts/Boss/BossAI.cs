@@ -180,7 +180,7 @@ public class BossAI : MonoBehaviour
 
     public void MoveSpeed(float Modifier)
     {
-        agent.speed = Modifier * 5;
+        agent.speed = Modifier * 3.1f;
     }
 
     // 플레이어 추적
