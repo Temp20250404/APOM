@@ -10,7 +10,7 @@ public class PlayerIdleState : PlayerDefaultState
 
     public override void StateEnter()
     {
-        Debug.Log("Idle State");
+        Debug.Log($"ID : {stateMachine.player.playerID} : Idle State");
         stateMachine.movementSpeedModifier = 0f;
         stateMachine.movementInput = Vector2.zero;
         stateMachine.player.inputController.isMoving = false;

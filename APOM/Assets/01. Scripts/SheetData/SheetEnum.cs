@@ -10,6 +10,14 @@ public enum EBOOL
     TRUE
 }
 
+[UGS(typeof(EITEMTYPE))]
+public enum EITEMTYPE
+{
+    NONE,
+    EQUIPMENT,
+    CONSUMABLE
+}
+
 [UGS(typeof(EGRADE))]
 public enum EGRADE
 {
@@ -38,12 +46,13 @@ public enum EEQUIPTYPE
 public enum EJOB
 {
     NONE,
+    WHOLE,
     ARCHER,
     LANCER
 }
 
-[UGS(typeof(ECTYPE))]
-public enum ECTYPE
+[UGS(typeof(ECONSUMTYPE))]
+public enum ECONSUMTYPE
 {
     NONE,
     HP,

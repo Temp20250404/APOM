@@ -92,7 +92,7 @@ public class PlayerBaseState : IState
     {
         float radian = stateMachine.player.inputController.recivePacketRotation * Mathf.Deg2Rad;
         
-        Debug.Log($"reciveRotation ID {stateMachine.player.playerID} : {stateMachine.player.inputController.recivePacketRotation}");
+        //Debug.Log($"reciveRotation ID {stateMachine.player.playerID} : {stateMachine.player.inputController.recivePacketRotation}");
         
         Vector3 forward = new Vector3(Mathf.Sin(radian), 0f, Mathf.Cos(radian));
         Vector3 right = new Vector3(Mathf.Cos(radian), 0f, -Mathf.Sin(radian));
@@ -160,6 +160,10 @@ public class PlayerBaseState : IState
     {
         PlayerController input = stateMachine.player.inputController;
         input.playerActions.Move.canceled -= OnMoveCanceled;
+    }
+
+    protected virtual void OnMovePerformed(InputAction.CallbackContext context)
+    {
     }
 
     protected virtual void OnMoveCanceled(InputAction.CallbackContext context)

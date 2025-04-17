@@ -11,7 +11,7 @@ public class PlayerMoveState : PlayerDefaultState
 
     public override void StateEnter()
     {
-        Debug.Log("Move State");
+        Debug.Log($"ID : {stateMachine.player.playerID} : Move State");
         stateMachine.movementSpeedModifier = defaultData.moveSpeedModifier;
 
         base.StateEnter();
@@ -44,7 +44,7 @@ public class PlayerMoveState : PlayerDefaultState
     {
         if (!stateMachine.player.inputController.isMoving)
         {
-            stateMachine.ChangeState(stateMachine.idleState);
+            //stateMachine.ChangeState(stateMachine.idleState);
         }
     }
 }

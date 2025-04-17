@@ -76,21 +76,23 @@ public class PlayerController : MonoBehaviour
         KeyInput();
         CheckMoveRotationChange();
 
-        rotationChanged = (ucurrentKeyInputs != 0) && (currentRotation != previousRotation);
-
-        if (ucurrentKeyInputs != previousKeyInputs || rotationChanged)
-        {
-            previousKeyInputs = ucurrentKeyInputs;
-            previousRotation = currentRotation;
-            Util.SendPacket<CS_KEYINFO>(packet =>
-            {
-                packet.KeyInfo = sendKeyInputs;
-                packet.CameraYaw = sendPacketRotation;
-            });
-        }
+        
 
         if (isMainPlayer)
         {
+            rotationChanged = (ucurrentKeyInputs != 0) && (currentRotation != previousRotation);
+
+            if (ucurrentKeyInputs != previousKeyInputs || rotationChanged)
+            {
+                previousKeyInputs = ucurrentKeyInputs;
+                previousRotation = currentRotation;
+                Util.SendPacket<CS_KEYINFO>(packet =>
+                {
+                    packet.KeyInfo = sendKeyInputs;
+                    packet.CameraYaw = sendPacketRotation;
+                });
+            }
+
             Util.SendPacket<CS_POSITION_SYNC>(packet =>
             {
                 packet.PosX = transform.position.x;
@@ -177,7 +179,7 @@ public class PlayerController : MonoBehaviour
     public void ReciveTransformSyncPosition(SC_POSITION_SYNC packet)
     {
         TargetSyncPosition = new Vector3(packet.PosX, 0f, packet.PosY);
-        Debug.Log($"Recive Position Packet {packet.PlayerID} : {packet.PosX}, {packet.PosY}");
+        //Debug.Log($"Recive Position Packet {packet.PlayerID} : {packet.PosX}, {packet.PosY}");
     }
 
     public void ReciveTransformSyncRotation(SC_POSITION_SYNC packet)
