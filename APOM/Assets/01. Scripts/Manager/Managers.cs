@@ -57,15 +57,15 @@ public class Managers : Singleton<Managers>
     }
     private void Start()
     {
-        UI.ShowPopupUI<UI_Login>();
-        //UI.ShowPopupUI<UI_IDFind>();
-        //UI.ShowPopupUI<UI_SignUp>();
-
-        //UI.ShowPopupUI<UI_PWFind>();
+        //UI.ShowPopupUI<UI_Login>();
+        UI.ShowSceneUI<UI_Condition>();
+        UI.ShowSceneUI<UI_MiniMap>();
+        UI.ShowSceneUI<UI_QuickSlot>();
+        UI.ShowSceneUI<UI_Chat>();
 
         //UI.ShowPopupUI<UI_Inventory>(); // ShowPopupUI<UI_PopupTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
-                                        //UI.ShowPopupUI<UI_PopupTest>(); // ShowPopupUI<UI_PopupTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
-                                        //UI.ShowPopupUI<SkillPopupUI>(); 
+        //UI.ShowPopupUI<UI_PopupTest>(); // ShowPopupUI<UI_PopupTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
+        //UI.ShowPopupUI<SkillPopupUI>(); 
 
         // 서버에 4초를 주기로 생존 여부를 알리는 패킷을 보내는 기능
         StartCoroutine(SendTimeoutPackt()); 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UI_Scene : UI_Base
 {
-    public UI_Chat UI_Chat { get; private set; } = null;
+    public UI_Chat UI_Chat = null;
     public override void Init()
     {
         Managers.UI.SetCanvas(gameObject, true);
