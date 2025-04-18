@@ -2110,10 +2110,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4067752572120065193}
   - component: {fileID: 671295582237461543}
-  - component: {fileID: 6530584879302290185}
   - component: {fileID: 7807379593457248071}
   - component: {fileID: 3329417173526020203}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2163,29 +2162,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
---- !u!136 &6530584879302290185
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7700766915224855703}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.4
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &7807379593457248071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2216,6 +2192,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMainPlayer: 0
+  isMoving: 0
   reciveKeyInputs: 0000000000
   recivePacketRotation: 0
 --- !u!1 &7860200344137225048

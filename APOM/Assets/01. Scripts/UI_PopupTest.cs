@@ -26,6 +26,7 @@ public class UI_Inventory : UI_Popup
     {
         base.Init();
 
+        popupType = PopupType.Inventory;
         Bind<Button>(typeof(Buttons));
 
         // 버튼 클릭 시 닫기

@@ -5,28 +5,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UGS;
+using Unity.Jobs;
 using UnityEngine;
-
-[UGS(typeof(EItemType))]
-public enum EItemType
-{
-    consume,
-    equip,
-}
 
 public class DataManager : IManager
 {
-    public ItemData itemData { get; private set; } = new ItemData();
+    //public EquipmentData equipmentData { get; private set; } = new EquipmentData();
 
     public void Init()
     {
         UnityGoogleSheet.LoadAllData();
-        EItemType itemType;
-        if (ItemData.GetDictionary().TryGetValue(3, out APOM_Data.Item_Data foundItem))
-        {
-            itemType = foundItem.itemType;
-        }
-        SaveAllSheetDataToSDD("Test");
+        //EGRADE grades;
+        //if (EquipmentData.GetDictionary().TryGetValue(3, out APOM_Data.Equipment_Data foundItem))
+        //{
+        //    grades = foundItem.grade;
+        //}
+        //SaveAllSheetDataToSDD("EnhancementRate_Data");
         Debug.Log("DataManager Initialized");
     }
     public void Clear()
@@ -61,7 +55,7 @@ public class DataManager : IManager
 
         foreach (var type in sheetTypes)
         {
-            // GetDictionary() 정적 메서드를 찾습니다.
+            // GetDictionary() 메서드를 찾음
             MethodInfo getDictMethod = type.GetMethod("GetDictionary", BindingFlags.Public | BindingFlags.Static);
 
             if (getDictMethod == null)

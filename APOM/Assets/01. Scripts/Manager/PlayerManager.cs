@@ -34,7 +34,7 @@ public class PlayerManager : IManager
         {
             return;
         }
-        Vector3 spawnPosition = new Vector3(_packet.PosX, 0f, _packet.PosY);
+        Vector3 spawnPosition = new Vector3(_packet.PlayerPos.PosX, 0f, _packet.PlayerPos.PosY);
         GameObject go = Object.Instantiate(playerprefab, spawnPosition, Quaternion.identity);
         Player player = Util.GetOrAddComponent<Player>(go);
         player.playerID = _packet.PlayerID;
@@ -60,7 +60,7 @@ public class PlayerManager : IManager
         if (loginPlayerList.TryGetValue(_id, out Player _player))
         {
             loginPlayerList.Remove(_id);
-            GameObject.Destroy(_player);
+            GameObject.Destroy(_player.gameObject);
 
             Debug.Log($"플레이어 {_id} 삭제 성공");
         }
