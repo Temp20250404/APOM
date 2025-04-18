@@ -5,6 +5,7 @@ using System.Collections;
 using System.Runtime.InteropServices;
 using UGS;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public interface IManager
 {
@@ -12,6 +13,11 @@ public interface IManager
     void Clear();
 }
 
+public enum SceneType
+{
+    Title,
+    Game,
+}
 public class Managers : Singleton<Managers>
 {
     [field: SerializeField] private GameManager gameManager = new GameManager();
@@ -25,6 +31,7 @@ public class Managers : Singleton<Managers>
     [field: SerializeField] private PlayerManager @player = new PlayerManager();
     [field: SerializeField] private NetworkManager network = new NetworkManager();
     [field: SerializeField] private PacketManager packet = new PacketManager();
+    [field: SerializeField] private BossManager bossManager = new BossManager();
 
     public static GameManager GameManager => Instance.gameManager;
     public static DataManager Data => Instance.data;
@@ -37,6 +44,7 @@ public class Managers : Singleton<Managers>
     public static PlayerManager Player => Instance.@player;
     public static NetworkManager Network => Instance.network;
     public static PacketManager Packet => Instance.packet;
+    public static BossManager BossManager => Instance.bossManager;
 
     protected override void Awake()
     {
@@ -51,20 +59,22 @@ public class Managers : Singleton<Managers>
         Application.targetFrameRate = 60;   // 최대 프레임 60으로 조정
         JobQueue.Push(() => { });           // 잡큐 enq 시작
 
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
         Init();
+
     }
     private void Start()
     {
-        UI.ShowSceneUI<UI_Chat>();
+        // 초기 타이틀 씬이라면 로그인 UI만 보여주기
+        //SetupUI(SceneType.Title);
 
-        UI.ShowPopupUI<UI_IDFind>();
-        UI.ShowPopupUI<UI_SignUp>();
-        UI.ShowPopupUI<UI_Login>();
-        UI.ShowPopupUI<UI_PWFind>();
+        //UI.ShowPopupUI<UI_Login>();
 
-        UI.ShowPopupUI<UI_Inventory>(); // ShowPopupUI<UI_PopupTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
-                                        //UI.ShowPopupUI<UI_PopupTest>(); // ShowPopupUI<UI_PopupTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
-                                        //UI.ShowPopupUI<SkillPopupUI>(); 
+        //UI.ShowSceneUI<UI_Main>();
+        //UI.ShowPopupUI<UI_Inventory>(); // ShowPopupUI<UI_PopupTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
+        //UI.ShowPopupUI<UI_PopupTest>(); // ShowPopupUI<UI_PopupTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
+        //UI.ShowPopupUI<SkillPopupUI>(); 
 
         // 서버에 4초를 주기로 생존 여부를 알리는 패킷을 보내는 기능
         StartCoroutine(SendTimeoutPackt()); 
@@ -86,6 +96,7 @@ public class Managers : Singleton<Managers>
         Player.Init();
         Network.Init();
         Packet.Init();
+        BossManager.Init();
     }
 
     public static void Clear()
@@ -119,5 +130,35 @@ public class Managers : Singleton<Managers>
     public void PacketTestMethed(SC_POSITION_SYNC _packet)
     {
         Debug.Log($"ID: {_packet.PlayerID} - {_packet.PosX}, {_packet.PosY}, {_packet.CameraYaw}");
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 씬 이름 기준으로 UI 자동 설정
+        switch (scene.name)
+        {
+            case "Title":
+                SetupUI(SceneType.Title);
+                break;
+            case "HMJScene":
+                SetupUI(SceneType.Game);
+                break;
+        }
+    }
+
+    public void SetupUI(SceneType sceneType)
+    {
+        UI.ClearSceneUI();
+
+        switch (sceneType)
+        {
+            case SceneType.Title:
+                UI.ShowPopupUI<UI_Login>();
+                break;
+            case SceneType.Game:
+                UI.ShowSceneUI<UI_Main>();
+                //UI.ShowPopupUI<UI_Login>();
+                break;
+        }
     }
 }

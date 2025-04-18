@@ -38,7 +38,7 @@ public enum ChatType
     Count    // enum 길이 파악용
 }
 
-public class UI_Chat : UI_Scene, IPointerDownHandler, IDragHandler, IPointerUpHandler
+public class UI_Chat : UI_Base, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     // 프리팹: 채팅 메시지를 하나씩 출력할 오브젝트 (SubItem/ChatCell)
     private GameObject ChatCell;
@@ -102,8 +102,6 @@ public class UI_Chat : UI_Scene, IPointerDownHandler, IDragHandler, IPointerUpHa
     /// </summary>
     public override void Init()
     {
-        base.Init(); // UI_Scene Init 호출
-
         Bind<GameObject>(typeof(ChatObjects)); // GameObject만 바인딩하고, 컴포넌트는 직접 꺼냄
 
         ChatCell = Managers.Resource.Load<GameObject>("UI/Scene/ChatCell"); // 채팅 셀 프리팹 로드

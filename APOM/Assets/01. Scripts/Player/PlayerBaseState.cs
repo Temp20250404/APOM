@@ -34,7 +34,7 @@ public class PlayerBaseState : IState
             Vector3 delta = lerpPosition - stateMachine.player.transform.position;
             stateMachine.player.characterController.Move(delta);
             
-            Debug.Log($"{stateMachine.player.playerID}: {stateMachine.player.inputController.TargetSyncPosition}, {stateMachine.player.inputController.TargetSyncRotation}");
+            //Debug.Log($"{stateMachine.player.playerID}: {stateMachine.player.inputController.TargetSyncPosition}, {stateMachine.player.inputController.TargetSyncRotation}");
         }
     }
 
@@ -86,7 +86,7 @@ public class PlayerBaseState : IState
     protected Vector3 GetMovementDirection()
     {
         float radian = stateMachine.player.inputController.recivePacketRotation * Mathf.Deg2Rad;
-        Debug.Log($"reciveRotation ID {stateMachine.player.playerID} : {stateMachine.player.inputController.recivePacketRotation}");
+        //Debug.Log($"reciveRotation ID {stateMachine.player.playerID} : {stateMachine.player.inputController.recivePacketRotation}");
         Vector3 forward = new Vector3(Mathf.Sin(radian), 0f, Mathf.Cos(radian));
         Vector3 right = new Vector3(Mathf.Cos(radian), 0f, -Mathf.Sin(radian));
 

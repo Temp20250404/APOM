@@ -3,7 +3,9 @@ using Google.Protobuf;
 using ServerCore;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 class PacketHandler
 {
@@ -14,10 +16,10 @@ class PacketHandler
 
         // TODO: SC_Chat 패킷 처리 로직을 여기에 구현
 
-        
+
         //UI_CHAT을 찾아서 ServerByChat 함수를 호출
         //Managers.UI._sceneUI.UI_Chat.ServerByChat(chatPacket.Message, chatPacket.Channel);
-        Managers.UI._sceneUI.UI_Chat.ServerByChat(chatPacket.Message, chatPacket.Channel);
+        (Managers.UI._sceneUI as IChat)?.ReceiveChat(chatPacket.Message, chatPacket.Channel);
     }
 
     // SC_KEYINFO 패킷을 처리하는 함수
@@ -39,6 +41,23 @@ class PacketHandler
         SC_FIND_ID_RESPONSE findIdResponsePacket = packet as SC_FIND_ID_RESPONSE;
 
         // TODO: SC_FindIdResponse 패킷 처리 로직을 여기에 구현
+
+        UI_IDFind uI_IDFind = Managers.UI._popupStack.OfType<UI_IDFind>().FirstOrDefault();
+
+        if (findIdResponsePacket.Success)
+        {
+            if (uI_IDFind != null)
+            {
+                uI_IDFind.findResultText.text = $"ID: {findIdResponsePacket.Id}";
+            }
+        }
+        else
+        {
+            if (uI_IDFind != null)
+            {
+                uI_IDFind.findResultText.text = "등록된 ID가 없습니다.";
+            }
+        }
     }
 
     // SC_FIND_PW_RESPONSE 패킷을 처리하는 함수
@@ -47,6 +66,22 @@ class PacketHandler
         SC_FIND_PW_RESPONSE findPwResponsePacket = packet as SC_FIND_PW_RESPONSE;
 
         // TODO: SC_FindPwResponse 패킷 처리 로직을 여기에 구현
+
+        UI_PWFind uI_PWFind = Managers.UI._popupStack.OfType<UI_PWFind>().FirstOrDefault();
+        if (findPwResponsePacket.Success)
+        {
+            if (uI_PWFind != null)
+            {
+                uI_PWFind.findResultText.text = $"PW: {findPwResponsePacket.Id}";
+            }
+        }
+        else
+        {
+            if (uI_PWFind != null)
+            {
+                uI_PWFind.findResultText.text = "등록된 ID가 없습니다. \nID와 Email을 확인해주세요";
+            }
+        }
     }
 
     // SC_LOGIN_RESPONSE 패킷을 처리하는 함수
@@ -54,7 +89,25 @@ class PacketHandler
     {
         SC_LOGIN_RESPONSE loginResponsePacket = packet as SC_LOGIN_RESPONSE;
 
-        // TODO: SC_LoginResponse 패킷 처리 로직을 여기에 구현
+        // TODO: SC_LoginResponse 패킷 처리 로직을 여기에 구현\
+
+        UI_Login uI_Login = Managers.UI._popupStack.OfType<UI_Login>().FirstOrDefault();
+
+        if (loginResponsePacket.Success)
+        {
+            if (uI_Login != null)
+            {
+                uI_Login.loginResultText.text = "로그인 성공";
+                SceneManager.LoadScene("HMJScene");
+            }
+        }
+        else
+        {
+            if (uI_Login != null)
+            {
+                uI_Login.loginResultText.text = loginResponsePacket.ErrorCode.ToString();
+            }
+        }
     }
 
     // SC_SIGNUP_RESPONSE 패킷을 처리하는 함수
@@ -63,6 +116,23 @@ class PacketHandler
         SC_SIGNUP_RESPONSE signupResponsePacket = packet as SC_SIGNUP_RESPONSE;
 
         // TODO: SC_SignupResponse 패킷 처리 로직을 여기에 구현
+
+        UI_SignUp uI_SignUp = Managers.UI._popupStack.OfType<UI_SignUp>().FirstOrDefault();
+
+        if (signupResponsePacket.Success)
+        {
+            if(uI_SignUp != null)
+            {
+                uI_SignUp.signUpResultText.text = "회원가입 성공";
+            }
+        }
+        else
+        {
+            if (uI_SignUp != null)
+            {
+                uI_SignUp.signUpResultText.text = signupResponsePacket.ErrorCode.ToString();
+            }
+        }
     }
 
     // SC_TRANSFER_CHARACTER_INFO 패킷을 처리하는 함수
@@ -79,6 +149,8 @@ class PacketHandler
         SC_CREATE_MONSTER createMonsterPacket = packet as SC_CREATE_MONSTER;
 
         // TODO: SC_CreateMonster 패킷 처리 로직을 여기에 구현
+
+        Managers.BossManager.SpawnBoss(createMonsterPacket);
     }
 
     // SC_PLAYER_ATTACK 패킷을 처리하는 함수
@@ -133,7 +205,6 @@ class PacketHandler
 
         // TODO: SC_SpawnCharacter 패킷 처리 로직을 여기에 구현
         Managers.Player.SpawnPlayer(spawnCharacterPacket);
-
     }
 
     // SC_BOSS_PHASE 패킷을 처리하는 함수
@@ -142,5 +213,27 @@ class PacketHandler
         SC_BOSS_PHASE bossPhasePacket = packet as SC_BOSS_PHASE;
 
         // TODO: SC_BossPhase 패킷 처리 로직을 여기에 구현
+
+        BossState state = (BossState)bossPhasePacket.BossState;
+        Boss boss = Managers.BossManager.GetBoss(bossPhasePacket.BossID);
+        Vector3 bossPos = new Vector3(bossPhasePacket.BossPos.PosX, bossPhasePacket.BossPos.PosY, bossPhasePacket.BossPos.PosZ);
+        Vector3 target = new Vector3(bossPhasePacket.TargetMovementPos.PosX, bossPhasePacket.TargetMovementPos.PosY, bossPhasePacket.TargetMovementPos.PosZ);
+
+        if (boss != null)
+        {
+            boss.StateMachine.ChangeState(state);
+            boss.bossAI.ChaseTarget(target);
+
+            if (state == BossState.Attack)
+            {
+                boss.bossAI.MoveSpeed(0f);
+                return;
+            }
+            boss.bossAI.MoveSpeed(bossPhasePacket.CurSpeed);
+
+            //Debug.Log($"보스 {bossPhasePacket.BossID} 상태 변경: {state}");
+            //Debug.Log($"보스 {bossPhasePacket.BossID} 위치 변경: {target}");
+            //Debug.Log($"보스 {bossPhasePacket.BossID} 속도 변경: {bossPhasePacket.CurSpeed}");
+        }
     }
 }

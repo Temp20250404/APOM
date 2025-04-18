@@ -24,9 +24,9 @@ public class BossConditions
 [CreateAssetMenu(fileName = "Boss", menuName = "Boss/Boss")]
 public class BossData : ScriptableObject
 {
-    [field: SerializeField] public float PlayerChasingRange { get; private set; } = 10f;
+    //[field: SerializeField] public float PlayerChasingRange { get; private set; } = 10f;
     [field: SerializeField] public float AttackRange { get; private set; } = 1.5f;
     [field: SerializeField] public BossGroundData GroundData { get; private set; }
-    [field: SerializeField] public int Damage { get; private set; }
+    //[field: SerializeField] public int Damage { get; private set; }
     [field: SerializeField] public  BossConditions BossConditions{ get; private set; }
 }

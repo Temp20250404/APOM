@@ -13,7 +13,7 @@ public class BossChaseState : BossBaseState
     public override void StateEnter()
     {
         // BaseSpeed에 곱해줄 값 세팅
-        stateMachine.MoveMentSpeedModifier = groundData.ChasingSpeedModifier * groundData.BaseSpeed;
+        //stateMachine.MoveMentSpeedModifier = groundData.ChasingSpeedModifier * groundData.BaseSpeed;
         base.StateEnter();
         StartAnimation(stateMachine.Boss.BossAnimationData.ChasingParameterHash);
     }
@@ -29,19 +29,21 @@ public class BossChaseState : BossBaseState
     {
         base.StateUpdate();
 
-        if (stateMachine.Boss.bossAI.DetectTargets())
-        {
-            stateMachine.Boss.bossAI.ChaseTarget();
-        }
-        else
-        {
-            stateMachine.Boss.bossAI.target = null;
-            stateMachine.ChangeState(BossState.Idle);
-        }
+        //stateMachine.Boss.bossAI.ChaseTarget();
 
-        if (stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData))
-        {
-            stateMachine.ChangeState(BossState.Attack);
-        }
+        //if (stateMachine.Boss.bossAI.DetectTargets())
+        //{
+        //    stateMachine.Boss.bossAI.ChaseTarget();
+        //}
+        //else
+        //{
+        //    stateMachine.Boss.bossAI.target = null;
+        //    stateMachine.ChangeState(BossState.Idle);
+        //}
+
+        //if (stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData))
+        //{
+        //    stateMachine.ChangeState(BossState.Attack);
+        //}
     }
 }

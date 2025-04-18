@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour
                 packet.PosY = transform.position.z;
                 packet.CameraYaw = transform.rotation.eulerAngles.y;
             });
-            Debug.Log($"Send Position Packet: {transform.position.x}, {transform.position.z}, {transform.rotation.eulerAngles.y}");
+            //Debug.Log($"Send Position Packet: {transform.position.x}, {transform.position.z}, {transform.rotation.eulerAngles.y}");
         }
     }
 
