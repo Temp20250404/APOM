@@ -29,6 +29,7 @@ public class Boss : MonoBehaviour
         BossAnimationData.Initialize();
         //bossAI.InitSkillsAnimationHash(BossAnimationData);
         stateMachine = new BossStateMachine(this);
+        
     }
     void Start()
     {

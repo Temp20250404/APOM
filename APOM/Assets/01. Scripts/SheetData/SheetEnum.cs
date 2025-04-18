@@ -1,4 +1,5 @@
 using GoogleSheet.Core.Type;
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,27 @@ public enum EITEMTYPE
 {
     NONE,
     EQUIPMENT,
-    CONSUMABLE
+    CONSUMABLE,
+    ENHANCEMENTMATERIAL
+}
+
+[UGS(typeof(ESUBTYPE))]
+public enum ESUBTYPE
+{
+    NONE,
+    WEAPON,
+    HELMET,
+    ARMOR,
+    GLOVES,
+    SHOES,
+    PENDANT,
+    EARRING,
+    RING,
+    HP,
+    MP,
+    BUFF,
+    GEAR,
+    ACCESSORY
 }
 
 [UGS(typeof(EGRADE))]
@@ -26,20 +47,6 @@ public enum EGRADE
     UNCOMMON,
     RARE,
     LEGENDARY
-}
-
-[UGS(typeof(EEQUIPTYPE))]
-public enum EEQUIPTYPE
-{
-    NONE,
-    WEAPON,
-    HELMET,
-    ARMOR,
-    GLOVES,
-    SHOES,
-    PENDANT,
-    EARRING,
-    RING
 }
 
 [UGS(typeof(EJOB))]

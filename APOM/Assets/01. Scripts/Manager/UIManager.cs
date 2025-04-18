@@ -39,18 +39,21 @@ public class UIManager : IManager
         if (_sceneUIParent == null)
         {
             GameObject sceneParent = new GameObject("SceneUIParent");
+            sceneParent.transform.SetParent(Managers.Instance.transform);
             _sceneUIParent = sceneParent.transform;
         }
 
         if (_popupUIParent == null)
         {
             GameObject popupParent = new GameObject("PopupUIParent");
+            popupParent.transform.SetParent(Managers.Instance.transform);
             _popupUIParent = popupParent.transform;
         }
 
         if (_followUIParent == null)
         {
             GameObject followParent = new GameObject("FollowUIParent");
+            followParent.transform.SetParent(Managers.Instance.transform);
             _followUIParent = followParent.transform;
         }
 
@@ -110,26 +113,57 @@ public class UIManager : IManager
         GameObject go = Managers.Resource.Instantiate($"UI/Scene/{name}");
         go.transform.SetParent(_sceneUIParent.transform, false);
  
-        return Util.GetOrAddComponent<T>(go); 
+        return Util.GetOrAddComponent<T>(go);
     }
 
-	public T ShowSceneUI<T>(string name = null) where T : UI_Scene
-	{
-		if (string.IsNullOrEmpty(name))
-			name = typeof(T).Name;
+    public T ShowSceneUI<T>(string name = null) where T : UI_Scene
+    {
+        if (string.IsNullOrEmpty(name))
+            name = typeof(T).Name;
 
-		GameObject go = Managers.Resource.Instantiate($"UI/Scene/{name}");
-		T sceneUI = Util.GetOrAddComponent<T>(go);
-        _sceneUI = sceneUI; 
-  
-		go.transform.SetParent(_sceneUIParent.transform, false);
+        GameObject go = new GameObject($"{name}");
+        T sceneUI = Util.GetOrAddComponent<T>(go);
+        _sceneUI = sceneUI;
+
+        go.transform.SetParent(_sceneUIParent.transform, false);
 
         sceneUI.Init();
 
-        return sceneUI; 
-	}
+        return sceneUI;
+    }
 
-	public T ShowPopupUI<T>(string name = null) where T : UI_Popup
+    public T ShowSceneChildUI<T>(Transform parent = null, string name = null) where T : UI_Base
+    {
+        if (string.IsNullOrEmpty(name))
+            name = typeof(T).Name;
+
+        GameObject go = Managers.Resource.Instantiate($"UI/Scene/{name}");
+
+        if (parent != null)
+            go.transform.SetParent(parent, false);
+
+        T component = Util.GetOrAddComponent<T>(go);
+
+        //  여기서 바로 캔버스 설정 + Init
+        Managers.UI.SetCanvas(go);
+        component.Init();
+
+        return component;
+    }
+
+    public void ClearSceneUI()
+    {
+        if (_sceneUI != null)
+        {
+            GameObject.Destroy(_sceneUI.gameObject);
+            _sceneUI = null;
+        }
+
+        CloseAllPopupUI();
+        _order = 10;
+    }
+
+    public T ShowPopupUI<T>(string name = null) where T : UI_Popup
     {
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
@@ -154,8 +188,10 @@ public class UIManager : IManager
                 break;
         }
 
-        return popup; 
+        return popup;
     }
+
+
 
     public void ClosePopupUI(UI_Popup popup)
     {

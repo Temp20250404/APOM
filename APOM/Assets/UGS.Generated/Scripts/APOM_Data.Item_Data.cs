@@ -57,14 +57,12 @@ namespace APOM_Data
 /* Fields. */
 
 		public System.Int32 index;
-		public System.String itemname;
+		public System.String itemName;
 		public EITEMTYPE itemType;
-		public EEQUIPTYPE equipmenttype;
-		public ECONSUMTYPE consumableType;
+		public ESUBTYPE itemSubType;
 		public EGRADE grade;
 		public EJOB jobLimit;
 		public System.Int32 isUpgradable;
-		public System.Int32 currentUpgrade;
 		public System.Int32 maxUpgradeLevel;
 		public System.String description;
 		public System.String iconPath;
@@ -76,7 +74,6 @@ namespace APOM_Data
 		public System.Single itemconsumablecooldown;
 		public System.Single castTime;
 		public System.Int32 isPercent;
-		public System.Int32 isStackable;
 		public System.Int32 maxStack;
 		public System.Int32 sellPrice;
 		public System.Int32 buyPrice;

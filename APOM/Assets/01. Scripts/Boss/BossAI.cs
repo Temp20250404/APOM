@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -16,18 +17,26 @@ using SEnum = System.Enum;
 //}
 public class BossAI : MonoBehaviour
 {
-    [Header("타겟 탐지 설정")]
-    public float viewDistance = 10f;
-    public LayerMask targetMask;
-    public LayerMask obstacleMask; // 장애물 레이어 (벽 등)
+    //[Header("타겟 탐지 설정")]
+    //public float viewDistance = 10f;
+    //public LayerMask targetMask;
+    //public LayerMask obstacleMask; // 장애물 레이어 (벽 등)
 
-    private Vector3 wanderTarget;
+    //private Vector3 wanderTarget;
 
     private NavMeshAgent agent;
-    public Transform target;
+    //public Transform target;
 
-    [Header("페이즈 설정")]
-    public BossPhase phase = BossPhase.Phase1;
+    //[Header("페이즈 설정")]
+    //public BossPhase phase = BossPhase.Phase1;
+
+    private Vector3 _targetPosition;
+    //private float _moveSpeed = 0f;
+
+    private BoxCollider colliders;
+    private Animator anim;
+
+    // private CharacterController characterController;
 
     //[Header("스킬 리스트")]
     //public List<BossSkill> skillList;
@@ -46,7 +55,10 @@ public class BossAI : MonoBehaviour
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        //InitializeSkillDictionary();
+        colliders = GetComponent<BoxCollider>();
+        anim = GetComponentInChildren<Animator>();
+        //characterController = GetComponent<CharacterController>();
+        //InitializeSkillDictionary();\
     }
 
     //private void InitializeSkillDictionary()
@@ -172,17 +184,33 @@ public class BossAI : MonoBehaviour
 
     public void MoveSpeed(float Modifier)
     {
-        agent.speed = Modifier;
+        agent.speed = Modifier * 3.1f;
     }
 
     // 플레이어 추적
     public void ChaseTarget(Vector3 target)
     {
-
-            //타겟 위치로 네브메시 에이전트가 이동
-            agent.SetDestination(target);
-
+        agent.SetDestination(target);
     }
+
+    public void ColliderOnEnable(float delay)
+    {
+        colliders.enabled = true;
+        Debug.Log("Collider On");
+        StartCoroutine(DisableCollider(delay));
+    }
+
+    IEnumerator DisableCollider(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        colliders.enabled = false;
+        Debug.Log("Collider Off");
+    }
+
+    //private void Update()
+    //{
+        //transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _moveSpeed * Time.deltaTime);
+    //}
 
     //// 시각적으로 시야 범위를 확인하기 위한 Gizmo
     //void OnDrawGizmosSelected()
