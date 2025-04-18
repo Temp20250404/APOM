@@ -3,31 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerDefaultState : PlayerBaseState
+public class PlayerMoveState : PlayerDefaultState
 {
     private Coroutine delayedIdleCoroutine = null;
 
-    public PlayerDefaultState(PlayerStateMachine playerStateMachine) : base(playerStateMachine)
+    public PlayerMoveState(PlayerStateMachine playerStateMachine) : base(playerStateMachine)
     {
     }
 
     public override void StateEnter()
     {
+        Debug.Log($"ID : {stateMachine.player.playerID} : Move State");
+        stateMachine.movementSpeedModifier = defaultData.moveSpeedModifier;
+
         base.StateEnter();
-        StartAnimation(stateMachine.player.animationData.defaultParameterHash);
+        StartAnimation(stateMachine.player.animationData.moveParameterHash);
     }
 
     public override void StateUpdate()
     {
         base.StateUpdate();
-
-        Move();
+        CheckMove();
     }
 
     public override void StateExit()
     {
         base.StateExit();
-        StopAnimation(stateMachine.player.animationData.defaultParameterHash);
+        StopAnimation(stateMachine.player.animationData.moveParameterHash);
     }
 
     public override void StateHandleInput()
@@ -50,27 +52,23 @@ public class PlayerDefaultState : PlayerBaseState
         }
     }
 
-    protected override void OnMoveCanceled(InputAction.CallbackContext context)
+    private void CheckMove()
     {
-        //if (stateMachine.movementInput == Vector2.zero)
-        //{
-        //    return;
-        //}
-        if (stateMachine.player.inputController.isMainPlayer)
+        if (!stateMachine.player.inputController.isMoving)
         {
-            stateMachine.ChangeState(stateMachine.idleState);
+            if (stateMachine.player.inputController.isMainPlayer)
+            {
+                stateMachine.ChangeState(stateMachine.idleState);
+            }
+            else
+            {
+                StartDelayedChangeIdleState();
+            }
         }
-        else
-        {
-            StartDelayedChangeIdleState();
-        }
-
-        base.OnMoveCanceled(context);
     }
-
     private void StartDelayedChangeIdleState()
     {
-        if (delayedIdleCoroutine != null) 
+        if (delayedIdleCoroutine != null)
             return;
 
         delayedIdleCoroutine = stateMachine.player.inputController.StartCoroutine(CDelayedChangeIdleState());

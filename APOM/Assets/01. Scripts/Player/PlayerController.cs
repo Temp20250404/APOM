@@ -13,6 +13,7 @@ public enum EKEYINPUT
     S = 2,
     D = 3,
     SPACE,
+    LCLICK,
     END
 }
 
