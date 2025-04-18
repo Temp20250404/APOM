@@ -10,11 +10,12 @@ using UnityEngine;
 
 public class DataManager : IManager
 {
-    //public EquipmentData equipmentData { get; private set; } = new EquipmentData();
+    public ItemData itemData { get; private set; } = new ItemData();
 
     public void Init()
     {
         UnityGoogleSheet.LoadAllData();
+
         //EGRADE grades;
         //if (EquipmentData.GetDictionary().TryGetValue(3, out APOM_Data.Equipment_Data foundItem))
         //{
