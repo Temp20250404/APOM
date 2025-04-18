@@ -32,6 +32,7 @@ public class Managers : Singleton<Managers>
     [field: SerializeField] private NetworkManager network = new NetworkManager();
     [field: SerializeField] private PacketManager packet = new PacketManager();
     [field: SerializeField] private BossManager bossManager = new BossManager();
+    [field: SerializeField] private PlayerDataManager playerData = new PlayerDataManager();
 
     public static GameManager GameManager => Instance.gameManager;
     public static DataManager Data => Instance.data;
@@ -45,6 +46,7 @@ public class Managers : Singleton<Managers>
     public static NetworkManager Network => Instance.network;
     public static PacketManager Packet => Instance.packet;
     public static BossManager BossManager => Instance.bossManager;
+    public static PlayerDataManager PlayerData => Instance.playerData;
 
     protected override void Awake()
     {
