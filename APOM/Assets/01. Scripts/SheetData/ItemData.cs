@@ -1,3 +1,4 @@
+using APOM_Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,7 @@ public class ItemData : APOM_Data.Item_Data
     public Dictionary<int, ItemData> GetEquipmentDataDictionary()
     {
         Dictionary<int, ItemData> EquipmentDictionary = new Dictionary<int, ItemData>();
-        //ItemData.GetDictionary().TryGetValue(1, out ItemData foundItem);
+        ItemData.GetDictionary().TryGetValue(1, out Item_Data foundItem);
 
         return EquipmentDictionary;
     }

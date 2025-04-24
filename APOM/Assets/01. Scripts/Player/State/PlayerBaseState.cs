@@ -104,6 +104,22 @@ public class PlayerBaseState : IState
         return forward * stateMachine.movementInput.y + right * stateMachine.movementInput.x;
     }
 
+    protected Vector3 GetCameraDirection()
+    {
+        float radian = stateMachine.player.inputController.recivePacketRotation * Mathf.Deg2Rad;
+        //Debug.Log($"reciveRotation ID {stateMachine.player.playerID} : {stateMachine.player.inputController.recivePacketRotation}");
+        Vector3 forward = new Vector3(Mathf.Sin(radian), 0f, Mathf.Cos(radian));
+        Vector3 right = new Vector3(Mathf.Cos(radian), 0f, -Mathf.Sin(radian));
+
+        forward.y = 0;
+        right.y = 0;
+
+        forward.Normalize();
+        right.Normalize();
+
+        return forward;
+    }
+
     private float GetMovementSpeed()
     {
         float moveSpeed = stateMachine.movementSpeed * stateMachine.movementSpeedModifier;
@@ -148,6 +164,11 @@ public class PlayerBaseState : IState
         return input;
     }
 
+    protected bool GetInputNoramlAttack()
+    {
+        return stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.LCLICK];
+    }
+
     protected virtual void AddInputActionsCallbacks()
     {
         PlayerController input = stateMachine.player.inputController;
@@ -166,10 +187,13 @@ public class PlayerBaseState : IState
 
     protected virtual void OnMoveCanceled(InputAction.CallbackContext context)
     {
-        //stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.W] = false;
-        //stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.S] = false;
-        //stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.A] = false;
-        //stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.D] = false;
-        //stateMachine.movementInput = Vector2.zero;
+    }
+
+    protected virtual void OnNormalAttackPerformed(InputAction.CallbackContext context)
+    {
+    }
+
+    protected virtual void OnNormalAttackCanceled(InputAction.CallbackContext context)
+    {
     }
 }

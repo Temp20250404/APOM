@@ -3,29 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerDefaultState : PlayerBaseState
+public class PlayerGroundState : PlayerBaseState
 {
-    public PlayerDefaultState(PlayerStateMachine playerStateMachine) : base(playerStateMachine)
+    public PlayerGroundState(PlayerStateMachine playerStateMachine) : base(playerStateMachine)
     {
     }
 
     public override void StateEnter()
     {
         base.StateEnter();
-        StartAnimation(stateMachine.player.animationData.defaultParameterHash);
+        StartAnimation(stateMachine.player.animationData.groundParameterHash);
     }
 
     public override void StateUpdate()
     {
         base.StateUpdate();
-
-        Move();
     }
 
     public override void StateExit()
     {
         base.StateExit();
-        StopAnimation(stateMachine.player.animationData.defaultParameterHash);
+        StopAnimation(stateMachine.player.animationData.groundParameterHash);
     }
 
     public override void StateHandleInput()
@@ -50,3 +48,4 @@ public class PlayerDefaultState : PlayerBaseState
         base.OnMoveCanceled(context);
     }
 }
+

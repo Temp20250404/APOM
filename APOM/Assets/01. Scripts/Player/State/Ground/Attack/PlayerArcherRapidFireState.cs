@@ -2,28 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAttackState : PlayerBaseState
+public class PlayerArcherRapidFireState : PlayerAttackState
 {
-    public PlayerAttackState(PlayerStateMachine playerStateMachine) : base(playerStateMachine)
+    public PlayerArcherRapidFireState(PlayerStateMachine playerStateMachine) : base(playerStateMachine)
     {
     }
     public override void StateEnter()
     {
+        Debug.Log($"ID : {stateMachine.player.playerID} : NormalAttack State");
+
         base.StateEnter();
-        StartAnimation(stateMachine.player.animationData.defaultParameterHash);
+        StartAnimation(stateMachine.player.animationData.skill5ParameterHash);
     }
 
     public override void StateUpdate()
     {
         base.StateUpdate();
-
-        Move();
     }
 
     public override void StateExit()
     {
         base.StateExit();
-        StopAnimation(stateMachine.player.animationData.defaultParameterHash);
+        StopAnimation(stateMachine.player.animationData.skill5ParameterHash);
     }
 
     public override void StateHandleInput()

@@ -8,12 +8,18 @@ using UnityEngine;
 
 public enum EKEYINPUT
 {
-    W = 0,
-    A = 1,
-    S = 2,
-    D = 3,
+    W,
+    A,
+    S,
+    D,
     SPACE,
     LCLICK,
+    RCLICK,
+    NUM1,
+    NUM2,
+    NUM3,
+    NUM4,
+    NUM5,
     END
 }
 
@@ -61,7 +67,6 @@ public class PlayerController : MonoBehaviour
         {
             pivot = _pivot.gameObject;
         }
-        
     }
 
     private void Start()
@@ -77,13 +82,12 @@ public class PlayerController : MonoBehaviour
         KeyInput();
         CheckMoveRotationChange();
 
-        
-
         if (isMainPlayer)
         {
             rotationChanged = (ucurrentKeyInputs != 0) && (currentRotation != previousRotation);
 
-            if (ucurrentKeyInputs != previousKeyInputs || rotationChanged)
+            if (ucurrentKeyInputs != previousKeyInputs || 
+                rotationChanged)
             {
                 previousKeyInputs = ucurrentKeyInputs;
                 previousRotation = currentRotation;
@@ -128,10 +132,23 @@ public class PlayerController : MonoBehaviour
         currentKeyInputs[(int)EKEYINPUT.S] = Input.GetKey(KeyCode.S);
         currentKeyInputs[(int)EKEYINPUT.A] = Input.GetKey(KeyCode.A);
         currentKeyInputs[(int)EKEYINPUT.D] = Input.GetKey(KeyCode.D);
+        currentKeyInputs[(int)EKEYINPUT.SPACE] = Input.GetKey(KeyCode.Space);
+
+        currentKeyInputs[(int)EKEYINPUT.LCLICK] = Input.GetKey(KeyCode.Mouse0);
+        currentKeyInputs[(int)EKEYINPUT.RCLICK] = Input.GetKey(KeyCode.Mouse1);
+
+        currentKeyInputs[(int)EKEYINPUT.NUM1] = Input.GetKey(KeyCode.Alpha1);
+        currentKeyInputs[(int)EKEYINPUT.NUM2] = Input.GetKey(KeyCode.Alpha2);
+        currentKeyInputs[(int)EKEYINPUT.NUM3] = Input.GetKey(KeyCode.Alpha3);
+        currentKeyInputs[(int)EKEYINPUT.NUM4] = Input.GetKey(KeyCode.Alpha4);
+        currentKeyInputs[(int)EKEYINPUT.NUM5] = Input.GetKey(KeyCode.Alpha5);
 
         ucurrentKeyInputs = ChnageToUint(currentKeyInputs);
 
-        if (ucurrentKeyInputs != 0)
+        if (currentKeyInputs[(int)EKEYINPUT.W] != false ||
+            currentKeyInputs[(int)EKEYINPUT.S] != false ||
+            currentKeyInputs[(int)EKEYINPUT.A] != false ||
+            currentKeyInputs[(int)EKEYINPUT.D] != false)
         {
             isMoving = true;
         }
