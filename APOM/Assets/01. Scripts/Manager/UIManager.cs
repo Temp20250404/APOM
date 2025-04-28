@@ -7,14 +7,6 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
-public enum ItemCategory // 아이템 카테고리
-{
-    Weapon,
-    Expendable,
-    Ingredient,
-    Etc
-}
-
 [Serializable]
 public class UIManager : IManager
 {
@@ -73,7 +65,7 @@ public class UIManager : IManager
   
     public void Clear()
     {
-        
+
     }
 
     public void SetCanvas(GameObject go, bool sort = true)
@@ -93,17 +85,17 @@ public class UIManager : IManager
         }
     }
 
-	public T MakeSubItem<T>(Transform parent = null, string name = null) where T : UI_Base
-	{
-		if (string.IsNullOrEmpty(name))
-			name = typeof(T).Name;
+    public T MakeSubItem<T>(Transform parent = null, string name = null) where T : UI_Base
+    {
+        if (string.IsNullOrEmpty(name))
+            name = typeof(T).Name;
 
-		GameObject go = Managers.Resource.Instantiate($"UI/SubItem/{name}");
-		if (parent != null)
-			go.transform.SetParent(parent);
+        GameObject go = Managers.Resource.Instantiate($"UI/SubItem/{name}");
+        if (parent != null)
+            go.transform.SetParent(parent);
 
-		return Util.GetOrAddComponent<T>(go);
-	}
+        return Util.GetOrAddComponent<T>(go);
+    }
 
     public T ShowSceneChildUI<T>(string name = null) where T : UI_Scene
     {
@@ -121,6 +113,7 @@ public class UIManager : IManager
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
 
+        //GameObject go = Managers.Resource.Instantiate($"UI/Scene/{name}");
         GameObject go = new GameObject($"{name}");
         T sceneUI = Util.GetOrAddComponent<T>(go);
         _sceneUI = sceneUI;
@@ -195,8 +188,8 @@ public class UIManager : IManager
 
     public void ClosePopupUI(UI_Popup popup)
     {
-		if (_popupStack.Count == 0)
-			return;
+        if (_popupStack.Count == 0)
+            return;
 
         if (_popupStack.Peek() != popup)
         {
@@ -212,9 +205,9 @@ public class UIManager : IManager
             return;
 
         UI_Popup popup = _popupStack.Pop();
-        GameObject.Destroy(popup.gameObject); 
+        GameObject.Destroy(popup.gameObject);
         popup = null;
-        _order--; 
+        _order--;
     }
 
     public void CloseAllPopupUI()
@@ -262,35 +255,5 @@ public class UIManager : IManager
                 _order--;
             }
         }
-    }
-
-    private int GetSortPriority(ItemCategory category) // 정렬 우선순위 지정
-    {
-        switch (category)
-        {
-            case ItemCategory.Weapon: return 0;
-            case ItemCategory.Expendable: return 1;
-            case ItemCategory.Ingredient: return 2;
-            case ItemCategory.Etc: return 3;
-            default: return 4;
-        }   
-    }
-
-    public void SortInventory(List<Item> inventory)
-    {
-        inventory.Sort(CompareItems);
-        Debug.Log("인벤토리 정렬 끝");
-        //UpdateInventoryUI();
-    }
-
-    private int CompareItems(Item a, Item b)
-    {
-        int orderA = GetSortPriority(a.category);
-        int orderB = GetSortPriority(b.category);
-
-        if (orderA != orderB)
-            return orderA.CompareTo(orderB);
-
-        return string.Compare(a.name, b.name);
     }
 }

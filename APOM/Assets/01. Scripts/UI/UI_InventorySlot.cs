@@ -1,19 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class UI_InventorySlot : MonoBehaviour
+public class UI_InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] private Image icon;
-    [SerializeField] private Text nameText;
+    private Item item;
+    private UI_InventoryTooltip tooltip;
 
-    public void SetSlot(Item item)
+    public void Init(Item itemData, UI_InventoryTooltip tooltipRef) 
     {
-        if (icon != null)
-            icon.sprite = item.icon;
+        item = itemData;
+        tooltip = tooltipRef;
+    }
 
-        if (nameText != null)
-            nameText.text = item.name;
+    public void OnPointerEnterHandler(PointerEventData eventData)
+    {
+        tooltip.ShowTooltip(item, Input.mousePosition);
+    }
+
+    public void OnpointerExit(PointerEventData eventData)
+    {
+        tooltip.HideTooltip();
     }
 }

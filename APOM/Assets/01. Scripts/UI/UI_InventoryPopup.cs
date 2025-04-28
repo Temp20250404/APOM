@@ -14,7 +14,7 @@ public class UI_InventoryPopup : MonoBehaviour
     {
         sortButton.onClick.AddListener(() =>
         {
-            ItemManager.Instance.SortInventory();
+            //UI_Inventory.Instance.SortInventory();
             RefreshUI();
         });
 
@@ -33,10 +33,10 @@ public class UI_InventoryPopup : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        foreach (var item in ItemManager.Instance.Items)
+       // foreach (var item in ItemManager.Instance.Items)
         {
             var slot = Instantiate(itemSlotPrefab, gridParent).GetComponent<UI_InventorySlot>();
-            slot.SetSlot(item);
+            //slot.SetSlot(item);
         }
     }
 }
