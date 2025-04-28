@@ -11,6 +11,7 @@ using UnityEngine;
 public class DataManager : IManager
 {
     public ItemData itemData { get; private set; } = new ItemData();
+    public ColliderData colliderData { get; private set; } = new ColliderData();
 
     public void Init()
     {

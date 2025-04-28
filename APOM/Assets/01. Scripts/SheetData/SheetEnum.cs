@@ -66,3 +66,11 @@ public enum ECONSUMTYPE
     MP,
     BUFF
 }
+
+[UGS(typeof(ECollidertype))]
+public enum ECollidertype
+{
+    Box,
+    Sphere,
+    Capsule
+}
