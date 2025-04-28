@@ -2703,21 +2703,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2241bc23776e8448ba460cf4f131d14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sliderMaster: {fileID: 3777500897024501777}
-  inputMaster: {fileID: 0}
-  sliderBGM: {fileID: 0}
-  sliderSFX: {fileID: 0}
-  sliderCombat: {fileID: 0}
+  masterSlider: {fileID: 0}
+  bgmSlider: {fileID: 0}
+  sfxSlider: {fileID: 0}
+  uiSlider: {fileID: 0}
+  masterPercentText: {fileID: 0}
+  bgmPercentText: {fileID: 0}
+  sfxPercentText: {fileID: 0}
+  uiPercentText: {fileID: 0}
   muteToggle: {fileID: 0}
-  VideoButton: {fileID: 0}
-  AudioButton: {fileID: 0}
   applyButton: {fileID: 0}
-  resetButton: {fileID: 0}
   confirmButton: {fileID: 0}
-  closeButton: {fileID: 0}
-  Panel: {fileID: 0}
-  AudioPopup: {fileID: 0}
-  VideoPopup: {fileID: 0}
+  resetButton: {fileID: 0}
+  inventoryKey: 105
+  equipmentKey: 112
+  skill1MouseButton: 0
+  skill2MouseButton: 1
+  inventoryPrefab: {fileID: 0}
+  equipmentPrefab: {fileID: 0}
+  canvasTransform: {fileID: 0}
+  inventoryKeyButton: {fileID: 0}
+  inventoryKeyText: {fileID: 0}
+  equipmentKeyButton: {fileID: 0}
+  equipmentKeyText: {fileID: 0}
 --- !u!1 &2086157144697457929
 GameObject:
   m_ObjectHideFlags: 0
@@ -3945,7 +3953,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0.0008466786}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2961155010793870065

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static ItemEnums;
 
 public enum ItemCategory
 {
@@ -32,7 +31,7 @@ public class Item : UI_Popup // 아이템 정보
 
     public ItemCategory category; // 장비 소모품 강화재료 기타
 
-    public EquipmentType? subType; // 장비일 경우만 사용
+    public EquipmentType? subType; // Equipment일 경우만 사용
 
     public int price; // 가격
     public int id; // 아이템 고유 아이디
