@@ -223,14 +223,7 @@ class PacketHandler
         {
             boss.StateMachine.ChangeState(state);
             boss.bossAI.ChaseTarget(target);
-
-            if (state == BossState.Attack)
-            {
-                boss.bossAI.MoveSpeed(0f);
-                return;
-            }
             boss.bossAI.MoveSpeed(bossPhasePacket.CurSpeed);
-
             //Debug.Log($"보스 {bossPhasePacket.BossID} 상태 변경: {state}");
             //Debug.Log($"보스 {bossPhasePacket.BossID} 위치 변경: {target}");
             //Debug.Log($"보스 {bossPhasePacket.BossID} 속도 변경: {bossPhasePacket.CurSpeed}");

@@ -55,4 +55,9 @@ public class Player : MonoBehaviour
     {
         stateMachine.StatePhysicsUpdate();
     }
+
+    public void OnAttackFinished()
+    {
+        stateMachine.ChangeState(stateMachine.idleState);
+    }
 }
