@@ -2,22 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum MiniMapType
+{
+    MiniMapCamera,
+}
 public class UI_MiniMap : UI_Base
 {
+    public Player player;
+    private Camera miniMapCamera;
     public override void Init()
     {
-
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
         
+    }
+    private void Start()
+    {
+        Bind<Camera>(typeof(MiniMapType));
+        miniMapCamera = Get<Camera>((int)(MiniMapType.MiniMapCamera));
+
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
-        
+        if (player == null)
+            return;
+        Vector3 playerPos = player.transform.position;
+        playerPos.y = 10.0f;
+        miniMapCamera.transform.position = playerPos;
     }
 }
