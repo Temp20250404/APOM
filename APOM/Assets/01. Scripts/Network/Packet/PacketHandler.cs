@@ -72,7 +72,7 @@ class PacketHandler
         {
             if (uI_PWFind != null)
             {
-                uI_PWFind.findResultText.text = $"PW: {findPwResponsePacket.Id}";
+                uI_PWFind.findResultText.text = $"PW: {findPwResponsePacket.Pw}";
             }
         }
         else
@@ -110,6 +110,22 @@ class PacketHandler
         }
     }
 
+    // SC_REQUEST_ITEM_INFO 패킷을 처리하는 함수
+    public static void SC_RequestItemInfo(PacketSession session, IMessage packet)
+    {
+        SC_REQUEST_ITEM_INFO requestItemInfoPacket = packet as SC_REQUEST_ITEM_INFO;
+
+        // TODO: SC_RequestItemInfo 패킷 처리 로직을 여기에 구현
+    }
+
+    // SC_RESPONSE_CHARACTER_INFO 패킷을 처리하는 함수
+    public static void SC_ResponseCharacterInfo(PacketSession session, IMessage packet)
+    {
+        SC_RESPONSE_CHARACTER_INFO responseCharacterInfoPacket = packet as SC_RESPONSE_CHARACTER_INFO;
+
+        // TODO: SC_ResponseCharacterInfo 패킷 처리 로직을 여기에 구현
+    }
+
     // SC_SIGNUP_RESPONSE 패킷을 처리하는 함수
     public static void SC_SignupResponse(PacketSession session, IMessage packet)
     {
@@ -133,14 +149,6 @@ class PacketHandler
                 uI_SignUp.signUpResultText.text = signupResponsePacket.ErrorCode.ToString();
             }
         }
-    }
-
-    // SC_TRANSFER_CHARACTER_INFO 패킷을 처리하는 함수
-    public static void SC_TransferCharacterInfo(PacketSession session, IMessage packet)
-    {
-        SC_TRANSFER_CHARACTER_INFO transferCharacterInfoPacket = packet as SC_TRANSFER_CHARACTER_INFO;
-
-        // TODO: SC_TransferCharacterInfo 패킷 처리 로직을 여기에 구현
     }
 
     // SC_CREATE_MONSTER 패킷을 처리하는 함수
@@ -228,5 +236,13 @@ class PacketHandler
             //Debug.Log($"보스 {bossPhasePacket.BossID} 위치 변경: {target}");
             //Debug.Log($"보스 {bossPhasePacket.BossID} 속도 변경: {bossPhasePacket.CurSpeed}");
         }
+    }
+
+    // SC_TEST_PACKET 패킷을 처리하는 함수
+    public static void SC_TestPacket(PacketSession session, IMessage packet)
+    {
+        SC_TEST_PACKET testPacketPacket = packet as SC_TEST_PACKET;
+
+        // TODO: SC_TestPacket 패킷 처리 로직을 여기에 구현
     }
 }
