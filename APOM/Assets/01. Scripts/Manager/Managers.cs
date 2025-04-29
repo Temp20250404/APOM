@@ -72,7 +72,7 @@ public class Managers : Singleton<Managers>
         //UI.ShowPopupUI<UI_Login>();
 
         //UI.ShowSceneUI<UI_Main>();
-        UI.ShowPopupUI<UI_Inventory>(); // ShowPopupUI<UI_PopupTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
+        //UI.ShowPopupUI<UI_Inventory>(); // ShowPopupUI<UI_PopupTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
         //UI.ShowPopupUI<UI_PopupTest>(); // ShowPopupUI<UI_PopupTest>("여기에 class의 명이 아닌 Prefab의 이름을 넣을 수 있음")
         //UI.ShowPopupUI<SkillPopupUI>(); 
 
