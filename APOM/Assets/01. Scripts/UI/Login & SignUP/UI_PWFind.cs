@@ -58,7 +58,7 @@ public class UI_PWFind : UI_Popup
         }
 
         CS_FIND_PW_REQUEST ptk = new CS_FIND_PW_REQUEST();
-        ptk.Pw = id;
+        ptk.Id = id;
         ptk.Email = email;
         Managers.Network.Send(ptk);
 
