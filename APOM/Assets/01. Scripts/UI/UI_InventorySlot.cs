@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UI_InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class UI_InventorySlot : MonoBehaviour//, IPointerEnterHandler, IPointerExitHandler
 {
     private Item item;
     private UI_InventoryTooltip tooltip;
