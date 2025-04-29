@@ -153,10 +153,10 @@ public class Managers : Singleton<Managers>
         switch (sceneType)
         {
             case SceneType.Title:
-                UI.ShowPopupUI<UI_Login>();
                 break;
             case SceneType.Game:
                 UI.ShowSceneUI<UI_Main>();
+                UI.ShowPopupUI<UI_BossCondition>();
                 //UI.ShowPopupUI<UI_Login>();
                 break;
         }
