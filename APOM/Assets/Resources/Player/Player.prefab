@@ -2270,6 +2270,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc32648ccc206a74796dc08eede53e57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  arrowSpawnPoints:
+  - {fileID: 4690165816610087113}
+  - {fileID: 6177856785720657747}
+  - {fileID: 7051026599042062796}
+  arrowPrefab: {fileID: 4504219294475791479, guid: ed623ec7f3d32874ba3e18c9b34dad94, type: 3}
 --- !u!1 &7057311041763260203
 GameObject:
   m_ObjectHideFlags: 0
@@ -2744,6 +2749,12 @@ MonoBehaviour:
     moveParameterName: Move
     attackParameterName: '@Attack'
     normalAttackParameterName: NormalAttack
+    dodgeParameterName: Dodge
+    skill1ParameterName: Skill1
+    skill2ParameterName: Skill2
+    skill3ParameterName: Skill3
+    skill4ParameterName: Skill4
+    skill5ParameterName: Skill5
 --- !u!114 &3329417173526020203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2758,7 +2769,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMainPlayer: 0
   isMoving: 0
-  reciveKeyInputss: 000000000000
+  reciveKeyInputs: 000000000000000000000000
   recivePacketRotation: 0
   TargetSyncPosition: {x: 0, y: 0, z: 0}
   TargetSyncRotation: {x: 0, y: 0, z: 0, w: 0}

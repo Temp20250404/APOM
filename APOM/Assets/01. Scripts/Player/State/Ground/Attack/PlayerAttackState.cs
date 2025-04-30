@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class PlayerAttackState : PlayerGroundState
 {
+    protected Quaternion motionRotate;
+
+    protected GameObject target;
+
     public PlayerAttackState(PlayerStateMachine playerStateMachine) : base(playerStateMachine)
     {
     }
