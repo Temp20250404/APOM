@@ -72,6 +72,10 @@ public class ServerSession : PacketSession
         {
             PacketQueue.Instance.Push(i, m);
         };
+
+        CS_REGISTER_REQUEST pkt = new CS_REGISTER_REQUEST();
+        pkt.BRequest = true;
+        Managers.Network.Send(pkt);
     }
 
     public override void OnDisconnected(EndPoint endPoint)
