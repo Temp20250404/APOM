@@ -15,7 +15,7 @@ public class BossIdleState : BossBaseState
     public override void StateEnter()
     {
         // 가만히 있는 상태이기 때문에 Speed를 0으로
-        //stateMachine.MoveMentSpeedModifier = 0f;
+        stateMachine.MoveMentSpeedModifier = 0f;
         base.StateEnter();
         // Animation 전환
         StartAnimation(stateMachine.Boss.BossAnimationData.IdleParameterHash);
@@ -36,19 +36,19 @@ public class BossIdleState : BossBaseState
     {
         base.StateUpdate();
 
-        //if (stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData))
-        //{
-        //    AnimatorStateInfo animStateInfo = stateMachine.Boss.Anim.GetCurrentAnimatorStateInfo(0);
-        //    if (animStateInfo.IsTag("Idle") && animStateInfo.normalizedTime >= 0.8f)
-        //    {
-        //        stateMachine.ChangeState(BossState.Attack);
-        //    }
-        //}
+        if (stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData))
+        {
+            AnimatorStateInfo animStateInfo = stateMachine.Boss.Anim.GetCurrentAnimatorStateInfo(0);
+            if (animStateInfo.IsTag("Idle") && animStateInfo.normalizedTime >= 0.8f)
+            {
+                stateMachine.ChangeState(BossState.Attack);
+            }
+        }
 
-        //if (!stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData) && stateMachine.Boss.bossAI.DetectTargets())
-        //{
-        //    stateMachine.ChangeState(BossState.Chase);
-        //}
+        if (!stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData) && stateMachine.Boss.bossAI.DetectTargets())
+        {
+            stateMachine.ChangeState(BossState.Chase);
+        }
 
         //UpdateWalk();
     }

@@ -29,4 +29,9 @@ public class BossEventHandler : MonoBehaviour
     {
         bossAI.EndSkill3(this.transform);
     }
+
+    public void EndSkill3Anim()
+    {
+        bossAI.EndSkillAnim();
+    }
 }
