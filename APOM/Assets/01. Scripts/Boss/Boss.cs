@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Boss : MonoBehaviour
 {
@@ -9,7 +10,6 @@ public class Boss : MonoBehaviour
     [field: Header("Animations")]
     [field: SerializeField] public BossAnimationData BossAnimationData { get; private set; }
     public Animator Anim { get; private set; }
-    public CharacterController Controller { get; private set; }
 
     private BossStateMachine stateMachine;
 
@@ -19,13 +19,12 @@ public class Boss : MonoBehaviour
     public uint bossID { get; set; } = 0;
 
     [Header("Condition")]
-    [SerializeField] private float currentHealth;
+    [SerializeField] public float currentHealth;
 
     private void Awake()
     {
         Anim = GetComponentInChildren<Animator>();
         bossAI = GetComponent<BossAI>();
-        Controller = GetComponent<CharacterController>();
         BossAnimationData.Initialize();
         //bossAI.InitSkillsAnimationHash(BossAnimationData);
         stateMachine = new BossStateMachine(this);
@@ -40,5 +39,16 @@ public class Boss : MonoBehaviour
     private void Update()
     {
         stateMachine.StateUpdate();
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            TakeDamage(10.0f);
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        bossAI.UpdatePhase(currentHealth, SOData.BossConditions.Health);
     }
 }
