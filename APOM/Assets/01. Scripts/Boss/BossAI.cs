@@ -36,6 +36,13 @@ public class BossAI : MonoBehaviour
     private BoxCollider colliders;
     private Animator anim;
 
+    public GameObject skillEff1;
+
+    [Header("스킬3 설정")]
+    [SerializeField] private float flyUpAmount;
+    [SerializeField] private float flyUpDuration;
+    [SerializeField] private float rotateAngleX;
+
     // private CharacterController characterController;
 
     //[Header("스킬 리스트")]
@@ -59,6 +66,111 @@ public class BossAI : MonoBehaviour
         anim = GetComponentInChildren<Animator>();
         //characterController = GetComponent<CharacterController>();
         //InitializeSkillDictionary();\
+    }
+
+    public void MoveSpeed(float Modifier)
+    {
+        agent.speed = Modifier * 3.1f;
+    }
+
+    // 플레이어 추적
+    public void ChaseTarget(Vector3 target)
+    {
+        agent.SetDestination(target);
+    }
+
+    public void ColliderOnEnable(float delay)
+    {
+        colliders.enabled = true;
+        Debug.Log("Collider On");
+        StartCoroutine(DisableCollider(delay));
+    }
+
+    IEnumerator DisableCollider(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        colliders.enabled = false;
+        Debug.Log("Collider Off");
+    }
+
+    public void OnSkill1Eff(float delay)
+    {
+        skillEff1.SetActive(true);
+        StartCoroutine(StartEffSkill1(delay));
+    }
+
+    IEnumerator StartEffSkill1(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        skillEff1.SetActive(false);
+    }
+
+    public void UseSkill3(Transform transform)
+    {
+        StartCoroutine(FlyUp(transform));
+    }
+
+    IEnumerator FlyUp(Transform target)
+    {
+        Vector3 startPos = target.localPosition;
+        Vector3 endPos = startPos + Vector3.up * flyUpAmount;
+
+        Quaternion startRot = target.localRotation;
+        Quaternion endRot = Quaternion.Euler
+            (rotateAngleX,
+            startRot.eulerAngles.y,
+            startRot.eulerAngles.z);
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < flyUpDuration)
+        {
+            float t = elapsedTime / flyUpDuration;
+
+            target.localPosition = Vector3.Lerp(startPos, endPos, t);
+            target.localRotation = Quaternion.Lerp(startRot, endRot, t);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        target.localPosition = endPos;
+        target.localRotation = endRot;
+        anim.SetBool("Skill3Attack", true);
+    }
+
+    public void EndSkill3(Transform transform)
+    {
+        StartCoroutine(FlyDown(transform));
+    }
+
+    IEnumerator FlyDown(Transform target)
+    {
+        Vector3 startPos = target.localPosition;
+        Vector3 endPos = startPos + Vector3.down * flyUpAmount;
+
+        Quaternion startRot = target.localRotation;
+        Quaternion endRot = Quaternion.Euler
+            (startRot.eulerAngles.x - rotateAngleX,
+            startRot.eulerAngles.y,
+            startRot.eulerAngles.z);
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < flyUpDuration)
+        {
+            float t = elapsedTime / flyUpDuration;
+
+            target.localPosition = Vector3.Lerp(startPos, endPos, t);
+            target.localRotation = Quaternion.Lerp(startRot, endRot, t);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        target.localPosition = endPos;
+        target.localRotation = endRot;
+        anim.SetBool("Skill3Down", true);
     }
 
     //private void InitializeSkillDictionary()
@@ -182,34 +294,9 @@ public class BossAI : MonoBehaviour
     //    return false;
     //}
 
-    public void MoveSpeed(float Modifier)
-    {
-        agent.speed = Modifier * 3.1f;
-    }
-
-    // 플레이어 추적
-    public void ChaseTarget(Vector3 target)
-    {
-        agent.SetDestination(target);
-    }
-
-    public void ColliderOnEnable(float delay)
-    {
-        colliders.enabled = true;
-        Debug.Log("Collider On");
-        StartCoroutine(DisableCollider(delay));
-    }
-
-    IEnumerator DisableCollider(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        colliders.enabled = false;
-        Debug.Log("Collider Off");
-    }
-
     //private void Update()
     //{
-        //transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _moveSpeed * Time.deltaTime);
+    //transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _moveSpeed * Time.deltaTime);
     //}
 
     //// 시각적으로 시야 범위를 확인하기 위한 Gizmo
