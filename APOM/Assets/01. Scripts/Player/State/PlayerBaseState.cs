@@ -138,6 +138,18 @@ public class PlayerBaseState : IState
         }
     }
 
+    protected void DirectRotate(Vector3 direction)
+    {
+        direction.y = 0f;
+
+        if (direction != Vector3.zero)
+        {
+            Transform playerTransform = stateMachine.player.transform;
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            playerTransform.rotation = targetRotation;
+        }
+    }
+
     protected Vector2 GetInputWASD()
     {
         bool[] inputWASD = stateMachine.player.inputController.reciveKeyInputs;

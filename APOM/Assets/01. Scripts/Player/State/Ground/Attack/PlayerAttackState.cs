@@ -19,13 +19,13 @@ public class PlayerAttackState : PlayerGroundState
 
         base.StateEnter();
         StartAnimation(stateMachine.player.animationData.attackParameterHash);
+        DirectRotate(GetCameraDirection());
     }
 
     public override void StateUpdate()
     {
         base.StateUpdate();
 
-        Rotate(GetCameraDirection());
         //var atttackAnimInfo = stateMachine.player.animator.GetCurrentAnimatorStateInfo(0);
 
         //if (atttackAnimInfo.normalizedTime >= 1f)

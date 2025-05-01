@@ -20,16 +20,16 @@ public class PlayerDodgeState : PlayerAttackState
 
         StartAnimation(stateMachine.player.animationData.dodgeParameterHash);
 
-        if (GetMovementDirection() == Vector3.zero)
+        Vector3 inputDir = GetMovementDirection();
+
+        if (inputDir.sqrMagnitude < 0.01f)
         {
-            dodgeDir = stateMachine.player.transform.forward;
+            dodgeDir = Quaternion.Euler(0f, stateMachine.player.inputController.recivePacketRotation, 0f) * Vector3.forward;
         }
         else
         {
-            dodgeDir = GetMovementDirection();
+            dodgeDir = GetMovementDirection().normalized;
         }
-
-        Rotate(dodgeDir);
     }
 
     public override void StateUpdate()
