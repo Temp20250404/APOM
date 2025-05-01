@@ -45,7 +45,8 @@ public class BossIdleState : BossBaseState
             }
         }
 
-        if (!stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData) && stateMachine.Boss.bossAI.DetectTargets())
+        if (!stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData) && 
+            stateMachine.Boss.bossAI.DetectTargets(stateMachine.Boss.SOData.PlayerChasingRange))
         {
             stateMachine.ChangeState(BossState.Chase);
         }

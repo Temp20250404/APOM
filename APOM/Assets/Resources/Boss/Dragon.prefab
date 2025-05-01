@@ -76,7 +76,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fbb28d37ea13754db64f948c11372a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  viewDistance: 10
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 16384
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
+  target: {fileID: 0}
+  phase: 0
   skillEff1: {fileID: 6541568356613396825}
+  flyUpAmount: 50
+  flyUpDuration: 5
+  rotateAngleX: 70
+  skillList: []
+  postSkillCooldown: 1
+  postSkillCooldownTimer: 0
 --- !u!195 &4297305140897777562
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -137,7 +152,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5378106270288166008
 Transform:
   m_ObjectHideFlags: 0
@@ -4910,7 +4925,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 698a8134f4ebbbd4e848648685f68067, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14698,7 +14712,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a668ea415e8092b478482ef5456fae30, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.18
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a668ea415e8092b478482ef5456fae30, type: 3}
       propertyPath: m_LocalRotation.w
@@ -15224,6 +15238,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 40302a8333685284196cafbfa5ba830e, type: 2}
+    - target: {fileID: 5866666021909216657, guid: a668ea415e8092b478482ef5456fae30, type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6010916891610780298, guid: a668ea415e8092b478482ef5456fae30, type: 3}
       propertyPath: m_Layer
       value: 16
@@ -15358,6 +15376,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a668ea415e8092b478482ef5456fae30, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4272072442454334553}
+    - targetCorrespondingSourceObject: {fileID: 274023244788807575, guid: a668ea415e8092b478482ef5456fae30, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7471400926596864777}
   m_SourcePrefab: {fileID: 100100000, guid: a668ea415e8092b478482ef5456fae30, type: 3}
 --- !u!4 &602353074068720838 stripped
 Transform:
@@ -15381,6 +15402,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 115b3328da29b754ab4860a1376363e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &4282443345365977200 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 274023244788807575, guid: a668ea415e8092b478482ef5456fae30, type: 3}
+  m_PrefabInstance: {fileID: 4081331331866329063}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &7471400926596864777
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4282443345365977200}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 31.943926
+  m_Center: {x: 3.87, y: 0, z: -0.19}
 --- !u!4 &4551296740420818956 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a668ea415e8092b478482ef5456fae30, type: 3}

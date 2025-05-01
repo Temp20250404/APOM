@@ -258,9 +258,9 @@ public class BossAI : MonoBehaviour
     }
 
      //360도 시야 범위 내에서 타겟을 탐지
-    public bool DetectTargets()
+    public bool DetectTargets(float distance)
     {
-        Collider[] targetsInRange = Physics.OverlapSphere(transform.position, viewDistance, targetMask);
+        Collider[] targetsInRange = Physics.OverlapSphere(transform.position, distance, targetMask);
 
         foreach (Collider targetCollider in targetsInRange)
         {

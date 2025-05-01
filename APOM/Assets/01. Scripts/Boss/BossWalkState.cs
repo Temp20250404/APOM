@@ -28,7 +28,7 @@ public class BossWalkState : BossBaseState
     {
         base.StateUpdate();
 
-        if (stateMachine.Boss.bossAI.DetectTargets())
+        if (stateMachine.Boss.bossAI.DetectTargets(stateMachine.Boss.SOData.PlayerChasingRange))
         {
             stateMachine.ChangeState(BossState.Chase);
             Debug.Log("Chase State");

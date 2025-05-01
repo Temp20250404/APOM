@@ -30,7 +30,7 @@ public class BossChaseState : BossBaseState
 
         stateMachine.Boss.bossAI.ChaseTarget();
 
-        if (stateMachine.Boss.bossAI.DetectTargets())
+        if (stateMachine.Boss.bossAI.DetectTargets(stateMachine.Boss.SOData.PlayerChasingRange))
         {
             stateMachine.Boss.bossAI.ChaseTarget();
         }
