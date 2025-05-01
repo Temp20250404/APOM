@@ -49,8 +49,8 @@ public class PlayerController : MonoBehaviour
 
     bool rotationChanged;
 
-    public Vector3 TargetSyncPosition;
-    public Quaternion TargetSyncRotation;
+    public Vector3 TargetSyncPosition { get; set; }
+    public Quaternion TargetSyncRotation { get; set; }
 
     private void Awake()
     {

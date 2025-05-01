@@ -28,7 +28,7 @@ public class PlayerDodgeState : PlayerAttackState
         }
         else
         {
-            dodgeDir = GetMovementDirection().normalized;
+            dodgeDir = new Vector3(GetMovementDirection().x, 0f, GetMovementDirection().z).normalized;
         }
     }
 
