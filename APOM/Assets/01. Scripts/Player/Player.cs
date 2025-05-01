@@ -18,8 +18,11 @@ public class Player : MonoBehaviour
     public PlayerController inputController { get; private set; }
     public CharacterController characterController { get; private set; }
     private PlayerStateMachine stateMachine;
+
+    public Camera mainCamera { get; set; }
     public Transform mainCameraTransform { get; set; }
-    private PlayerStat Stat = new PlayerStat();
+
+    public PlayerStat Stat = new PlayerStat();
 
     private void Awake()
     {
@@ -36,7 +39,8 @@ public class Player : MonoBehaviour
 
         stateMachine.ChangeState(stateMachine.idleState);
 
-        mainCameraTransform = Camera.main.transform;
+        mainCamera = Camera.main;
+        mainCameraTransform = mainCamera.transform;
         
     }
 

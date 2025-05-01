@@ -8,10 +8,10 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
-  - 
+  - ' Obstacle'
   - 
   - 
   - 
@@ -21,7 +21,7 @@ TagManager:
   - 
   - Player
   - MiniMap
-  - 
+  - Enemy
   - 
   - 
   - 

@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 1008074923}
   - component: {fileID: 1008074922}
   - component: {fileID: 1008074921}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -471,7 +471,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8846991807231192882, guid: ee68db10906606f43afdacd44c78d1b4, type: 3}
       propertyPath: m_Orbits.Array.data[2].m_Height
-      value: -2
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

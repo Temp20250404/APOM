@@ -38,7 +38,7 @@ public class PlayerStateMachine : StateMachine
         backStepShotState = new PlayerArcherBackStepShotState(this);
         rapidFireState = new PlayerArcherRapidFireState(this);
 
-        movementSpeed = player.data.defaultData.baseSpeed;
+        movementSpeed = player.Stat.moveSpeed;
         rotationDamping = player.data.defaultData.baseRotationDamping;
     }
 }

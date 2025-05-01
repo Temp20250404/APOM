@@ -175,6 +175,7 @@ class PacketHandler
         SC_PLAYER_DAMAGED playerDamagedPacket = packet as SC_PLAYER_DAMAGED;
 
         // TODO: SC_PlayerDamaged 패킷 처리 로직을 여기에 구현
+        Managers.Player.GetPlayer(playerDamagedPacket.PlayerID).Stat.TakeDamage(playerDamagedPacket.Damage);
     }
 
     // SC_PLAYER_DIE 패킷을 처리하는 함수
@@ -183,6 +184,7 @@ class PacketHandler
         SC_PLAYER_DIE playerDiePacket = packet as SC_PLAYER_DIE;
 
         // TODO: SC_PlayerDie 패킷 처리 로직을 여기에 구현
+
     }
 
     // SC_POSITION_SYNC 패킷을 처리하는 함수

@@ -2298,7 +2298,7 @@ GameObject:
   - component: {fileID: 4328541346875674402}
   - component: {fileID: 6898769923958055006}
   m_Layer: 14
-  m_Name: Unity_Grruzam_BaseModeling_Archer_Include_WP
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

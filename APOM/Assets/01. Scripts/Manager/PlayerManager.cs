@@ -40,6 +40,7 @@ public class PlayerManager : IManager
         //uiMain.minimap.player = go.GetComponent<Player>();
         Player player = Util.GetOrAddComponent<Player>(go);
         player.playerID = _packet.PlayerID;
+        player.Stat.SetStats(_packet.PlayerInfo.PlayerJob);
         AddPlayer(_packet.PlayerID, player);
 
         if (isFirstSpawn)

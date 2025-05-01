@@ -1,16 +1,28 @@
 using APOM_Data;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Animations;
 
 public class ItemData : APOM_Data.Item_Data
 {
-    public Dictionary<int, ItemData> GetEquipmentDataDictionary()
-    {
-        Dictionary<int, ItemData> EquipmentDictionary = new Dictionary<int, ItemData>();
-        ItemData.GetDictionary().TryGetValue(1, out Item_Data foundItem);
+    private Dictionary<int, Item_Data> itemDataDictionary = new Dictionary<int, Item_Data>();
+    private List<Item_Data> itemDataList = new List<Item_Data>();
 
-        return EquipmentDictionary;
+    public void Init()
+    {
+        itemDataDictionary = Item_Data.GetDictionary();
+        itemDataList = Item_Data.GetList();
+    }
+
+    public Dictionary<int, Item_Data> GetDictionary()
+    {
+        return itemDataDictionary;
+    }
+
+    public List<Item_Data> GetList()
+    {
+        return itemDataList;
     }
 }

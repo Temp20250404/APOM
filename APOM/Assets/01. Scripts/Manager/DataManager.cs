@@ -1,3 +1,4 @@
+using APOM_Data;
 using GoogleSheet;
 using GoogleSheet.Core.Type;
 using System;
@@ -12,17 +13,15 @@ public class DataManager : IManager
 {
     public ItemData itemData { get; private set; } = new ItemData();
     public ColliderData colliderData { get; private set; } = new ColliderData();
+    public JobBaseStatsData jobBaseStatsData { get; private set; } = new JobBaseStatsData();
 
     public void Init()
     {
         UnityGoogleSheet.LoadAllData();
 
-        //EGRADE grades;
-        //if (EquipmentData.GetDictionary().TryGetValue(3, out APOM_Data.Equipment_Data foundItem))
-        //{
-        //    grades = foundItem.grade;
-        //}
-        //SaveAllSheetDataToSDD("EnhancementRate_Data");
+        itemData.Init();
+        jobBaseStatsData.Init();
+
         Debug.Log("DataManager Initialized");
     }
     public void Clear()
