@@ -79,7 +79,7 @@ public class Managers : Singleton<Managers>
         //UI.ShowPopupUI<SkillPopupUI>(); 
 
         // 서버에 4초를 주기로 생존 여부를 알리는 패킷을 보내는 기능
-        StartCoroutine(SendTimeoutPackt()); 
+        StartCoroutine(SendTimeoutPackt());
     }
 
     private void Update()
@@ -143,6 +143,9 @@ public class Managers : Singleton<Managers>
                 SetupUI(SceneType.Title);
                 break;
             case "HMJScene":
+                SetupUI(SceneType.Game);
+                break;
+            case "YHJ_TestScene":
                 SetupUI(SceneType.Game);
                 break;
         }
