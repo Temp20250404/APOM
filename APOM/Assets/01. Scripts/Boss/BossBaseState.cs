@@ -16,7 +16,7 @@ public class BossBaseState : IState
 
     public virtual void StateEnter()
     {
-        //stateMachine.Boss.bossAI.MoveSpeed(stateMachine.MoveMentSpeedModifier);
+        stateMachine.Boss.bossAI.MoveSpeed(stateMachine.MoveMentSpeedModifier);
     }
 
     public virtual void StateUpdate()

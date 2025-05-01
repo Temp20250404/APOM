@@ -12,7 +12,7 @@ public class BossManager : IManager
     public void Init()
     {
         bossList.Clear();
-        BossPrefab = Resources.Load<GameObject>("Boss/Boss"); // 기본 보스 프리팹
+        BossPrefab = Resources.Load<GameObject>("Boss/Dragon"); // 기본 보스 프리팹
     }
 
     public void Clear()

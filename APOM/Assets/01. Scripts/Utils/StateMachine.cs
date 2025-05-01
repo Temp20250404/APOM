@@ -39,14 +39,6 @@ public enum BossPhase
     Phase4
 }
 
-public enum BossSkillType
-{
-    None = -1,
-    Skill1,
-    Skill2,
-    Skill3
-}
-
 public abstract class StateMachine
 {
     protected IState currentState;
