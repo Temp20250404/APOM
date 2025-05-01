@@ -9,6 +9,12 @@ public class PlayerModelAnimEvent : MonoBehaviour
     [SerializeField] private Transform[] arrowSpawnPoints;
     [SerializeField] private GameObject arrowPrefab;
 
+    private Vector3 target;
+    private Vector3 dir;
+    float angle;
+    Quaternion targetRot;
+    float angleDifferent;
+
     void Awake()
     {
         player = GetComponentInParent<Player>();
@@ -27,11 +33,26 @@ public class PlayerModelAnimEvent : MonoBehaviour
             return;
         }
 
-        GameObject arrow = Instantiate(arrowPrefab,
+        if (player.targetObject != null)
+        {
+            target = player.targetObject.transform.position;
+        }
+        else if (player.targetPosition != Vector3.zero)
+        {
+            target = player.targetPosition;
+        }
+        else
+        {
+            target = player.transform.position + player.transform.forward * 10f;
+        }
+
+        dir = (target - arrowSpawnPoints[_spawnPoint].position).normalized;
+        angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        targetRot = Quaternion.Euler(0f, 0f, angle);
+
+        GameObject go = Instantiate(arrowPrefab,
             arrowSpawnPoints[_spawnPoint].position,
             arrowSpawnPoints[_spawnPoint].rotation
         );
-
-
     }
 }

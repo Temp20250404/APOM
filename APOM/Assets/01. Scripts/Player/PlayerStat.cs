@@ -39,6 +39,8 @@ public class PlayerStat
     private float minDamageRate = 0.98f;
     private float maxDamageRate = 1.02f;
 
+    public bool isDodge = false;
+
     public void SetStats(uint _jobIndex)
     {
         Managers.Data.jobBaseStatsData.GetDictionary().TryGetValue((int)_jobIndex, out JobBaseStats_Data _Data);
@@ -98,6 +100,11 @@ public class PlayerStat
 
     public void TakeDamage(float _damage)
     {
+        if (isDodge)
+        {
+            return;
+        }
+
         currentHp -= _damage;
         if (currentHp < 0)
         {

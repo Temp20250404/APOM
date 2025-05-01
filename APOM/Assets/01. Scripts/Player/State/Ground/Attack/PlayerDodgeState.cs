@@ -16,6 +16,8 @@ public class PlayerDodgeState : PlayerAttackState
 
         base.StateEnter();
 
+        stateMachine.player.Stat.isDodge = true;
+
         stateMachine.movementSpeedModifier = defaultData.moveSpeedModifier * 0.8f;
 
         StartAnimation(stateMachine.player.animationData.dodgeParameterHash);
@@ -25,11 +27,13 @@ public class PlayerDodgeState : PlayerAttackState
         if (inputDir.sqrMagnitude < 0.01f)
         {
             dodgeDir = Quaternion.Euler(0f, stateMachine.player.inputController.recivePacketRotation, 0f) * Vector3.forward;
+            
         }
         else
         {
             dodgeDir = new Vector3(GetMovementDirection().x, 0f, GetMovementDirection().z).normalized;
         }
+        DirectRotate((Quaternion.Euler(0f, 90f, 0f) * dodgeDir));
     }
 
     public override void StateUpdate()
@@ -42,7 +46,9 @@ public class PlayerDodgeState : PlayerAttackState
     public override void StateExit()
     {
         base.StateExit();
+        stateMachine.player.Stat.isDodge = false;
         StopAnimation(stateMachine.player.animationData.dodgeParameterHash);
+        DirectRotate((Quaternion.Euler(0f, 0f, 0f) * dodgeDir));
     }
 
     public override void StateHandleInput()

@@ -24,6 +24,9 @@ public class Player : MonoBehaviour
 
     public PlayerStat Stat = new PlayerStat();
 
+    public GameObject targetObject = null;
+    public Vector3 targetPosition = Vector3.zero;
+
     private void Awake()
     {
         animationData.Initialize();

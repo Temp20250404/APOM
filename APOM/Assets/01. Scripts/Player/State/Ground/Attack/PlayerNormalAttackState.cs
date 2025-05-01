@@ -18,11 +18,11 @@ public class PlayerNormalAttackState : PlayerAttackState
 
         DirectRotate(Quaternion.Euler(0f, 41f, 0f) * GetCameraDirection());
 
-        if (targetObject != null)
+        if (stateMachine.player.targetObject != null)
         {
             Util.SendPacket<CS_PLAYER_ATTACK>(packet =>
             {
-                if (targetObject.TryGetComponent<Boss>(out Boss boss))
+                if (stateMachine.player.targetObject.TryGetComponent<Boss>(out Boss boss))
                 {
                     packet.AiID = boss.bossID;
                 }

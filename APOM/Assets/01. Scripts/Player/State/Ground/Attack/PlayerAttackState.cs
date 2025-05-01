@@ -7,9 +7,6 @@ public class PlayerAttackState : PlayerGroundState
 {
     protected Quaternion motionRotate;
 
-    protected GameObject targetObject = null;
-    protected Vector3 targetPosition = Vector3.zero;
-
     public PlayerAttackState(PlayerStateMachine playerStateMachine) : base(playerStateMachine)
     {
     }
@@ -42,8 +39,8 @@ public class PlayerAttackState : PlayerGroundState
         base.StateExit();
         StopAnimation(stateMachine.player.animationData.attackParameterHash);
 
-        targetObject = null;
-        targetPosition = Vector3.zero;
+        stateMachine.player.targetObject = null;
+        stateMachine.player.targetPosition = Vector3.zero;
     }
 
     public override void StateHandleInput()
@@ -68,15 +65,15 @@ public class PlayerAttackState : PlayerGroundState
 
         if (Physics.Raycast(ray, out hit, rayDistance, enemyMask))
         {
-            targetObject = hit.collider.gameObject;
+            stateMachine.player.targetObject = hit.collider.gameObject;
         }
         else if (Physics.Raycast(ray, out hit, rayDistance, ObstacleMask))
         {
-            targetPosition = hit.point;
+            stateMachine.player.targetPosition = hit.point;
         }
         else
         {
-            targetPosition = ray.origin + ray.direction * rayDistance;
+            stateMachine.player.targetPosition = ray.origin + ray.direction * rayDistance;
         }
     }
 }
