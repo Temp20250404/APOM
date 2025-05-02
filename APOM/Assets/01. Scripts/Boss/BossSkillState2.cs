@@ -1,3 +1,4 @@
+using Game;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,7 +33,10 @@ public class BossSkillState2 : BossBaseState
         AnimatorStateInfo animStateInfo = stateMachine.Boss.Anim.GetCurrentAnimatorStateInfo(0);
         if (animStateInfo.normalizedTime >= 1f && animStateInfo.IsTag("Skills"))
         {
-            stateMachine.ChangeState(BossState.Idle);
+            CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
+            packet.BossID = stateMachine.Boss.bossID;
+            packet.BossState = (int)BossState.Idle;
+            Managers.Network.Send(packet);
             //stateMachine.Boss.bossAI.ClearSkill();
 
             // 서버에 상태 변경을 요청하는 메서드 호출

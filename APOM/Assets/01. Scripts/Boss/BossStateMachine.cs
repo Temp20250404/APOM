@@ -13,6 +13,7 @@ public class BossStateMachine : StateMachine
 
     public BossIdleState BossIdleState { get; }
     public BossAttackState BossAttackState { get; }
+    public BossAttackState1 BossAttackState1 { get; }
     public BossChaseState BossChaseState { get; }
     public BossWalkState BossWalkState { get; }
     public BossSkillState BossSkillState { get; }
@@ -25,6 +26,7 @@ public class BossStateMachine : StateMachine
 
         BossIdleState = new BossIdleState(this);
         BossAttackState = new BossAttackState(this);
+        BossAttackState1 = new BossAttackState1(this);
         BossChaseState = new BossChaseState(this);
         BossWalkState = new BossWalkState(this);
         BossSkillState = new BossSkillState(this);
@@ -35,6 +37,7 @@ public class BossStateMachine : StateMachine
         {
             { BossState.Idle, BossIdleState },
             { BossState.Attack, BossAttackState },
+            { BossState.Attack1, BossAttackState1 },
             { BossState.Chase, BossChaseState },
             { BossState.Walk, BossWalkState },
             { BossState.Skill1, BossSkillState },

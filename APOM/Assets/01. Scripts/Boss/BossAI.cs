@@ -1,3 +1,4 @@
+using Game;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,16 +7,9 @@ using UnityEngine;
 using UnityEngine.AI;
 using SEnum = System.Enum;
 
-[System.Serializable]
-public class BossSkill
-{
-    public float skillTimer = 0f;
-    public float skillDelay;         // 쿨타임
-    public BossPhase phase;          // 이 스킬이 등장하는 시작 페이즈
-    public int animationHash; // 애니메이션 해시
-}
 public class BossAI : MonoBehaviour
 {
+    private Boss boss;
     [Header("타겟 탐지 설정")]
     public float viewDistance = 10f;
     public LayerMask targetMask;
@@ -25,6 +19,7 @@ public class BossAI : MonoBehaviour
 
     private NavMeshAgent agent;
     public Transform target;
+    public bool isPerson;
 
     [Header("페이즈 설정")]
     public BossPhase phase = BossPhase.Phase1;
@@ -36,76 +31,55 @@ public class BossAI : MonoBehaviour
 
     public GameObject skillEff1;
 
+    [Header("쿨타임, 1회성 제한")]
+    [SerializeField] private float postSkillCooldown = 60f;
+    [SerializeField] private float postSkillCooldownTimer = 0f;
+    [SerializeField] private bool phase3SkillUsed = false;
+    [SerializeField] private bool phase4SkillUsed = false;
+
     [Header("스킬3 설정")]
     [SerializeField] private float flyUpAmount;
     [SerializeField] private float flyUpDuration;
     [SerializeField] private float rotateAngleX;
 
-    [Header("스킬 리스트")]
-    public List<BossSkill> skillList;
-    private BossSkill nextSkillToUse; // 다음 사용할 스킬
-    public BossSkill NextSkillToUse
-    {
-        get => nextSkillToUse; // 외부에서 접근할 수 있도록 프로퍼티로 제공
-        set => nextSkillToUse = value;
-    }
 
-    [HideInInspector] public float postSkillCooldown = 1f; // 스킬 종료 후 대기 시간
-    [HideInInspector] public float postSkillCooldownTimer = 0f;
 
-    Dictionary<BossPhase, List<BossSkill>> bossSkillData = new();
+    //Dictionary<BossPhase, List<BossSkill>> bossSkillData = new();
 
     void Awake()
     {
+        boss = GetComponent<Boss>();
         agent = GetComponent<NavMeshAgent>();
         colliders = GetComponent<BoxCollider>();
         anim = GetComponentInChildren<Animator>();
-        InitializeSkillDictionary();
+        postSkillCooldownTimer = postSkillCooldown;
     }
 
-    private void InitializeSkillDictionary()
+    private void Update()
     {
-        // 딕셔너리 초기화
-        foreach (BossPhase phase in SEnum.GetValues(typeof(BossPhase)))
-        {
-            bossSkillData[phase] = new List<BossSkill>();
-        }
-
-        // skillList 안에서 각 스킬의 phase 기준으로 분류
-        foreach (var skill in skillList)
-        {
-            bossSkillData[skill.phase].Add(skill);
-        }
+        HandleSkills();
     }
 
-    //public void InitSkillsAnimationHash(BossAnimationData animData)
-    //{
-    //    foreach (var skill in skillList)
-    //    {
-    //        switch (skill.skillType)
-    //        {
-    //            case BossSkillType.Skill1:
-    //                skill.animationHash = animData.BossSkill1ParameterHash;
-    //                break;
-    //            case BossSkillType.Skill2:
-    //                skill.animationHash = animData.BossSkill2ParameterHash;
-    //                break;
-    //            case BossSkillType.Skill3:
-    //                skill.animationHash = animData.BossSkill3ParameterHash;
-    //                break;
-    //        }
-    //    }
-    //}
-
-    public void MoveSpeed(float Modifier)
+    public void SCMoveSpeed(float Modifier)
     {
-        agent.speed = Modifier;
+        agent.speed = Modifier * 3.8f;
     }
 
     // 플레이어 추적
-    public void ChaseTarget()
+    public void CSChaseTarget()
     {
-        agent.SetDestination(target.position);
+        CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
+        packet.BossID = boss.bossID;
+        packet.BossState = (int)BossState.Chase;
+        packet.TargetMovementPos = new Position 
+        { PosX = target.position.x, PosY = target.position.y, PosZ = target.position.z };
+        packet.CurSpeed = boss.SOData.GroundData.BaseSpeed * boss.SOData.GroundData.ChasingSpeedModifier;
+        Managers.Network.Send(packet);
+    }
+
+    public void SCChaseTarget(Vector3 target)
+    {
+        agent.SetDestination(target);
     }
 
     public void ColliderOnEnable(float delay)
@@ -215,32 +189,46 @@ public class BossAI : MonoBehaviour
     }
 
     //스킬 쿨타임 및 발동 처리
-    //public void HandleSkills()
-    //{
-    //    // 스킬이 하나 실행 중이면 더 이상 진행하지 않음
-    //    if (nextSkillToUse != null) return;
+    public void HandleSkills()
+    {
+        if (phase == BossPhase.Phase1)
+            return;
 
-    //    // 쿨다운 타이머가 남아있으면 아무 스킬도 선택하지 않음
-    //    if (postSkillCooldownTimer > 0f)
-    //    {
-    //        postSkillCooldownTimer -= Time.deltaTime;
-    //        return;
-    //    }
+        //  Skill2 쿨타임마다 반복
+        postSkillCooldownTimer += Time.deltaTime;
 
-    //    foreach (BossSkill skill in GetAllSkillsUpToCurrentPhase())
-    //    {
-    //        skill.skillTimer += Time.deltaTime;
+        if (postSkillCooldownTimer >= postSkillCooldown)
+        {
+            postSkillCooldownTimer = 0f;
 
-    //        if (skill.skillTimer >= skill.skillDelay)
-    //        {
-    //            nextSkillToUse = skill;
-    //            skill.skillTimer = 0f;
-    //            break;
-    //        }
-    //    }
-    //}
+            CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
+            packet.BossID = boss.bossID;
+            packet.BossState = (int)BossState.Skill1;
+            Managers.Network.Send(packet);
+        }
 
+        //  Phase3 진입 시 Skill3 1회 발동
+        if (phase == BossPhase.Phase3 && !phase3SkillUsed)
+        {
+            phase3SkillUsed = true;
 
+            CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
+            packet.BossID = boss.bossID;
+            packet.BossState = (int)BossState.Skill2;
+            Managers.Network.Send(packet);
+        }
+
+        //  Phase4 진입 시 Skill4 1회 발동
+        if (phase == BossPhase.Phase4 && !phase4SkillUsed)
+        {
+            phase4SkillUsed = true;
+
+            CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
+            packet.BossID = boss.bossID;
+            packet.BossState = (int)BossState.Skill3;
+            Managers.Network.Send(packet);
+        }
+    }
 
     //보스의 현재 HP 상태에 따라 페이즈 전환
     public void UpdatePhase(float currentHP, float maxHP)
@@ -291,56 +279,28 @@ public class BossAI : MonoBehaviour
         return distance <= data.AttackRange;
     }
 
-    public void StartWalk()
-    {
-        //wanderTarget = GetRandomWalkPoint(2f, 4f);
-        agent.SetDestination(wanderTarget);
-    }
-
-    private Vector3 GetRandomWalkPoint(float minRaius, float maxRaius)
-    {
-        Vector3 randomPoint = Random.insideUnitSphere * Random.Range(minRaius, maxRaius);
-        randomPoint += transform.position;
-
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomPoint, out hit, maxRaius, NavMesh.AllAreas))
-        {
-            return hit.position;
-        }
-
-        return transform.position; // 기본 위치 반환
-    }
-
-    public bool EndWalk()
-    {
-        return !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance;
-    }
-
-    public void ClearSkill()
-    {
-        NextSkillToUse = null;
-        postSkillCooldownTimer = postSkillCooldown;
-    }
-
-    private void UseSkill(BossSkill skill)
-    {
-        Debug.Log($"[페이즈 {phase}] 스킬 발동!");
-        // 이펙트 및 Transform 처리? 정도 
-    }
-
-    ////현재 페이즈까지의 모든 스킬을 가져오는 메서드
-    //public List<BossSkill> GetAllSkillsUpToCurrentPhase()
+    //public void StartWalk()
     //{
-    //    List<BossSkill> result = new();
+    //    //wanderTarget = GetRandomWalkPoint(2f, 4f);
+    //    agent.SetDestination(wanderTarget);
+    //}
 
-    //    foreach (BossPhase p in SEnum.GetValues(typeof(BossPhase)))
+    //private Vector3 GetRandomWalkPoint(float minRaius, float maxRaius)
+    //{
+    //    Vector3 randomPoint = Random.insideUnitSphere * Random.Range(minRaius, maxRaius);
+    //    randomPoint += transform.position;
+
+    //    NavMeshHit hit;
+    //    if (NavMesh.SamplePosition(randomPoint, out hit, maxRaius, NavMesh.AllAreas))
     //    {
-    //        if (p <= phase && bossSkillData.ContainsKey(p))
-    //        {
-    //            result.AddRange(bossSkillData[p]);
-    //        }
+    //        return hit.position;
     //    }
 
-    //    return result;
+    //    return transform.position; // 기본 위치 반환
+    //}
+
+    //public bool EndWalk()
+    //{
+    //    return !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance;
     //}
 }

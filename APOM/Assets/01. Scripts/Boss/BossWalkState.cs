@@ -14,7 +14,7 @@ public class BossWalkState : BossBaseState
         stateMachine.MoveMentSpeedModifier = groundData.WalkSpeedModifier * groundData.BaseSpeed;
         base.StateEnter();
         StartAnimation(stateMachine.Boss.BossAnimationData.WalkParameterHash);
-        stateMachine.Boss.bossAI.StartWalk();
+        //stateMachine.Boss.bossAI.StartWalk();
     }
 
     // Walk 상태에서 다른 상태로 전환될 때
@@ -35,10 +35,10 @@ public class BossWalkState : BossBaseState
             return;
         }
 
-        if (stateMachine.Boss.bossAI.EndWalk())
-        {
-            stateMachine.ChangeState(BossState.Idle); // 도착 시 Idle 상태로 전환
-            return;
-        }
+        //if (stateMachine.Boss.bossAI.EndWalk())
+        //{
+        //    stateMachine.ChangeState(BossState.Idle); // 도착 시 Idle 상태로 전환
+        //    return;
+        //}
     }
 }

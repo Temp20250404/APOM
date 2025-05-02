@@ -84,14 +84,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   target: {fileID: 0}
+  isPerson: 0
   phase: 0
   skillEff1: {fileID: 6541568356613396825}
+  postSkillCooldown: 60
+  postSkillCooldownTimer: 0
+  phase3SkillUsed: 0
+  phase4SkillUsed: 0
   flyUpAmount: 50
   flyUpDuration: 5
   rotateAngleX: 70
-  skillList: []
-  postSkillCooldown: 1
-  postSkillCooldownTimer: 0
 --- !u!195 &4297305140897777562
 NavMeshAgent:
   m_ObjectHideFlags: 0

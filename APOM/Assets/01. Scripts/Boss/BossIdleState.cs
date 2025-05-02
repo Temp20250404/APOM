@@ -1,3 +1,4 @@
+using Game;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -41,14 +42,20 @@ public class BossIdleState : BossBaseState
             AnimatorStateInfo animStateInfo = stateMachine.Boss.Anim.GetCurrentAnimatorStateInfo(0);
             if (animStateInfo.IsTag("Idle") && animStateInfo.normalizedTime >= 0.8f)
             {
-                stateMachine.ChangeState(BossState.Attack);
+                CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
+                packet.BossID = stateMachine.Boss.bossID;
+                packet.BossState = (int)BossState.Attack;
+                Managers.Network.Send(packet);
             }
         }
 
         if (!stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData) && 
             stateMachine.Boss.bossAI.DetectTargets(stateMachine.Boss.SOData.PlayerChasingRange))
         {
-            stateMachine.ChangeState(BossState.Chase);
+            CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
+            packet.BossID = stateMachine.Boss.bossID;
+            packet.BossState = (int)BossState.Chase;
+            Managers.Network.Send(packet);
         }
 
         //UpdateWalk();

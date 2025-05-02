@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossAttackState : BossBaseState
+public class BossAttackState1 : BossBaseState
 {
-    public BossAttackState(BossStateMachine stateMachine) : base(stateMachine)
+    public BossAttackState1(BossStateMachine stateMachine) : base(stateMachine)
     {
     }
 
@@ -16,8 +16,7 @@ public class BossAttackState : BossBaseState
         base.StateEnter();
         // Animation ÀüÈ¯
         StartAnimation(stateMachine.Boss.BossAnimationData.Attack_ParameterHash);
-        StartAnimation(stateMachine.Boss.BossAnimationData.AttackParameterHash);
-
+        StartAnimation(stateMachine.Boss.BossAnimationData.Attack2ParameterHash);
 
     }
 
@@ -27,7 +26,7 @@ public class BossAttackState : BossBaseState
         base.StateExit();
 
         StopAnimation(stateMachine.Boss.BossAnimationData.Attack_ParameterHash);
-        StopAnimation(stateMachine.Boss.BossAnimationData.AttackParameterHash);
+        StopAnimation(stateMachine.Boss.BossAnimationData.Attack2ParameterHash);
     }
 
     public override void StateUpdate()
@@ -38,7 +37,7 @@ public class BossAttackState : BossBaseState
         if (animStateInfo.IsTag("Attack") && animStateInfo.normalizedTime >= 0.8f)
         {
             CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
-            packet.BossID = stateMachine.Boss.bossID;
+            packet.BossID = stateMachine.Boss.bossID; 
             packet.BossState = (int)BossState.Idle;
             Managers.Network.Send(packet);
         }

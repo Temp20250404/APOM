@@ -1,3 +1,4 @@
+using Game;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,7 +33,11 @@ public class Boss : MonoBehaviour
     }
     void Start()
     {
-        stateMachine.ChangeState(BossState.Idle);
+        CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
+        packet.BossID = stateMachine.Boss.bossID;
+        packet.BossState = (int)BossState.Idle;
+        Managers.Network.Send(packet);
+
         currentHealth = SOData.BossConditions.Health;
     }
 
@@ -50,5 +55,13 @@ public class Boss : MonoBehaviour
     {
         currentHealth -= damage;
         bossAI.UpdatePhase(currentHealth, SOData.BossConditions.Health);
+
+        if (currentHealth <= 0)
+        {
+            CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
+            packet.BossID = stateMachine.Boss.bossID;
+            packet.BossState = (int)BossState.Die;
+            Managers.Network.Send(packet);
+        }
     }
 }

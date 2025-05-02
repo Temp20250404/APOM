@@ -1,3 +1,4 @@
+using Game;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,21 +29,26 @@ public class BossChaseState : BossBaseState
     {
         base.StateUpdate();
 
-        stateMachine.Boss.bossAI.ChaseTarget();
 
-        if (stateMachine.Boss.bossAI.DetectTargets(stateMachine.Boss.SOData.PlayerChasingRange))
-        {
-            stateMachine.Boss.bossAI.ChaseTarget();
-        }
-        else
+        stateMachine.Boss.bossAI.CSChaseTarget();
+
+        if (!stateMachine.Boss.bossAI.DetectTargets(stateMachine.Boss.SOData.PlayerChasingRange))
         {
             stateMachine.Boss.bossAI.target = null;
-            stateMachine.ChangeState(BossState.Idle);
+
+            CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
+            packet.BossID = stateMachine.Boss.bossID;
+            packet.BossState = (int)BossState.Idle;
+            Managers.Network.Send(packet);
         }
+
 
         if (stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData))
         {
-            stateMachine.ChangeState(BossState.Attack);
+            CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
+            packet.BossID = stateMachine.Boss.bossID;
+            packet.BossState = (int)BossState.Attack;
+            Managers.Network.Send(packet);
         }
     }
 }

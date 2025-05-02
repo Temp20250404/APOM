@@ -40,7 +40,7 @@ public class UI_SignUp : UI_Popup
         Bind<TMP_InputField>(typeof(SignUpType));    // ID_Input, PW_Input
         Bind<Button>(typeof(SignUpType));            // 모든 버튼류
 
-        // enum 인덱스로 실제 변수에 할당
+         // enum 인덱스로 실제 변수에 할당
         idInputField = Get<TMP_InputField>((int)SignUpType.ID_Input);
         emailInputField = Get<TMP_InputField>((int)SignUpType.EMail_Input);
         pwInputField = Get<TMP_InputField>((int)SignUpType.PW_Input);
@@ -68,6 +68,16 @@ public class UI_SignUp : UI_Popup
             return;
         }
 
+
+
+        CS_SIGNUP_REQUEST ptk = new CS_SIGNUP_REQUEST();
+        ptk.Id = id;
+        ptk.Password = pw;
+        ptk.Email = email;
+
+        Managers.Network.Send(ptk);
+        TextEmpty();
+
         //if (IsIDDuplicated(id))
         //{
         //    signUpResultText.text = "이미 존재하는 ID입니다.";
@@ -79,14 +89,6 @@ public class UI_SignUp : UI_Popup
         //    signUpResultText.text = "비밀번호가 일치하지 않습니다.";
         //    return;
         //}
-
-        CS_SIGNUP_REQUEST ptk = new CS_SIGNUP_REQUEST();
-        ptk.Id = id;
-        ptk.Password = pw;
-        ptk.Email = email;
-
-        Managers.Network.Send(ptk);
-        TextEmpty();
     }
 
     //private bool IsIDDuplicated(string id)

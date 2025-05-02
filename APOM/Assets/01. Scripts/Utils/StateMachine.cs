@@ -25,6 +25,7 @@ public enum BossState
     Walk,
     Chase,
     Attack,
+    Attack1,
     Skill1,
     Skill2,
     Skill3,

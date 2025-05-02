@@ -27,11 +27,11 @@ public class BossManager : IManager
             return;
         }
 
-        //Vector3 spawnPosition = new Vector3(_packet.MonsterPos.PosX, _packet.MonsterPos.PosY, _packet.MonsterPos.PosZ);
-        //GameObject go = Object.Instantiate(BossPrefab, spawnPosition, Quaternion.identity);
-        //Boss boss = Util.GetOrAddComponent<Boss>(go);
-        //boss.bossID = _packet.AiID;
-        //AddBoss(_packet.AiID, boss);
+        Vector3 spawnPosition = new Vector3(_packet.MonsterPos.PosX, _packet.MonsterPos.PosY, _packet.MonsterPos.PosZ);
+        GameObject go = Object.Instantiate(BossPrefab, spawnPosition, Quaternion.identity);
+        Boss boss = Util.GetOrAddComponent<Boss>(go);
+        boss.bossID = _packet.AiID;
+        AddBoss(_packet.AiID, boss);
     }
 
     public Boss GetBoss(uint id)
