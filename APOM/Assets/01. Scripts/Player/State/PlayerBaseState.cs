@@ -117,7 +117,7 @@ public class PlayerBaseState : IState
         if (!isGrounded)
         {
             // 바닥에 닿아 있지 않을 때 중력 적용
-            velocity.y += gravity * Time.deltaTime;
+            //velocity.y += gravity * Time.deltaTime;
         }
         // 속도를 위치에 적용
         stateMachine.player.transform.position += velocity * Time.deltaTime;

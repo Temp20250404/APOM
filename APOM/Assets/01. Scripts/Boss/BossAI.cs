@@ -42,6 +42,8 @@ public class BossAI : MonoBehaviour
     [SerializeField] private float flyUpDuration;
     [SerializeField] private float rotateAngleX;
 
+    public bool isSkillActive = false;
+
 
 
     //Dictionary<BossPhase, List<BossSkill>> bossSkillData = new();
@@ -58,6 +60,7 @@ public class BossAI : MonoBehaviour
     private void Update()
     {
         HandleSkills();
+        //DetectTargets(boss.SOData.PlayerChasingRange);
     }
 
     public void SCMoveSpeed(float Modifier)
@@ -279,6 +282,7 @@ public class BossAI : MonoBehaviour
         return distance <= data.AttackRange;
     }
 
+}
     //public void StartWalk()
     //{
     //    //wanderTarget = GetRandomWalkPoint(2f, 4f);
@@ -303,4 +307,3 @@ public class BossAI : MonoBehaviour
     //{
     //    return !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance;
     //}
-}

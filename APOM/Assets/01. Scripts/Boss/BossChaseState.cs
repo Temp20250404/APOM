@@ -39,6 +39,7 @@ public class BossChaseState : BossBaseState
             CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
             packet.BossID = stateMachine.Boss.bossID;
             packet.BossState = (int)BossState.Idle;
+            packet.CurSpeed = 0f;
             Managers.Network.Send(packet);
         }
 
@@ -48,6 +49,7 @@ public class BossChaseState : BossBaseState
             CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
             packet.BossID = stateMachine.Boss.bossID;
             packet.BossState = (int)BossState.Attack;
+            packet.CurSpeed = 0f;
             Managers.Network.Send(packet);
         }
     }

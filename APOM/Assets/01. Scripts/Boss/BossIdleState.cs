@@ -45,6 +45,7 @@ public class BossIdleState : BossBaseState
                 CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
                 packet.BossID = stateMachine.Boss.bossID;
                 packet.BossState = (int)BossState.Attack;
+                packet.CurSpeed = 0f;
                 Managers.Network.Send(packet);
             }
         }
@@ -55,11 +56,14 @@ public class BossIdleState : BossBaseState
             CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
             packet.BossID = stateMachine.Boss.bossID;
             packet.BossState = (int)BossState.Chase;
+            packet.CurSpeed = stateMachine.Boss.SOData.GroundData.ChasingSpeedModifier *
+                                stateMachine.Boss.SOData.GroundData.BaseSpeed;
             Managers.Network.Send(packet);
         }
 
-        //UpdateWalk();
     }
+}
+        //UpdateWalk();
 
     //private void UpdateWalk()
     //{
@@ -69,4 +73,3 @@ public class BossIdleState : BossBaseState
     //        stateMachine.ChangeState(BossState.Walk);
     //    }
     //}
-}

@@ -12,7 +12,7 @@ public class BossAttackState : BossBaseState
     public override void StateEnter()
     {
         // 가만히 있는 상태이기 때문에 Speed를 0으로
-        stateMachine.MoveMentSpeedModifier = 0f;
+        //stateMachine.MoveMentSpeedModifier = 0f;
         base.StateEnter();
         // Animation 전환
         StartAnimation(stateMachine.Boss.BossAnimationData.Attack_ParameterHash);
@@ -40,6 +40,7 @@ public class BossAttackState : BossBaseState
             CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
             packet.BossID = stateMachine.Boss.bossID;
             packet.BossState = (int)BossState.Idle;
+            packet.CurSpeed = 0f;
             Managers.Network.Send(packet);
         }
 
@@ -48,6 +49,8 @@ public class BossAttackState : BossBaseState
             CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
             packet.BossID = stateMachine.Boss.bossID;
             packet.BossState = (int)BossState.Chase;
+            packet.CurSpeed = stateMachine.Boss.SOData.GroundData.ChasingSpeedModifier *
+                stateMachine.Boss.SOData.GroundData.BaseSpeed;
             Managers.Network.Send(packet);
         }
     }

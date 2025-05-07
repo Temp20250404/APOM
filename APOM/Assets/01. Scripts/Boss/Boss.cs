@@ -29,15 +29,17 @@ public class Boss : MonoBehaviour
         BossAnimationData.Initialize();
         //bossAI.InitSkillsAnimationHash(BossAnimationData);
         stateMachine = new BossStateMachine(this);
-        
+
+
+
     }
     void Start()
     {
         CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
         packet.BossID = stateMachine.Boss.bossID;
         packet.BossState = (int)BossState.Idle;
+        packet.CurSpeed = 0f;
         Managers.Network.Send(packet);
-
         currentHealth = SOData.BossConditions.Health;
     }
 
@@ -61,6 +63,7 @@ public class Boss : MonoBehaviour
             CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
             packet.BossID = stateMachine.Boss.bossID;
             packet.BossState = (int)BossState.Die;
+            packet.CurSpeed = 0f;
             Managers.Network.Send(packet);
         }
     }

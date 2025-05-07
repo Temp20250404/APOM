@@ -263,12 +263,22 @@ class PacketHandler
         Debug.Log($"보스 {bossPhasePacket.BossID} 상태: {state}");
         if (boss != null)
         {
+            // 스킬이 실행 중일 경우, 패킷을 처리하지 않음
+            if (boss.bossAI.isSkillActive)
+            {
+                Debug.Log("스킬이 실행 중이므로 다른 패킷을 처리하지 않습니다.");
+                return;
+            }
+
             boss.StateMachine.ChangeState(state);
             boss.bossAI.SCChaseTarget(target);
             boss.bossAI.SCMoveSpeed(bossPhasePacket.CurSpeed);
-            //Debug.Log($"보스 {bossPhasePacket.BossID} 상태 변경: {state}");
-            //Debug.Log($"보스 {bossPhasePacket.BossID} 위치 변경: {target}");
-            //Debug.Log($"보스 {bossPhasePacket.BossID} 속도 변경: {bossPhasePacket.CurSpeed}");
+
+            // 스킬 실행을 위한 플래그 처리 (애니메이션 완료 후 리셋)
+            if (state == BossState.Skill1 || state == BossState.Skill2 || state == BossState.Skill3)
+            {
+                boss.bossAI.isSkillActive = true;
+            }
         }
     }
 

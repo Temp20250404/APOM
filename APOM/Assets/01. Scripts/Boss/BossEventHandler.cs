@@ -34,4 +34,9 @@ public class BossEventHandler : MonoBehaviour
     {
         bossAI.EndSkillAnim();
     }
+
+    public void EndSkillByServer()
+    {
+        bossAI.isSkillActive = false;
+    }
 }
