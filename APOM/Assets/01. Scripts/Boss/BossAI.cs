@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 using SEnum = System.Enum;
 
 public class BossAI : MonoBehaviour
@@ -44,7 +45,16 @@ public class BossAI : MonoBehaviour
 
     public bool isSkillActive = false;
 
+    //public Canvas skill1Canvas;
+    //public Image skill1Shot;
+    //public Canvas skill2Canvas;
+    //public Image skill2Shot;
+    //public Canvas skill3Canvas;
+    //public Image skill3Shot;
 
+
+    public GameObject skillAreaPrefab; // 프리팹: WorldSpace Canvas 안에 Image 있는 거
+    private GameObject currentSkillArea;
 
     //Dictionary<BossPhase, List<BossSkill>> bossSkillData = new();
 
@@ -55,6 +65,18 @@ public class BossAI : MonoBehaviour
         colliders = GetComponent<BoxCollider>();
         anim = GetComponentInChildren<Animator>();
         postSkillCooldownTimer = postSkillCooldown;
+    }
+
+    private void Start()
+    {
+        //skill1Shot.enabled = false;
+        //skill2Shot.enabled = false;
+        //skill3Shot.enabled = false;
+
+        //skill1Canvas.enabled = false;
+        //skill2Canvas.enabled = false;
+        //skill3Canvas.enabled = false;
+
     }
 
     private void Update()
@@ -99,13 +121,15 @@ public class BossAI : MonoBehaviour
         Debug.Log("Collider Off");
     }
 
-    public void OnSkill1Eff(float delay)
+    public void OnSkill2Eff(float delay)
     {
         skillEff1.SetActive(true);
-        StartCoroutine(StartEffSkill1(delay));
+        Vector3 up = new Vector3(0, 2, 0);
+        ShowSkillArea(transform.position + up, 2f, 1f); // 스킬 범위 표시
+        StartCoroutine(StartEffSkill2(delay));
     }
 
-    IEnumerator StartEffSkill1(float delay)
+    IEnumerator StartEffSkill2(float delay)
     {
         yield return new WaitForSeconds(delay);
         skillEff1.SetActive(false);
@@ -177,6 +201,28 @@ public class BossAI : MonoBehaviour
         target.localPosition = endPos;
         target.localRotation = endRot;
         anim.SetBool("Skill3Down", true);
+    }
+
+    public void ShowSkillArea(Vector3 position, float radius, float duration)
+    {
+        if (currentSkillArea != null)
+            Destroy(currentSkillArea);
+
+        currentSkillArea = Instantiate(skillAreaPrefab, position, Quaternion.identity);
+        currentSkillArea.transform.SetParent(transform);
+
+        // 크기 조정 (Canvas scale 기준)
+        float scale = radius * 2f;
+        currentSkillArea.transform.localScale = new Vector3(scale, scale, scale);
+
+        StartCoroutine(HideSkillAreaAfter(duration));
+    }
+
+    private IEnumerator HideSkillAreaAfter(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (currentSkillArea != null)
+            Destroy(currentSkillArea);
     }
 
     public void EndSkillAnim()

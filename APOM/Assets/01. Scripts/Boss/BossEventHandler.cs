@@ -15,9 +15,9 @@ public class BossEventHandler : MonoBehaviour
         bossAI.ColliderOnEnable(0.3f);
     }
 
-    public void Skill1Eff()
+    public void Skill2Eff()
     {
-        bossAI.OnSkill1Eff(3.0f);
+        bossAI.OnSkill2Eff(3.0f);
     }
 
     public void UseSkill3()

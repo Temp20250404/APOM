@@ -405,7 +405,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0.34787232
-        functionName: Skill1Eff
+        functionName: Skill2Eff
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
