@@ -15,6 +15,11 @@ public class BossEventHandler : MonoBehaviour
         bossAI.ColliderOnEnable(0.3f);
     }
 
+    public void UseSkill1()
+    {
+        Vector3 up = new Vector3(0, 2, 0);
+        bossAI.ShowSkill1Area(transform.position + up, 2f, 1f); // 스킬 범위 표시
+    }
     public void Skill2Eff()
     {
         bossAI.OnSkill2Eff(3.0f);

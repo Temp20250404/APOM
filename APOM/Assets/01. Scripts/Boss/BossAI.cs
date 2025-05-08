@@ -45,16 +45,11 @@ public class BossAI : MonoBehaviour
 
     public bool isSkillActive = false;
 
-    //public Canvas skill1Canvas;
-    //public Image skill1Shot;
-    //public Canvas skill2Canvas;
-    //public Image skill2Shot;
-    //public Canvas skill3Canvas;
-    //public Image skill3Shot;
-
-
-    public GameObject skillAreaPrefab; // 프리팹: WorldSpace Canvas 안에 Image 있는 거
     private GameObject currentSkillArea;
+    public GameObject skillConePrefab; // 스킬 범위 표시용 콘 모양 프리팹
+    public GameObject skillAreaPrefab; // 스킬 범위 표시용 범위 모양 프리팹
+    public GameObject skillAreaFillPrefab; // 스킬 범위 표시용 커지는 모양 프리팹
+
 
     //Dictionary<BossPhase, List<BossSkill>> bossSkillData = new();
 
@@ -67,17 +62,6 @@ public class BossAI : MonoBehaviour
         postSkillCooldownTimer = postSkillCooldown;
     }
 
-    private void Start()
-    {
-        //skill1Shot.enabled = false;
-        //skill2Shot.enabled = false;
-        //skill3Shot.enabled = false;
-
-        //skill1Canvas.enabled = false;
-        //skill2Canvas.enabled = false;
-        //skill3Canvas.enabled = false;
-
-    }
 
     private void Update()
     {
@@ -125,7 +109,7 @@ public class BossAI : MonoBehaviour
     {
         skillEff1.SetActive(true);
         Vector3 up = new Vector3(0, 2, 0);
-        ShowSkillArea(transform.position + up, 2f, 1f); // 스킬 범위 표시
+        ShowSkill2Area(transform.position + up, 2f, 1f); // 스킬 범위 표시
         StartCoroutine(StartEffSkill2(delay));
     }
 
@@ -137,6 +121,8 @@ public class BossAI : MonoBehaviour
 
     public void UseSkill3(Transform transform)
     {
+        Vector3 up = new Vector3(0, 2, 0);
+        ShowSkill3Area(transform.position + up, 3f, 10f);
         StartCoroutine(FlyUp(transform));
     }
 
@@ -202,13 +188,38 @@ public class BossAI : MonoBehaviour
         target.localRotation = endRot;
         anim.SetBool("Skill3Down", true);
     }
-
-    public void ShowSkillArea(Vector3 position, float radius, float duration)
+    public void ShowSkill1Area(Vector3 position, float radius, float duration)
     {
         if (currentSkillArea != null)
             Destroy(currentSkillArea);
 
-        currentSkillArea = Instantiate(skillAreaPrefab, position, Quaternion.identity);
+        currentSkillArea = new GameObject("SkillAreaContainer");
+        currentSkillArea.transform.position = position;
+        currentSkillArea.transform.SetParent(transform);
+
+        Vector3[] directions =
+            { transform.forward, -transform.forward, transform.right, -transform.right};
+
+        foreach (Vector3 dir in directions)
+        {
+            Vector3 spawnPos = position + dir.normalized * radius;
+
+            GameObject cone = Instantiate(skillConePrefab, spawnPos, Quaternion.LookRotation(dir), currentSkillArea.transform);
+            cone.transform.SetParent(currentSkillArea.transform);
+
+            // 크기 조정 (Canvas scale 기준)
+            float scale = radius * 2f;
+            cone.transform.localScale = new Vector3(scale, scale, scale);
+        }
+
+        StartCoroutine(HideSkillAreaAfter(duration));
+    }
+    public void ShowSkill2Area(Vector3 position, float radius, float duration)
+    {
+        if (currentSkillArea != null)
+            Destroy(currentSkillArea);
+
+        currentSkillArea = Instantiate(skillConePrefab, position, Quaternion.identity);
         currentSkillArea.transform.SetParent(transform);
 
         // 크기 조정 (Canvas scale 기준)
@@ -217,6 +228,50 @@ public class BossAI : MonoBehaviour
 
         StartCoroutine(HideSkillAreaAfter(duration));
     }
+
+    public void ShowSkill3Area(Vector3 position, float radius, float duration)
+    {
+        if (currentSkillArea != null)
+            Destroy(currentSkillArea);
+
+        currentSkillArea = new GameObject("SkillAreaContainer");
+        currentSkillArea.transform.position = position;
+        currentSkillArea.transform.SetParent(transform);
+
+        float baseScale = radius * 2f;
+
+        // 1. 프리팹 A - 고정 크기
+        GameObject areaA = Instantiate(skillAreaPrefab, position, Quaternion.identity, currentSkillArea.transform);
+        areaA.transform.localScale = new Vector3(baseScale, baseScale, baseScale);
+
+        // 2. 프리팹 B - 커지는 효과
+        GameObject areaB = Instantiate(skillAreaFillPrefab, position, Quaternion.identity, currentSkillArea.transform);
+        areaB.transform.localScale = new Vector3(0, 0, 0);
+
+        StartCoroutine(ScaleOverTime(areaB, 0f, baseScale, duration)); // x,z만 커짐
+
+        StartCoroutine(HideSkillAreaAfter(duration));
+    }
+
+    private IEnumerator ScaleOverTime(GameObject target, float fromXZ, float toXZ, float duration)
+    {
+        float elapsed = 0f;
+        Vector3 from = new Vector3(fromXZ, target.transform.localScale.y, fromXZ);
+        Vector3 to = new Vector3(toXZ, target.transform.localScale.y, toXZ);
+
+        while (elapsed < duration)
+        {
+            if (target == null) yield break;
+
+            target.transform.localScale = Vector3.Lerp(from, to, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        if (target != null)
+            target.transform.localScale = to;
+    }
+
 
     private IEnumerator HideSkillAreaAfter(float delay)
     {

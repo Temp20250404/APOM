@@ -95,7 +95,9 @@ MonoBehaviour:
   flyUpDuration: 5
   rotateAngleX: 70
   isSkillActive: 0
-  skillAreaPrefab: {fileID: 7591399980611067046, guid: 94bd3bac896541f439cb2427ec1a0741, type: 3}
+  skillConePrefab: {fileID: 7591399980611067046, guid: 94bd3bac896541f439cb2427ec1a0741, type: 3}
+  skillAreaPrefab: {fileID: 7075694205722205060, guid: 5f530ec5c57abf34bb83d365878637c4, type: 3}
+  skillAreaFillPrefab: {fileID: 2807682432592008053, guid: 94182d092db6ae8409ccf22783d1ee25, type: 3}
 --- !u!195 &4297305140897777562
 NavMeshAgent:
   m_ObjectHideFlags: 0
