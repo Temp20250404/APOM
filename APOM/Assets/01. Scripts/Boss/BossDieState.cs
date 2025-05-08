@@ -13,14 +13,13 @@ public class BossDieState : BossBaseState
         // BaseSpeed에 곱해줄 값 세팅
         stateMachine.MoveMentSpeedModifier = 0;
         base.StateEnter();
-        StartAnimation(stateMachine.Boss.BossAnimationData.BossDie_ParameterHash);
+        stateMachine.Boss.Anim.SetTrigger(stateMachine.Boss.BossAnimationData.BossDie_ParameterHash);
     }
 
     // Walk 상태에서 다른 상태로 전환될 때
     public override void StateExit()
     {
         base.StateExit();
-        StopAnimation(stateMachine.Boss.BossAnimationData.BossDie_ParameterHash);
     }
 
     public override void StateUpdate()

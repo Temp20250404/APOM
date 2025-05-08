@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Game;
 
-public class BossBaseState : IState
+public abstract class BossBaseState : IState
 {
     protected BossStateMachine stateMachine;
     protected readonly BossGroundData groundData;
-
 
     public BossBaseState(BossStateMachine stateMachine)
     {
@@ -14,27 +12,15 @@ public class BossBaseState : IState
         groundData = stateMachine.Boss.SOData.GroundData;
     }
 
-    public virtual void StateEnter()
-    {
-        //stateMachine.Boss.bossAI.MoveSpeed(stateMachine.MoveMentSpeedModifier);
-    }
+    public virtual void StateEnter() { }
 
-    public virtual void StateUpdate()
-    {
+    public virtual void StateUpdate() { }
 
-    }
+    public virtual void StateExit() { }
 
-    public virtual void StateExit()
-    {
-    }
+    public virtual void StateHandleInput() { }
 
-    public virtual void StateHandleInput()
-    {
-    }
-
-    public virtual void StatePhysicsUpdate()
-    {
-    }
+    public virtual void StatePhysicsUpdate() { }
 
     protected void StartAnimation(int parameterHash)
     {
@@ -44,5 +30,16 @@ public class BossBaseState : IState
     protected void StopAnimation(int parameterHash)
     {
         stateMachine.Boss.Anim.SetBool(parameterHash, false);
+    }
+
+    protected void SendBossState(BossState nextState, float speed = 0f)
+    {
+        CS_BOSS_PHASE packet = new CS_BOSS_PHASE
+        {
+            BossID = stateMachine.Boss.bossID,
+            BossState = (uint)nextState,
+            CurSpeed = speed
+        };
+        Managers.Network.Send(packet);
     }
 }

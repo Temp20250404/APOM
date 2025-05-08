@@ -61,7 +61,7 @@ MonoBehaviour:
     BossSkill2ParameterName: BossSkill2
     BossSkill3ParameterName: BossSkill3
     BossSkill_ParameterName: '@BossSkill'
-    BossDie_ParameterName: BossDie
+    BossDie_ParameterName: Die
   bossAI: {fileID: 0}
   currentHealth: 0
 --- !u!114 &3538000766732058447
@@ -86,7 +86,7 @@ MonoBehaviour:
   target: {fileID: 0}
   isPerson: 0
   phase: 0
-  skillEff1: {fileID: 6541568356613396825}
+  isSkillActive: 0
   postSkillCooldown: 60
   postSkillCooldownTimer: 0
   phase3SkillUsed: 0
@@ -94,7 +94,7 @@ MonoBehaviour:
   flyUpAmount: 50
   flyUpDuration: 5
   rotateAngleX: 70
-  isSkillActive: 0
+  skillEff1: {fileID: 6541568356613396825}
   skillConePrefab: {fileID: 7591399980611067046, guid: 94bd3bac896541f439cb2427ec1a0741, type: 3}
   skillAreaPrefab: {fileID: 7075694205722205060, guid: 5f530ec5c57abf34bb83d365878637c4, type: 3}
   skillAreaFillPrefab: {fileID: 2807682432592008053, guid: 94182d092db6ae8409ccf22783d1ee25, type: 3}

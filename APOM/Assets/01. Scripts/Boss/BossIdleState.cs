@@ -1,36 +1,14 @@
-using Game;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BossIdleState : BossBaseState
 {
-    //private float idleTime;
-    //private float waitTime;
-    public BossIdleState(BossStateMachine stateMachine) : base(stateMachine)
-    {
+    public BossIdleState(BossStateMachine stateMachine) : base(stateMachine) { }
 
-    }
-
-    // Idle 상태에 들어왔을 때
     public override void StateEnter()
     {
-        // 가만히 있는 상태이기 때문에 Speed를 0으로
         stateMachine.MoveMentSpeedModifier = 0f;
         base.StateEnter();
-        // Animation 전환
         StartAnimation(stateMachine.Boss.BossAnimationData.IdleParameterHash);
-
-        //idleTime = Random.Range(2f, 4f);
-        //waitTime = 0f;
-    }
-
-    // Idle 상태에서 다른 상태로 전환될 때
-    public override void StateExit()
-    {
-        base.StateExit();
-
-        StopAnimation(stateMachine.Boss.BossAnimationData.IdleParameterHash);
     }
 
     public override void StateUpdate()
@@ -39,37 +17,20 @@ public class BossIdleState : BossBaseState
 
         if (stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData))
         {
-            AnimatorStateInfo animStateInfo = stateMachine.Boss.Anim.GetCurrentAnimatorStateInfo(0);
-            if (animStateInfo.IsTag("Idle") && animStateInfo.normalizedTime >= 0.8f)
-            {
-                CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
-                packet.BossID = stateMachine.Boss.bossID;
-                packet.BossState = (int)BossState.Attack;
-                packet.CurSpeed = 0f;
-                Managers.Network.Send(packet);
-            }
+            AnimatorStateInfo animState = stateMachine.Boss.Anim.GetCurrentAnimatorStateInfo(0);
+            if (animState.IsTag("Idle") && animState.normalizedTime >= 0.8f)
+                SendBossState(BossState.Attack);
         }
-
-        if (!stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData) && 
-            stateMachine.Boss.bossAI.DetectTargets(stateMachine.Boss.SOData.PlayerChasingRange))
+        else if (stateMachine.Boss.bossAI.DetectTargets(stateMachine.Boss.SOData.PlayerChasingRange))
         {
-            CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
-            packet.BossID = stateMachine.Boss.bossID;
-            packet.BossState = (int)BossState.Chase;
-            packet.CurSpeed = stateMachine.Boss.SOData.GroundData.ChasingSpeedModifier *
-                                stateMachine.Boss.SOData.GroundData.BaseSpeed;
-            Managers.Network.Send(packet);
+            float chaseSpeed = groundData.ChasingSpeedModifier * groundData.BaseSpeed;
+            SendBossState(BossState.Chase, chaseSpeed);
         }
+    }
 
+    public override void StateExit()
+    {
+        base.StateExit();
+        StopAnimation(stateMachine.Boss.BossAnimationData.IdleParameterHash);
     }
 }
-        //UpdateWalk();
-
-    //private void UpdateWalk()
-    //{
-    //    waitTime += Time.deltaTime;
-    //    if (waitTime >= idleTime)
-    //    {
-    //        stateMachine.ChangeState(BossState.Walk);
-    //    }
-    //}
