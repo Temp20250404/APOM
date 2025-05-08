@@ -18,7 +18,7 @@ public class BossEventHandler : MonoBehaviour
 
     public void UseSkill1()
     {
-        bossAI.ShowSkill1Area(bossAI.transform.position + Vector3.up * 2f, 2f, 1f);
+        bossAI.ShowSkill1Area();
     }
     public void Skill2Eff()
     {

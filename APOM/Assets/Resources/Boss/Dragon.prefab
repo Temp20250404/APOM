@@ -76,6 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fbb28d37ea13754db64f948c11372a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boss: {fileID: 0}
   viewDistance: 10
   targetMask:
     serializedVersion: 2
@@ -95,9 +96,9 @@ MonoBehaviour:
   flyUpDuration: 5
   rotateAngleX: 70
   skillEff1: {fileID: 6541568356613396825}
-  skillConePrefab: {fileID: 7591399980611067046, guid: 94bd3bac896541f439cb2427ec1a0741, type: 3}
-  skillAreaPrefab: {fileID: 7075694205722205060, guid: 5f530ec5c57abf34bb83d365878637c4, type: 3}
-  skillAreaFillPrefab: {fileID: 2807682432592008053, guid: 94182d092db6ae8409ccf22783d1ee25, type: 3}
+  skill1Data: {fileID: 11400000, guid: af7d2171c26087a40a46f60407ca8fee, type: 2}
+  skill2Data: {fileID: 11400000, guid: 362b8abf635b64b48ba3ab3228d8318d, type: 2}
+  skill3Data: {fileID: 11400000, guid: 8c0832f1b73b31d44926744c9d817335, type: 2}
 --- !u!195 &4297305140897777562
 NavMeshAgent:
   m_ObjectHideFlags: 0

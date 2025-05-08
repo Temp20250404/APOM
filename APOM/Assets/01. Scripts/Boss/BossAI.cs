@@ -36,11 +36,13 @@ public class BossAI : MonoBehaviour
 
     [Header("Skill Effects")]
     public GameObject skillEff1;
-    public GameObject skillConePrefab;
-    public GameObject skillAreaPrefab;
-    public GameObject skillAreaFillPrefab;
 
     private GameObject currentSkillArea;
+
+    [Header("스킬 영역 데이터")]
+    public SkillAreaData skill1Data;
+    public SkillAreaData skill2Data;
+    public SkillAreaData skill3Data;
 
     // ─────────────────────────────────────────────
     // ▶ 초기화
@@ -77,7 +79,7 @@ public class BossAI : MonoBehaviour
 
         postSkillCooldownTimer += Time.deltaTime;
 
-        if (postSkillCooldownTimer >= postSkillCooldown && !phase3SkillUsed)
+        if (postSkillCooldownTimer >= postSkillCooldown && !isSkillActive)
         {
             postSkillCooldownTimer = 0f;
             SendSkillPacket(BossState.Skill1);
@@ -159,8 +161,7 @@ public class BossAI : MonoBehaviour
 
     public void UseSkill3(Transform trans)
     {
-        Vector3 offset = new Vector3(0, 2, 0);
-        ShowSkill3Area(trans.position + offset, 3f, 10f);
+        ShowSkill3Area();
         StartCoroutine(FlyUp(trans));
     }
 
@@ -220,7 +221,7 @@ public class BossAI : MonoBehaviour
     public void OnSkill2Eff(float delay)
     {
         skillEff1.SetActive(true);
-        ShowSkill2Area(transform.position + Vector3.up * 2f, 2f, 1f);
+        ShowSkill2Area();
         StartCoroutine(DeactivateEff(skillEff1, delay));
     }
 
@@ -233,54 +234,60 @@ public class BossAI : MonoBehaviour
     // ─────────────────────────────────────────────
     // ▶ 스킬 범위 표시 (UI)
 
-    public void ShowSkill1Area(Vector3 position, float radius, float duration)
+    public void ShowSkill1Area()
     {
         CleanupSkillArea();
 
+        Vector3 center = transform.position + skill1Data.offset;
         currentSkillArea = new GameObject("SkillAreaContainer");
-        currentSkillArea.transform.position = position;
+        currentSkillArea.transform.position = center;
         currentSkillArea.transform.SetParent(transform);
 
         Vector3[] dirs = { transform.forward, -transform.forward, transform.right, -transform.right };
 
         foreach (var dir in dirs)
         {
-            Vector3 spawnPos = position + dir * radius;
-            GameObject cone = Instantiate(skillConePrefab, spawnPos, Quaternion.LookRotation(dir), currentSkillArea.transform);
-            cone.transform.localScale = Vector3.one * radius * 2f;
+            Vector3 spawnPos = center + dir * skill1Data.radius;
+            GameObject cone = Instantiate(skill1Data.conePrefab, spawnPos, Quaternion.LookRotation(dir), currentSkillArea.transform);
+            cone.transform.localScale = Vector3.one * skill1Data.radius;
         }
 
-        StartCoroutine(HideSkillAreaAfter(duration));
+        StartCoroutine(HideSkillAreaAfter(skill1Data.duration));
     }
 
-    public void ShowSkill2Area(Vector3 position, float radius, float duration)
+
+    public void ShowSkill2Area()
     {
         CleanupSkillArea();
 
-        currentSkillArea = Instantiate(skillConePrefab, position, Quaternion.identity, transform);
-        currentSkillArea.transform.localScale = Vector3.one * radius * 2f;
+        Vector3 spawnPos = transform.position + skill2Data.offset;
+        currentSkillArea = Instantiate(skill2Data.conePrefab, spawnPos, Quaternion.identity, transform);
+        currentSkillArea.transform.localScale = Vector3.one * skill2Data.radius;
 
-        StartCoroutine(HideSkillAreaAfter(duration));
+        StartCoroutine(HideSkillAreaAfter(skill2Data.duration));
     }
 
-    public void ShowSkill3Area(Vector3 position, float radius, float duration)
+    public void ShowSkill3Area()
     {
         CleanupSkillArea();
+
+        Vector3 center = transform.position + skill3Data.offset;
+        float scale = skill3Data.radius;
 
         currentSkillArea = new GameObject("SkillAreaContainer");
-        currentSkillArea.transform.position = position;
+        currentSkillArea.transform.position = center;
         currentSkillArea.transform.SetParent(transform);
 
-        float scale = radius * 2f;
-
-        GameObject baseArea = Instantiate(skillAreaPrefab, position, Quaternion.identity, currentSkillArea.transform);
+        GameObject baseArea = Instantiate(skill3Data.areaBasePrefab, center, Quaternion.identity, currentSkillArea.transform);
         baseArea.transform.localScale = Vector3.one * scale;
 
-        GameObject growingArea = Instantiate(skillAreaFillPrefab, position, Quaternion.identity, currentSkillArea.transform);
-        growingArea.transform.localScale = Vector3.zero;
+        GameObject growArea = Instantiate(skill3Data.areaGrowPrefab, center, Quaternion.identity, currentSkillArea.transform);
+        growArea.transform.localScale = Vector3.zero;
 
-        StartCoroutine(ScaleOverTime(growingArea, 0f, scale, duration));
-        StartCoroutine(HideSkillAreaAfter(duration));
+        if (skill3Data.useGrowEffect)
+            StartCoroutine(ScaleOverTime(growArea, 0f, scale, skill3Data.growTime));
+
+        StartCoroutine(HideSkillAreaAfter(skill3Data.duration));
     }
 
     private IEnumerator ScaleOverTime(GameObject target, float fromXZ, float toXZ, float duration)
