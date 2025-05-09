@@ -46,6 +46,7 @@ public class PlayerManager : IManager
         if (isFirstSpawn)
         {
             player.inputController.SetMainPlayer();
+            Util.GetOrAddComponent<UseGravity>(go);
             isFirstSpawn = false;
         }
     }

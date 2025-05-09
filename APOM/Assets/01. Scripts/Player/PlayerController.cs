@@ -84,27 +84,7 @@ public class PlayerController : MonoBehaviour
 
         if (isMainPlayer)
         {
-            rotationChanged = (ucurrentKeyInputs != 0) && (currentRotation != previousRotation);
-
-            if (ucurrentKeyInputs != previousKeyInputs || 
-                rotationChanged)
-            {
-                previousKeyInputs = ucurrentKeyInputs;
-                previousRotation = currentRotation;
-                Util.SendPacket<CS_KEYINFO>(packet =>
-                {
-                    packet.KeyInfo = sendKeyInputs;
-                    packet.CameraYaw = sendPacketRotation;
-                });
-            }
-
-            Util.SendPacket<CS_POSITION_SYNC>(packet =>
-            {
-                packet.PosX = transform.position.x;
-                packet.PosY = transform.position.z;
-                packet.CameraYaw = transform.rotation.eulerAngles.y;
-            });
-            //Debug.Log($"Send Position Packet: {transform.position.x}, {transform.position.z}, {transform.rotation.eulerAngles.y}");
+            SendKeyInfoPacket();
         }
     }
 
@@ -182,6 +162,31 @@ public class PlayerController : MonoBehaviour
         {
             sendPacketRotation = currentRotation;
         }
+    }
+
+    private void SendKeyInfoPacket()
+    {
+        rotationChanged = (ucurrentKeyInputs != 0) && (currentRotation != previousRotation);
+
+        if (ucurrentKeyInputs != previousKeyInputs ||
+            rotationChanged)
+        {
+            previousKeyInputs = ucurrentKeyInputs;
+            previousRotation = currentRotation;
+            Util.SendPacket<CS_KEYINFO>(packet =>
+            {
+                packet.KeyInfo = sendKeyInputs;
+                packet.CameraYaw = sendPacketRotation;
+            });
+        }
+
+        Util.SendPacket<CS_POSITION_SYNC>(packet =>
+        {
+            packet.PosX = transform.position.x;
+            packet.PosY = transform.position.z;
+            packet.CameraYaw = transform.rotation.eulerAngles.y;
+        });
+        //Debug.Log($"Send Position Packet: {transform.position.x}, {transform.position.z}, {transform.rotation.eulerAngles.y}");
     }
 
     public void ReciveKeyInfoPacket(uint _PacketKeyInputs, float _PacketRotation)

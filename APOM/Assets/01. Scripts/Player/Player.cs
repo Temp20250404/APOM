@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     public Animator animator { get; private set; }
     public PlayerController inputController { get; private set; }
     public CharacterController characterController { get; private set; }
-    private PlayerStateMachine stateMachine;
+    [field: SerializeField] private PlayerStateMachine stateMachine;
 
     public Camera mainCamera { get; set; }
     public Transform mainCameraTransform { get; set; }

@@ -23,16 +23,21 @@ public class PlayerDodgeState : PlayerAttackState
         StartAnimation(stateMachine.player.animationData.dodgeParameterHash);
 
         Vector3 inputDir = GetMovementDirection();
+        inputDir.y = 0f;
+
+        float yaw;
 
         if (inputDir.sqrMagnitude < 0.01f)
         {
-            dodgeDir = Quaternion.Euler(0f, stateMachine.player.inputController.recivePacketRotation, 0f) * Vector3.forward;
-            
+            yaw = stateMachine.player.inputController.recivePacketRotation;
         }
         else
         {
-            dodgeDir = new Vector3(GetMovementDirection().x, 0f, GetMovementDirection().z).normalized;
+            yaw = Mathf.Atan2(inputDir.x, inputDir.z) * Mathf.Rad2Deg;
         }
+
+        dodgeDir = Quaternion.Euler(0f, yaw, 0f) * Vector3.forward;
+
         DirectRotate((Quaternion.Euler(0f, 90f, 0f) * dodgeDir));
     }
 

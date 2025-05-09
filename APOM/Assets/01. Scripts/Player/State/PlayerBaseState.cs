@@ -14,11 +14,6 @@ public class PlayerBaseState : IState
     protected PlayerStateMachine stateMachine;
     protected readonly PlayerDefaultData defaultData;
 
-    private float gravity = -9.8f;
-    private Vector3 velocity;
-    private int groundMask = (1 << LayerMask.NameToLayer("Ground"));
-    private bool isGrounded;
-
     public PlayerBaseState(PlayerStateMachine stateMachine)
     {
         this.stateMachine = stateMachine;
@@ -47,8 +42,6 @@ public class PlayerBaseState : IState
 
     public virtual void StatePhysicsUpdate()
     {
-        CheckGrounded();
-        Gravity();
     }
 
     protected void StartAnimation(int animationHash)
@@ -64,7 +57,6 @@ public class PlayerBaseState : IState
     private void ReadMovementInput()
     {
         stateMachine.movementInput = GetInputWASD();
-        //stateMachine.movementInput = stateMachine.player.inputController.playerActions.Move.ReadValue<Vector2>();
     }
 
     private void RemotePlayerSync()
@@ -110,27 +102,6 @@ public class PlayerBaseState : IState
         right.Normalize();
 
         return forward * stateMachine.movementInput.y + right * stateMachine.movementInput.x;
-    }
-
-    private void Gravity()
-    {
-        if (!isGrounded)
-        {
-            // 바닥에 닿아 있지 않을 때 중력 적용
-            velocity.y += gravity * Time.deltaTime;
-        }
-        // 속도를 위치에 적용
-        stateMachine.player.transform.position += velocity * Time.deltaTime;
-    }
-
-    private void CheckGrounded()
-    {
-        RaycastHit hitInfo;
-        isGrounded = Physics.Raycast(stateMachine.player.transform.position, Vector3.down, out hitInfo, 0.05f, groundMask);
-        if (isGrounded && velocity.y < 0)
-        {
-            velocity.y = 0;
-        }
     }
 
     protected Vector3 GetCameraDirection()

@@ -3739,7 +3739,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 372603761}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.08042035, y: 0, z: 0, w: 0.996761}
+  m_LocalRotation: {x: 0.09853762, y: 0.000000004280661, z: -4.238689e-10, w: 0.99513334}
   m_LocalPosition: {x: 0, y: 3, z: -2.08}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -12169,9 +12169,41 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 532971932691457835, guid: ee68db10906606f43afdacd44c78d1b4, type: 3}
+      propertyPath: m_YDamping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 532971932691457835, guid: ee68db10906606f43afdacd44c78d1b4, type: 3}
+      propertyPath: m_FollowOffset.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 532971932691457835, guid: ee68db10906606f43afdacd44c78d1b4, type: 3}
+      propertyPath: m_FollowOffset.z
+      value: -10
+      objectReference: {fileID: 0}
     - target: {fileID: 580183506268010224, guid: ee68db10906606f43afdacd44c78d1b4, type: 3}
       propertyPath: m_Name
       value: Player Camera
+      objectReference: {fileID: 0}
+    - target: {fileID: 680001052329130704, guid: ee68db10906606f43afdacd44c78d1b4, type: 3}
+      propertyPath: m_YDamping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 680001052329130704, guid: ee68db10906606f43afdacd44c78d1b4, type: 3}
+      propertyPath: m_FollowOffset.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 680001052329130704, guid: ee68db10906606f43afdacd44c78d1b4, type: 3}
+      propertyPath: m_FollowOffset.z
+      value: -10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8760387202137344426, guid: ee68db10906606f43afdacd44c78d1b4, type: 3}
+      propertyPath: m_YDamping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8846991807231192882, guid: ee68db10906606f43afdacd44c78d1b4, type: 3}
+      propertyPath: m_YAxis.Value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8846991807231192882, guid: ee68db10906606f43afdacd44c78d1b4, type: 3}
       propertyPath: m_Rigs.Array.data[0]
