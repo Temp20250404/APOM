@@ -7,6 +7,7 @@ public class BossEventHandler : MonoBehaviour
 {
     private BossAI bossAI;
 
+    private bool isSkill1Active = false;
     private void Awake()
     {
         bossAI = GetComponentInParent<BossAI>();
@@ -19,6 +20,20 @@ public class BossEventHandler : MonoBehaviour
     public void UseSkill1()
     {
         bossAI.ShowSkill1Area();
+    }
+
+    public void EndSkill1()
+    {
+        if (!isSkill1Active)
+        {
+            isSkill1Active = true;
+            return;
+        }
+
+        if (isSkill1Active)
+        {
+            EndSkillByServer();
+        }
     }
     public void Skill2Eff()
     {

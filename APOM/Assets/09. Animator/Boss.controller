@@ -359,7 +359,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 2324259850243551658}
-    m_Position: {x: 440, y: 170, z: 0}
+    m_Position: {x: 440, y: 400, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2334318612056404811}
     m_Position: {x: 180, y: 150, z: 0}
@@ -393,7 +393,7 @@ AnimatorStateMachine:
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
   m_EntryPosition: {x: 450, y: 20, z: 0}
-  m_ExitPosition: {x: 480, y: 620, z: 0}
+  m_ExitPosition: {x: 460, y: 640, z: 0}
   m_ParentStateMachinePosition: {x: 780, y: -40, z: 0}
   m_DefaultState: {fileID: -2334318612056404811}
 --- !u!1102 &-2334318612056404811
@@ -681,7 +681,7 @@ AnimatorController:
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
-    m_DefaultBool: 1
+    m_DefaultBool: 0
     m_Controller: {fileID: 0}
   - m_Name: BossSkill1
     m_Type: 4
@@ -699,7 +699,7 @@ AnimatorController:
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
-    m_DefaultBool: 1
+    m_DefaultBool: 0
     m_Controller: {fileID: 0}
   - m_Name: Skill3Attack
     m_Type: 4

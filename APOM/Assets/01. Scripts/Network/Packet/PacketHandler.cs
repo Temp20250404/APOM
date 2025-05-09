@@ -262,19 +262,30 @@ class PacketHandler
 
         if (boss != null)
         {
-            if (boss.bossAI.isSkillActive && state != BossState.Die)
+            if (boss.bossAI.isSkillActive && state != BossState.Die 
+                && state != BossState.Skill2 && state != BossState.Skill3)
             {
                 Debug.Log("스킬이 실행 중이므로 상태 전환 차단됨");
                 return;
             }
 
-            // Die 상태만 예외적으로 "보류" 처리
+            // Skill 상태 예외적으로 "보류" 처리
+            if ((boss.bossAI.isSkillActive && state == BossState.Skill2) ||
+                (boss.bossAI.isSkillActive && state == BossState.Skill3))
+            {
+                Debug.Log("스킬 중 skills 상태 → 스킬 종료 후 적용");
+                boss.bossAI.pendingState = state;
+                return;
+            }
+
+            // Die 상태 예외적으로 "보류" 처리
             if (boss.bossAI.isSkillActive && state == BossState.Die)
             {
                 Debug.Log("스킬 중 Die 상태 → 스킬 종료 후 적용");
                 boss.bossAI.pendingState = state;
                 return;
             }
+
 
             boss.StateMachine.ChangeState(state);
             boss.bossAI.SCChaseTarget(target);
