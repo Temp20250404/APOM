@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea4d4be9ab7a74d48b7a3650782cf91a, type: 3}
   m_Name: Skill2
   m_EditorClassIdentifier: 
-  radius: 4
   duration: 5
   offset: {x: 0, y: 2, z: 0}
+  ratation: {x: 30, y: 2, z: 8}
   useGrowEffect: 0
   growTime: 6
-  conePrefab: {fileID: 7591399980611067046, guid: 94bd3bac896541f439cb2427ec1a0741, type: 3}
+  conePrefab: {fileID: 7591399980611067046, guid: 4b24adfafcd900143898c22d533e6532, type: 3}
   areaBasePrefab: {fileID: 0}
   areaGrowPrefab: {fileID: 0}

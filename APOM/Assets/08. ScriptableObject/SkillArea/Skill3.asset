@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea4d4be9ab7a74d48b7a3650782cf91a, type: 3}
   m_Name: Skill3
   m_EditorClassIdentifier: 
-  radius: 6
   duration: 10
   offset: {x: 0, y: 2, z: 0}
+  ratation: {x: 6, y: 2, z: 6}
   useGrowEffect: 1
   growTime: 6
   conePrefab: {fileID: 0}
