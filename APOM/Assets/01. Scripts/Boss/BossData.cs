@@ -29,4 +29,5 @@ public class BossData : ScriptableObject
     [field: SerializeField] public BossGroundData GroundData { get; private set; }
     //[field: SerializeField] public int Damage { get; private set; }
     [field: SerializeField] public  BossConditions BossConditions{ get; private set; }
+    [field: SerializeField] public  string BossName { get; private set; }
 }

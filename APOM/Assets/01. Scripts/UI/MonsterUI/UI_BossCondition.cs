@@ -67,5 +67,9 @@ public class UI_BossCondition : UI_Popup
         GameObject obj = Instantiate(deBuffObj, buffDebuffContainer.transform);
     }
 
+    public void SetBossNameText(string name)
+    {
+        bossNameText.text = name;
+    }
 }
 

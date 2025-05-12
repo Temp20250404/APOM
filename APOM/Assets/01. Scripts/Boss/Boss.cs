@@ -27,20 +27,17 @@ public class Boss : MonoBehaviour
         Anim = GetComponentInChildren<Animator>();
         bossAI = GetComponent<BossAI>();
         BossAnimationData.Initialize();
-        //bossAI.InitSkillsAnimationHash(BossAnimationData);
         stateMachine = new BossStateMachine(this);
-
-
-
     }
     void Start()
     {
         CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
-        packet.BossID = stateMachine.Boss.bossID;
+        packet.BossID = bossID;
         packet.BossState = (int)BossState.Idle;
         packet.CurSpeed = 0f;
+        packet.MaxHp = (uint)SOData.BossConditions.Health;
+        packet.CurrentHp = (uint)currentHealth;
         Managers.Network.Send(packet);
-        currentHealth = SOData.BossConditions.Health;
     }
 
     private void Update()
@@ -53,18 +50,56 @@ public class Boss : MonoBehaviour
         }
     }
 
+    //public void TakeDamage(float damage)
+    //{
+    //    currentHealth -= damage;
+    //    bossAI.UpdatePhase(currentHealth, SOData.BossConditions.Health);
+
+    //    if (currentHealth <= 0)
+    //    {
+    //        CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
+    //        packet.BossID = bossID;
+    //        packet.BossState = (uint)BossState.Die;
+    //        packet.CurSpeed = 0f;
+    //        Managers.Network.Send(packet);
+    //    }
+    //}
+
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
         bossAI.UpdatePhase(currentHealth, SOData.BossConditions.Health);
 
+        // 체력 UI 및 서버 정보 갱신
+        //SendHpPacket();
+
+        // 체력이 0 이하일 경우 사망 처리
         if (currentHealth <= 0)
         {
-            CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
-            packet.BossID = stateMachine.Boss.bossID;
-            packet.BossState = (int)BossState.Die;
-            packet.CurSpeed = 0f;
-            Managers.Network.Send(packet);
+            SendPhasePacket(BossState.Die, 0f);
         }
+    }
+
+    //private void SendHpPacket()
+    //{
+    //    CS_BOSS_HP_UPDATE hpPacket = new CS_BOSS_HP_UPDATE();
+    //    hpPacket.BossID = bossID;
+    //    hpPacket.CurrentHp = (uint)Mathf.Max(0, currentHealth);
+    //    hpPacket.MaxHp = (uint)SOData.BossConditions.Health;
+
+    //    Managers.Network.Send(hpPacket);
+    //}
+
+    private void SendPhasePacket(BossState state, float curSpeed)
+    {
+        CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
+        packet.BossID = bossID;
+        packet.BossState = (uint)state;
+        packet.CurSpeed = curSpeed;
+        packet.CurrentHp = (uint)Mathf.Max(0, currentHealth);
+        packet.MaxHp = (uint)SOData.BossConditions.Health;
+        // 위치, 목표 좌표도 필요시 설정
+
+        Managers.Network.Send(packet);
     }
 }

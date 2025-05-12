@@ -21,6 +21,10 @@ public class BossEventHandler : MonoBehaviour
     {
         bossAI.ShowSkill1Area();
     }
+    public void TurnSkill1()
+    {
+        bossAI.StartRotationCorrection();
+    }
 
     public void EndSkill1()
     {

@@ -63,7 +63,7 @@ MonoBehaviour:
     BossSkill_ParameterName: '@BossSkill'
     BossDie_ParameterName: Die
   bossAI: {fileID: 0}
-  currentHealth: 0
+  currentHealth: 100
 --- !u!114 &3538000766732058447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99,6 +99,7 @@ MonoBehaviour:
   skill1Data: {fileID: 11400000, guid: af7d2171c26087a40a46f60407ca8fee, type: 2}
   skill2Data: {fileID: 11400000, guid: 362b8abf635b64b48ba3ab3228d8318d, type: 2}
   skill3Data: {fileID: 11400000, guid: 8c0832f1b73b31d44926744c9d817335, type: 2}
+  blendDuration: 1
 --- !u!195 &4297305140897777562
 NavMeshAgent:
   m_ObjectHideFlags: 0

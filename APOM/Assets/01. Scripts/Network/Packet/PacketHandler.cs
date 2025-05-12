@@ -302,6 +302,12 @@ class PacketHandler
             {
                 boss.bossAI.isSkillActive = false;
             }
+
+            var ui = Managers.UI.GetPopupUI<UI_BossCondition>();
+            if (ui != null)
+            {
+                ui.SetHPFill(bossPhasePacket);
+            }
         }
     }
 

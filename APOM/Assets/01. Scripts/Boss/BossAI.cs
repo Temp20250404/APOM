@@ -44,6 +44,15 @@ public class BossAI : MonoBehaviour
     public SkillAreaData skill2Data;
     public SkillAreaData skill3Data;
 
+    public float blendDuration = 1.0f; // 회전 보간 지속 시간
+    private Transform model; // 자식
+    private Transform parent; // this.transform
+
+    private Quaternion initialModelRot;
+    private Quaternion initialLocalRot;
+    private bool isBlending = false;
+    private float elapsed = 0f;
+
     // ─────────────────────────────────────────────
     // ▶ 초기화
     void Awake()
@@ -55,9 +64,64 @@ public class BossAI : MonoBehaviour
         postSkillCooldownTimer = postSkillCooldown;
     }
 
+    private void Start()
+    {
+        parent = transform;
+        model = transform.GetChild(0);
+    }
     void Update()
     {
         HandleSkills();
+        if (!isBlending) return;
+        BlendModelRotationToParent();
+    }
+
+    // ─────────────────────────────────────────────
+    // ▶ 스킬 시작 시 회전 보정
+    // ▶ Skill1 사용 시 회전 보정(피자)
+    public void StartRotationCorrection()
+    {
+        if (model == null || parent == null) return;
+
+        // 현재 모델이 회전한 상태라고 가정
+        Quaternion modelWorldRot = model.rotation;
+
+        // 부모에게 회전 흡수
+        parent.rotation = modelWorldRot;
+
+        // 모델은 원래 방향으로 복귀
+        model.localRotation = Quaternion.identity;
+
+        // 보간용 설정
+        initialLocalRot = model.localRotation;
+        elapsed = 0f;
+        isBlending = true;
+    }
+
+    private void BlendModelRotationToParent()
+    {
+        elapsed += Time.deltaTime;
+        float t = Mathf.Clamp01(elapsed / blendDuration);
+
+        // 현재 모델의 Y 회전 각도
+        float currentY = model.localEulerAngles.y;
+        if (currentY > 180f) currentY -= 360f; // -180 ~ 180으로 정규화
+
+        float targetY = Mathf.Lerp(currentY, 0f, t); // 점점 0으로
+
+        float deltaY = currentY - targetY;
+
+        // 부모에 그만큼 회전 추가
+        parent.Rotate(0, deltaY, 0);
+
+        // 모델은 점점 정면으로 보간
+        model.localRotation = Quaternion.Euler(0f, targetY, 0f);
+
+        if (t >= 1f)
+        {
+            model.localRotation = Quaternion.identity;
+            isBlending = false;
+        }
     }
 
     // ─────────────────────────────────────────────
@@ -247,9 +311,8 @@ public class BossAI : MonoBehaviour
 
         foreach (var dir in dirs)
         {
-            Vector3 spawnPos = center + dir * skill1Data.radius;
-            GameObject cone = Instantiate(skill1Data.conePrefab, spawnPos, Quaternion.LookRotation(dir), currentSkillArea.transform);
-            cone.transform.localScale = Vector3.one * skill1Data.radius;
+            GameObject cone = Instantiate(skill1Data.conePrefab, center, Quaternion.LookRotation(dir), currentSkillArea.transform);
+            cone.transform.localScale = skill1Data.ratation;
         }
 
         StartCoroutine(HideSkillAreaAfter(skill1Data.duration));
@@ -262,7 +325,7 @@ public class BossAI : MonoBehaviour
 
         Vector3 spawnPos = transform.position + skill2Data.offset;
         currentSkillArea = Instantiate(skill2Data.conePrefab, spawnPos, Quaternion.identity, transform);
-        currentSkillArea.transform.localScale = Vector3.one * skill2Data.radius;
+        currentSkillArea.transform.localScale = skill2Data.ratation;
 
         StartCoroutine(HideSkillAreaAfter(skill2Data.duration));
     }
@@ -272,14 +335,14 @@ public class BossAI : MonoBehaviour
         CleanupSkillArea();
 
         Vector3 center = transform.position + skill3Data.offset;
-        float scale = skill3Data.radius;
+        Vector3 scale = skill3Data.ratation;
 
         currentSkillArea = new GameObject("SkillAreaContainer");
         currentSkillArea.transform.position = center;
         currentSkillArea.transform.SetParent(transform);
 
         GameObject baseArea = Instantiate(skill3Data.areaBasePrefab, center, Quaternion.identity, currentSkillArea.transform);
-        baseArea.transform.localScale = Vector3.one * scale;
+        baseArea.transform.localScale = scale;
 
         GameObject growArea = Instantiate(skill3Data.areaGrowPrefab, center, Quaternion.identity, currentSkillArea.transform);
         growArea.transform.localScale = Vector3.zero;
@@ -290,11 +353,11 @@ public class BossAI : MonoBehaviour
         StartCoroutine(HideSkillAreaAfter(skill3Data.duration));
     }
 
-    private IEnumerator ScaleOverTime(GameObject target, float fromXZ, float toXZ, float duration)
+    private IEnumerator ScaleOverTime(GameObject target, float fromXZ, Vector3 toXZ, float duration)
     {
         float elapsed = 0f;
         Vector3 from = new Vector3(fromXZ, target.transform.localScale.y, fromXZ);
-        Vector3 to = new Vector3(toXZ, target.transform.localScale.y, toXZ);
+        Vector3 to = toXZ;
 
         while (elapsed < duration)
         {
