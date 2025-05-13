@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1953259897 &8574412962073106934
+TerrainLayer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: T_Water
+  m_DiffuseTexture: {fileID: 2800000, guid: 537a6db8feb61bb42b8f59ed14979b29, type: 3}
+  m_NormalMapTexture: {fileID: 2800000, guid: f5ce29adfb792e5498d0e0c2fb3ca274, type: 3}
+  m_MaskMapTexture: {fileID: 2800000, guid: d014df89d4003c0498eb92ad56f794ba, type: 3}
+  m_TileSize: {x: 5, y: 5}
+  m_TileOffset: {x: 0, y: 0}
+  m_Specular: {r: 0, g: 0, b: 0, a: 0}
+  m_Metallic: 0.679
+  m_Smoothness: 1
+  m_NormalScale: 0.5
+  m_DiffuseRemapMin: {x: 0, y: 0, z: 0, w: 0}
+  m_DiffuseRemapMax: {x: 0.09754361, y: 0.13091847, z: 0.1509434, w: 1}
+  m_MaskMapRemapMin: {x: 0.26214257, y: 0.8935524, z: -0.24, w: 0.93174785}
+  m_MaskMapRemapMax: {x: 0.3374656, y: 1, z: 1.26, w: 1}
