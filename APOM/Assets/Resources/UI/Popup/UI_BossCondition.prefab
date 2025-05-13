@@ -258,8 +258,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: BossName
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: b51c53513c8a9e84e8b7ff9b3e67ef00, type: 2}
+  m_sharedMaterial: {fileID: -4993035295609102433, guid: b51c53513c8a9e84e8b7ff9b3e67ef00, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -493,11 +493,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 1
+  m_FillAmount: 0.589
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0

@@ -92,11 +92,25 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0
+        functionName: UseSkill1
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 1
+        functionName: EndSkill1
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 193
     - serializedVersion: 16
       name: Qishilong_CG3_SC01_C03_DH
       takeName: Qishilong_CG3_SC01_C03_DH
@@ -182,6 +196,13 @@ ModelImporter:
       events:
       - time: 0.97946423
         functionName: EndSkill3Anim
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.99542975
+        functionName: EndSkillByServer
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
@@ -390,8 +411,15 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.346658
-        functionName: Skill1Eff
+      - time: 0.34787232
+        functionName: Skill2Eff
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.9421174
+        functionName: EndSkillByServer
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
@@ -722,7 +750,14 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0
+        functionName: TurnSkill1
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

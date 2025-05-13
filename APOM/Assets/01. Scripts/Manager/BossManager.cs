@@ -31,6 +31,10 @@ public class BossManager : IManager
         GameObject go = Object.Instantiate(BossPrefab, spawnPosition, Quaternion.identity);
         Boss boss = Util.GetOrAddComponent<Boss>(go);
         boss.bossID = _packet.AiID;
+        boss.currentHealth = _packet.MaxHP;
+
+        var ui = Managers.UI.GetPopupUI<UI_BossCondition>();
+        ui.SetBossNameText(boss.SOData.BossName);
         AddBoss(_packet.AiID, boss);
     }
 

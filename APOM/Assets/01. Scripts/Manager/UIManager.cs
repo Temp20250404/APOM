@@ -256,4 +256,15 @@ public class UIManager : IManager
             }
         }
     }
+
+    public T GetPopupUI<T>() where T : UI_Popup
+    {
+        foreach (UI_Popup popup in _popupStack)
+        {
+            if (popup is T tPopup)
+                return tPopup;
+        }
+
+        return null;
+    }
 }

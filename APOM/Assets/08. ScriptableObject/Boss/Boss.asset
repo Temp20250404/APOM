@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8858e205f4a332f439eec223ac7ff900, type: 3}
   m_Name: Boss
   m_EditorClassIdentifier: 
+  <PlayerChasingRange>k__BackingField: 20
   <AttackRange>k__BackingField: 10
   <GroundData>k__BackingField:
     <BaseSpeed>k__BackingField: 5
@@ -19,3 +20,4 @@ MonoBehaviour:
     <ChasingSpeedModifier>k__BackingField: 1
   <BossConditions>k__BackingField:
     <Health>k__BackingField: 100
+  <BossName>k__BackingField: "\uB4DC\uB798\uACE4"

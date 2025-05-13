@@ -1,53 +1,38 @@
-using Game;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BossAttackState1 : BossBaseState
 {
-    public BossAttackState1(BossStateMachine stateMachine) : base(stateMachine)
-    {
-    }
+    public BossAttackState1(BossStateMachine stateMachine) : base(stateMachine) { }
 
     public override void StateEnter()
     {
-        // 가만히 있는 상태이기 때문에 Speed를 0으로
-        stateMachine.MoveMentSpeedModifier = 0f;
         base.StateEnter();
-        // Animation 전환
         StartAnimation(stateMachine.Boss.BossAnimationData.Attack_ParameterHash);
         StartAnimation(stateMachine.Boss.BossAnimationData.Attack2ParameterHash);
-
-    }
-
-    // Idle 상태에서 다른 상태로 전환될 때
-    public override void StateExit()
-    {
-        base.StateExit();
-
-        StopAnimation(stateMachine.Boss.BossAnimationData.Attack_ParameterHash);
-        StopAnimation(stateMachine.Boss.BossAnimationData.Attack2ParameterHash);
     }
 
     public override void StateUpdate()
     {
         base.StateUpdate();
 
-        AnimatorStateInfo animStateInfo = stateMachine.Boss.Anim.GetCurrentAnimatorStateInfo(0);
-        if (animStateInfo.IsTag("Attack") && animStateInfo.normalizedTime >= 0.8f)
+        AnimatorStateInfo animState = stateMachine.Boss.Anim.GetCurrentAnimatorStateInfo(0);
+        if (animState.IsTag("Attack") && animState.normalizedTime >= 0.8f)
         {
-            CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
-            packet.BossID = stateMachine.Boss.bossID; 
-            packet.BossState = (int)BossState.Idle;
-            Managers.Network.Send(packet);
+            SendBossState(BossState.Idle);
+            return;
         }
 
         if (!stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData))
         {
-            CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
-            packet.BossID = stateMachine.Boss.bossID;
-            packet.BossState = (int)BossState.Chase;
-            Managers.Network.Send(packet);
+            float chaseSpeed = groundData.ChasingSpeedModifier * groundData.BaseSpeed;
+            SendBossState(BossState.Chase, chaseSpeed);
         }
+    }
+
+    public override void StateExit()
+    {
+        base.StateExit();
+        StopAnimation(stateMachine.Boss.BossAnimationData.Attack2ParameterHash);
+        StopAnimation(stateMachine.Boss.BossAnimationData.Attack_ParameterHash);
     }
 }
