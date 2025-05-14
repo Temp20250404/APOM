@@ -65,10 +65,10 @@ public class BossAI : MonoBehaviour
     }
 
     private void Start()
-    {//
+    {
         parent = transform;
         model = transform.GetChild(0);
-        //
+        
     }
     void Update()
     {
@@ -450,6 +450,8 @@ public class BossAI : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position, transform.position + transform.forward * viewDistance);
     }
+
+    
 }
 
 //public void StartWalk()
