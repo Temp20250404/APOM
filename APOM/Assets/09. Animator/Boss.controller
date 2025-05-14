@@ -374,7 +374,7 @@ AnimatorStateMachine:
     m_Position: {x: 670, y: 320, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2920339026580505784}
-    m_Position: {x: 660, y: 490, z: 0}
+    m_Position: {x: 680, y: 490, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5846035403890333065}
     m_Position: {x: 670, y: 230, z: 0}
@@ -681,7 +681,7 @@ AnimatorController:
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
-    m_DefaultBool: 0
+    m_DefaultBool: 1
     m_Controller: {fileID: 0}
   - m_Name: BossSkill1
     m_Type: 4
@@ -693,7 +693,7 @@ AnimatorController:
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
-    m_DefaultBool: 0
+    m_DefaultBool: 1
     m_Controller: {fileID: 0}
   - m_Name: BossSkill3
     m_Type: 4
