@@ -20,7 +20,7 @@ public class Arrow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += transform.right * 20.0f * Time.deltaTime;
+        transform.position += transform.right * 50.0f * Time.deltaTime;
     }
 
     private IEnumerator DisappearAfterTime(float _time)

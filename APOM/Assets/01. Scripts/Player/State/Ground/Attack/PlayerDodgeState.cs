@@ -22,7 +22,7 @@ public class PlayerDodgeState : PlayerAttackState
 
         StartAnimation(stateMachine.player.animationData.dodgeParameterHash);
 
-        Vector3 inputDir = GetMovementDirection();
+        Vector3 inputDir = GetMovementDirection(stateMachine.player.inputController.wasdDir);
         inputDir.y = 0f;
 
         float yaw;

@@ -75,7 +75,7 @@ public class PlayerBaseState : IState
 
     protected virtual void Move()
     {
-        Vector3 movementDirection = GetMovementDirection();
+        Vector3 movementDirection = GetMovementDirection(stateMachine.movementInput);
 
         Move(movementDirection);
         Rotate(movementDirection);
@@ -88,7 +88,7 @@ public class PlayerBaseState : IState
         stateMachine.player.characterController.Move((direction * movementSpeed) * Time.deltaTime);
     }
 
-    protected Vector3 GetMovementDirection()
+    protected Vector3 GetMovementDirection(Vector2 _Dir)
     {
         float radian = stateMachine.player.inputController.recivePacketRotation * Mathf.Deg2Rad;
         //Debug.Log($"reciveRotation ID {stateMachine.player.playerID} : {stateMachine.player.inputController.recivePacketRotation}");
@@ -101,7 +101,7 @@ public class PlayerBaseState : IState
         forward.Normalize();
         right.Normalize();
 
-        return forward * stateMachine.movementInput.y + right * stateMachine.movementInput.x;
+        return forward * _Dir.y + right * _Dir.x;
     }
 
     protected Vector3 GetCameraDirection()

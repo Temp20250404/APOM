@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
     private uint ucurrentKeyInputs = 0;
 
     private uint sendKeyInputs = 0;
+    public Vector2 wasdDir { get; private set; } = Vector2.zero;
     [HideInInspector] public bool[] reciveKeyInputs = new bool[(int)EKEYINPUT.END];
 
     private float previousRotation;
@@ -130,6 +131,7 @@ public class PlayerController : MonoBehaviour
             currentKeyInputs[(int)EKEYINPUT.A] != false ||
             currentKeyInputs[(int)EKEYINPUT.D] != false)
         {
+            wasdDir = GetWASDDir(currentKeyInputs);
             isMoving = true;
         }
 
@@ -137,6 +139,31 @@ public class PlayerController : MonoBehaviour
         {
             sendKeyInputs = ucurrentKeyInputs;
         }
+    }
+
+    private Vector2 GetWASDDir(bool[] _keyInputs)
+    {
+        Vector2 input = Vector2.zero;
+
+        if (_keyInputs[(int)EKEYINPUT.W])
+        {
+            input.y += 1f; // W
+        }
+        if (_keyInputs[(int)EKEYINPUT.S])
+        {
+            input.y -= 1f; // S
+        }
+        if (_keyInputs[(int)EKEYINPUT.A])
+        {
+            input.x -= 1f; // A
+        }
+        if (_keyInputs[(int)EKEYINPUT.D])
+        {
+            input.x += 1f; // D
+        }
+        input = input.normalized;
+
+        return input;
     }
 
     private uint ChnageToUint(bool[] _keyInputs)
