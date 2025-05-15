@@ -22,7 +22,7 @@ public class Boss : MonoBehaviour
     [Header("Condition")]
     [SerializeField] public float currentHealth;
 
-    public static bool IsMainClient = false;
+    public static bool IsMainClient = true;
 
     private void Awake()
     {
