@@ -85,8 +85,8 @@ public class BossEventHandler : MonoBehaviour
             var nextState = bossAI.pendingState.Value;
             bossAI.pendingState = null;
 
-            CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
-            packet.BossID = bossAI.boss.bossID;
+            CS_MONSTER_AI packet = new CS_MONSTER_AI();
+            packet.AiID = bossAI.boss.bossID;
             packet.BossState = (uint)nextState;
             packet.CurSpeed = 0f;
             Managers.Network.Send(packet);

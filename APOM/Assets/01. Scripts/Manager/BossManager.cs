@@ -3,16 +3,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum MonsterType
+{
+    Boss = 1,
+    Minion = 2,
+}
 public class BossManager : IManager
 {
-    private GameObject BossPrefab;
-
     private Dictionary<uint, Boss> bossList = new Dictionary<uint, Boss>();
+
+    private Dictionary<MonsterType, string> monsterPrefabPathMap = new()
+    {
+        { MonsterType.Boss, "Boss/Dragon" },
+        { MonsterType.Minion, "Boss/Boss" }
+    };
 
     public void Init()
     {
         bossList.Clear();
-        BossPrefab = Resources.Load<GameObject>("Boss/Dragon"); // 기본 보스 프리팹
+
+        SendCreatePacket(MonsterType.Boss, new Vector3(53.67f, 1.21f, -33.59f));
     }
 
     public void Clear()
@@ -27,11 +37,30 @@ public class BossManager : IManager
             return;
         }
 
-        Vector3 spawnPosition = new Vector3(_packet.MonsterPos.PosX, _packet.MonsterPos.PosY, _packet.MonsterPos.PosZ);
-        GameObject go = Object.Instantiate(BossPrefab, spawnPosition, Quaternion.identity);
+        // 패킷에서 몬스터 타입 확인
+        MonsterType type = (MonsterType)_packet.MonsterType;
+
+        // 프리팹 경로 확인
+        if (!monsterPrefabPathMap.TryGetValue(type, out string prefabPath))
+        {
+            Debug.LogError($"몬스터 타입에 대한 프리팹 경로가 없습니다: {type}");
+            return;
+        }
+
+        GameObject prefab = Resources.Load<GameObject>(prefabPath);
+
+        if (prefab == null)
+        {
+            Debug.LogError($"프리팹 로드 실패: {prefabPath}");
+            return;
+        }
+        // 몬스터 위치 설정
+        Vector3 spawnPosition = new Vector3
+            (_packet.MonsterPos.PosX, _packet.MonsterPos.PosY, _packet.MonsterPos.PosZ);
+
+        GameObject go = Object.Instantiate(prefab, spawnPosition, Quaternion.identity);
         Boss boss = Util.GetOrAddComponent<Boss>(go);
         boss.bossID = _packet.AiID;
-        boss.currentHealth = _packet.MaxHP;
 
         var ui = Managers.UI.GetPopupUI<UI_BossCondition>();
         ui.SetBossNameText(boss.SOData.BossName);
@@ -63,5 +92,20 @@ public class BossManager : IManager
         }
         else
             Debug.Log($"몬스터 {_id} 삭제 실패");
+    }
+
+    private void SendCreatePacket(MonsterType type, Vector3 transform)
+    {
+        CS_CREATE_MONSTER packet = new CS_CREATE_MONSTER
+        {
+            MonsterType = (uint)type,
+            MonsterPos = new Position
+            {
+                PosX = transform.x,
+                PosY = transform.y,
+                PosZ = transform.z
+            },
+        };
+        Managers.Network.Send(packet);
     }
 }

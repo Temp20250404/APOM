@@ -52,9 +52,9 @@ public class UI_BossCondition : UI_Popup
         bossNameText.text = name;
     }
 
-    public void SetHPFill(SC_BOSS_PHASE packet)
+    public void SetHPFill(SC_MONSTER_CONDITION packet)
     {
-        //hpFill.fillAmount = packet.CurrentHp / packet.MaxHp;
+        hpFill.fillAmount = packet.CurrentHp / packet.MaxHp;
     }
 
     public void AddBuff()

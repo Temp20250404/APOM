@@ -34,9 +34,12 @@ public abstract class BossBaseState : IState
 
     protected void SendBossState(BossState nextState, float speed = 0f)
     {
-        CS_BOSS_PHASE packet = new CS_BOSS_PHASE
+        if (!Boss.IsMainClient)
+            return;
+
+        CS_MONSTER_AI packet = new CS_MONSTER_AI
         {
-            BossID = stateMachine.Boss.bossID,
+            AiID = stateMachine.Boss.bossID,
             BossState = (uint)nextState,
             CurSpeed = speed
         };

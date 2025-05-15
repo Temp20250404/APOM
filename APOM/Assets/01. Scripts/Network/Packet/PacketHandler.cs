@@ -244,6 +244,13 @@ class PacketHandler
         SC_MONSTER_CONDITION monsterConditionPacket = packet as SC_MONSTER_CONDITION;
 
         // TODO: SC_MonsterCondition 패킷 처리 로직을 여기에 구현
+
+
+        var ui = Managers.UI.GetPopupUI<UI_BossCondition>();
+        if (ui != null)
+        {
+            ui.SetHPFill(monsterConditionPacket);
+        }
     }
 
     // SC_MONSTER_ROTATE 패킷을 처리하는 함수
@@ -310,6 +317,8 @@ class PacketHandler
         SC_START_AI_CALCULATE startAiCalculatePacket = packet as SC_START_AI_CALCULATE;
 
         // TODO: SC_StartAiCalculate 패킷 처리 로직을 여기에 구현
+
+        Boss.IsMainClient = true;
     }
 
     // SC_STOP_AI_CALCULATE 패킷을 처리하는 함수
@@ -323,14 +332,14 @@ class PacketHandler
     // SC_BOSS_PHASE 패킷을 처리하는 함수
     public static void SC_BossPhase(PacketSession session, IMessage packet)
     {
-        SC_BOSS_PHASE bossPhasePacket = packet as SC_BOSS_PHASE;
+        SC_MONSTER_AI bossPhasePacket = packet as SC_MONSTER_AI;
 
         BossState state = (BossState)bossPhasePacket.BossState;
-        Boss boss = Managers.BossManager.GetBoss(bossPhasePacket.BossID);
+        Boss boss = Managers.BossManager.GetBoss(bossPhasePacket.AiID);
         Vector3 bossPos = new Vector3(bossPhasePacket.BossPos.PosX, bossPhasePacket.BossPos.PosY, bossPhasePacket.BossPos.PosZ);
         Vector3 target = new Vector3(bossPhasePacket.TargetMovementPos.PosX, bossPhasePacket.TargetMovementPos.PosY, bossPhasePacket.TargetMovementPos.PosZ);
 
-        Debug.Log($"보스 {bossPhasePacket.BossID} 상태: {state}");
+        Debug.Log($"보스 {bossPhasePacket.AiID} 상태: {state}");
 
         if (boss != null)
         {
@@ -373,12 +382,6 @@ class PacketHandler
             if (state == BossState.Die)
             {
                 boss.bossAI.isSkillActive = false;
-            }
-
-            var ui = Managers.UI.GetPopupUI<UI_BossCondition>();
-            if (ui != null)
-            {
-                ui.SetHPFill(bossPhasePacket);
             }
         }
     }
