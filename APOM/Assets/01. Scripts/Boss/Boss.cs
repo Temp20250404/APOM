@@ -22,6 +22,8 @@ public class Boss : MonoBehaviour
     [Header("Condition")]
     [SerializeField] public float currentHealth;
 
+    public static bool IsMainClient = false;
+
     private void Awake()
     {
         Anim = GetComponentInChildren<Animator>();
@@ -31,13 +33,8 @@ public class Boss : MonoBehaviour
     }
     void Start()
     {
-        CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
-        packet.BossID = bossID;
-        packet.BossState = (int)BossState.Idle;
-        packet.CurSpeed = 0f;
-        packet.MaxHp = (uint)SOData.BossConditions.Health;
-        packet.CurrentHp = (uint)currentHealth;
-        Managers.Network.Send(packet);
+        SendPhasePacket(BossState.Idle, 0f);
+        SendHpPacket();
     }
 
     private void Update()
@@ -71,7 +68,7 @@ public class Boss : MonoBehaviour
         bossAI.UpdatePhase(currentHealth, SOData.BossConditions.Health);
 
         // 체력 UI 및 서버 정보 갱신
-        //SendHpPacket();
+        SendHpPacket();
 
         // 체력이 0 이하일 경우 사망 처리
         if (currentHealth <= 0)
@@ -80,24 +77,25 @@ public class Boss : MonoBehaviour
         }
     }
 
-    //private void SendHpPacket()
-    //{
-    //    CS_BOSS_HP_UPDATE hpPacket = new CS_BOSS_HP_UPDATE();
-    //    hpPacket.BossID = bossID;
-    //    hpPacket.CurrentHp = (uint)Mathf.Max(0, currentHealth);
-    //    hpPacket.MaxHp = (uint)SOData.BossConditions.Health;
+    private void SendHpPacket()
+    {
+        CS_MONSTER_CONDITION hpPacket = new CS_MONSTER_CONDITION();
+        hpPacket.AiID = bossID;
+        hpPacket.CurrentHp = (uint)Mathf.Max(0, currentHealth);
+        hpPacket.MaxHp = (uint)SOData.BossConditions.Health;
 
-    //    Managers.Network.Send(hpPacket);
-    //}
+        Managers.Network.Send(hpPacket);
+    }
 
     private void SendPhasePacket(BossState state, float curSpeed)
     {
-        CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
-        packet.BossID = bossID;
+        if(!IsMainClient)
+            return;
+
+        CS_MONSTER_AI packet = new CS_MONSTER_AI();
+        packet.AiID = bossID;
         packet.BossState = (uint)state;
         packet.CurSpeed = curSpeed;
-        packet.CurrentHp = (uint)Mathf.Max(0, currentHealth);
-        packet.MaxHp = (uint)SOData.BossConditions.Health;
         // 위치, 목표 좌표도 필요시 설정
 
         Managers.Network.Send(packet);

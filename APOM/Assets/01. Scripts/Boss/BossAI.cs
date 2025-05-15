@@ -165,9 +165,12 @@ public class BossAI : MonoBehaviour
 
     private void SendSkillPacket(BossState skillState)
     {
-        CS_BOSS_PHASE packet = new CS_BOSS_PHASE
+        if (!Boss.IsMainClient)
+            return;
+
+        CS_MONSTER_AI packet = new CS_MONSTER_AI
         {
-            BossID = boss.bossID,
+            AiID = boss.bossID,
             BossState = (uint)skillState
         };
         Managers.Network.Send(packet);
@@ -178,9 +181,12 @@ public class BossAI : MonoBehaviour
 
     public void CSChaseTarget()
     {
-        CS_BOSS_PHASE packet = new CS_BOSS_PHASE
+        if (!Boss.IsMainClient)
+            return;
+
+        CS_MONSTER_AI packet = new CS_MONSTER_AI
         {
-            BossID = boss.bossID,
+            AiID = boss.bossID,
             BossState = (int)BossState.Chase,
             TargetMovementPos = new Position
             {
