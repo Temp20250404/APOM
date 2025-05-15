@@ -94,7 +94,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0
-        functionName: UseSkill1
+        functionName: UseSkill1Area
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
@@ -102,6 +102,13 @@ ModelImporter:
         messageOptions: 0
       - time: 1
         functionName: EndSkill1
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.45082766
+        functionName: UseSkill1Eff
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
@@ -412,7 +419,7 @@ ModelImporter:
       curves: []
       events:
       - time: 0.34787232
-        functionName: Skill2Eff
+        functionName: UseSkill2Eff
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
@@ -420,6 +427,13 @@ ModelImporter:
         messageOptions: 0
       - time: 0.9421174
         functionName: EndSkillByServer
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0
+        functionName: UseSkill2Area
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
@@ -572,6 +586,13 @@ ModelImporter:
       events:
       - time: 0.9927068
         functionName: EndSkill3
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.5443034
+        functionName: UseSkill3Eff
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

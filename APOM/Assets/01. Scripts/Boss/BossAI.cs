@@ -13,17 +13,14 @@ public class BossAI : MonoBehaviour
     [Header("Target Detection")]
     public float viewDistance = 10f;
     public LayerMask targetMask;
-    public LayerMask obstacleMask;
-
     public Transform target;
-    public bool isPerson;
 
     [Header("Phase")]
     public BossPhase phase = BossPhase.Phase1;
     public BossState? pendingState = null;
+    public bool isSkillActive = false;
 
     [Header("Skill Cooldowns & Flags")]
-    public bool isSkillActive = false;
     [SerializeField] private float postSkillCooldown = 60f;
     [SerializeField] private float postSkillCooldownTimer = 0f;
     [SerializeField] private bool phase3SkillUsed = false;
@@ -36,7 +33,10 @@ public class BossAI : MonoBehaviour
 
     [Header("Skill Effects")]
     public GameObject skillEff1;
-
+    public GameObject skillEff2;
+    public GameObject skillEff3;
+    public Transform skillEff3SpawnPoint;
+    public Vector3 mapCenter = new Vector3(46.29f, 0.34f, -30.5f);
     private GameObject currentSkillArea;
 
     [Header("스킬 영역 데이터")]
@@ -68,6 +68,7 @@ public class BossAI : MonoBehaviour
     {
         parent = transform;
         model = transform.GetChild(0);
+        
     }
     void Update()
     {
@@ -282,19 +283,34 @@ public class BossAI : MonoBehaviour
         anim.SetBool("Skill3Down", true);
     }
 
-    public void OnSkill2Eff(float delay)
+    public void UseSkil3Eff()
     {
-        skillEff1.SetActive(true);
-        ShowSkill2Area();
-        StartCoroutine(DeactivateEff(skillEff1, delay));
+        ShootProjectile(mapCenter);
     }
 
+    public void ShootProjectile(Vector3 targetPos)
+    {
+        GameObject proj = Instantiate(skillEff3, skillEff3SpawnPoint.position, Quaternion.identity);
+        BossProjectile p = proj.GetComponent<BossProjectile>();
+        p.Fire(targetPos);
+    }
+
+    public void OnSkill2Eff(float delay)
+    {
+        skillEff2.SetActive(true);
+        StartCoroutine(DeactivateEff(skillEff2, delay));
+    }
+
+    public void OnSkill1Eff(float delay)
+    {
+        skillEff1.SetActive(true);
+        StartCoroutine(DeactivateEff(skillEff1, delay));
+    }
     private IEnumerator DeactivateEff(GameObject eff, float delay)
     {
         yield return new WaitForSeconds(delay);
         eff.SetActive(false);
     }
-
     // ─────────────────────────────────────────────
     // ▶ 스킬 범위 표시 (UI)
 
@@ -307,15 +323,21 @@ public class BossAI : MonoBehaviour
         currentSkillArea.transform.position = center;
         currentSkillArea.transform.SetParent(transform);
 
-        Vector3[] dirs = { transform.forward, -transform.forward, transform.right, -transform.right };
+        // 기준 방향 (정면)
+        Vector3 forward = transform.forward;
 
-        foreach (var dir in dirs)
+        // 0도, 120도, 240도 방향 생성
+        for (int i = 0; i < 3; i++)
         {
+            float angle = i * 120f;
+            Quaternion rotation = Quaternion.Euler(0, angle, 0);
+            Vector3 dir = rotation * forward;
+
             GameObject cone = Instantiate(skill1Data.conePrefab, center, Quaternion.LookRotation(dir), currentSkillArea.transform);
             cone.transform.localScale = skill1Data.ratation;
         }
 
-        StartCoroutine(HideSkillAreaAfter(skill1Data.duration));
+        StartCoroutine(HideSkillAreaAfter(skillEff1));
     }
 
 
@@ -327,14 +349,14 @@ public class BossAI : MonoBehaviour
         currentSkillArea = Instantiate(skill2Data.conePrefab, spawnPos, Quaternion.identity, transform);
         currentSkillArea.transform.localScale = skill2Data.ratation;
 
-        StartCoroutine(HideSkillAreaAfter(skill2Data.duration));
+        StartCoroutine(HideSkillAreaAfter(skillEff2));
     }
 
     public void ShowSkill3Area()
     {
         CleanupSkillArea();
 
-        Vector3 center = transform.position + skill3Data.offset;
+        Vector3 center = mapCenter;
         Vector3 scale = skill3Data.ratation;
 
         currentSkillArea = new GameObject("SkillAreaContainer");
@@ -350,7 +372,7 @@ public class BossAI : MonoBehaviour
         if (skill3Data.useGrowEffect)
             StartCoroutine(ScaleOverTime(growArea, 0f, scale, skill3Data.growTime));
 
-        StartCoroutine(HideSkillAreaAfter(skill3Data.duration));
+        StartCoroutine(HideSkillAreaAfter());
     }
 
     private IEnumerator ScaleOverTime(GameObject target, float fromXZ, Vector3 toXZ, float duration)
@@ -371,9 +393,15 @@ public class BossAI : MonoBehaviour
             target.transform.localScale = to;
     }
 
-    private IEnumerator HideSkillAreaAfter(float delay)
+    private IEnumerator HideSkillAreaAfter()
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(10f);
+        CleanupSkillArea();
+    }
+
+    private IEnumerator HideSkillAreaAfter(GameObject gameObject)
+    {
+        yield return new WaitUntil(() => gameObject.activeSelf);
         CleanupSkillArea();
     }
 
@@ -422,6 +450,8 @@ public class BossAI : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawLine(transform.position, transform.position + transform.forward * viewDistance);
     }
+
+    
 }
 
 //public void StartWalk()
