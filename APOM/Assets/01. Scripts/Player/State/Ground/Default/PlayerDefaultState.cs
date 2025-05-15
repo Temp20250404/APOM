@@ -5,6 +5,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerDefaultState : PlayerGroundState
 {
+    private float holdTime = 0f;
+    private float holdTimeLimit = 0.2f;
+    private bool isHold = false;
+
     public PlayerDefaultState(PlayerStateMachine playerStateMachine) : base(playerStateMachine)
     {
     }
@@ -22,6 +26,7 @@ public class PlayerDefaultState : PlayerGroundState
         Move();
 
         CheckAttack();
+        DodgeHoldCheck();
     }
 
     public override void StateExit()
@@ -54,13 +59,10 @@ public class PlayerDefaultState : PlayerGroundState
 
     private void CheckAttack()
     {
+        isHold = stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.RCLICK];
         if (GetInputNoramlAttack() == true)
         {
             stateMachine.ChangeState(stateMachine.normalAttackState);
-        }
-        else if (stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.RCLICK] == true)
-        {
-            stateMachine.ChangeState(stateMachine.dodgeState);
         }
         else if (stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.NUM1] == true)
         {
@@ -81,6 +83,22 @@ public class PlayerDefaultState : PlayerGroundState
         else if (stateMachine.player.inputController.reciveKeyInputs[(int)EKEYINPUT.NUM5] == true)
         {
             stateMachine.ChangeState(stateMachine.rapidFireState);
+        }
+    }
+
+    private void DodgeHoldCheck()
+    {
+        if (isHold == false)
+        {
+            holdTime = 0f;
+            return;
+        }
+
+        holdTime += Time.deltaTime;
+        if (holdTime >= holdTimeLimit)
+        {
+            stateMachine.ChangeState(stateMachine.dodgeState);
+            holdTime = 0f;
         }
     }
 }
