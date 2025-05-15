@@ -174,6 +174,22 @@ class PacketHandler
         }
     }
 
+    // SC_ACCEPT_PARTY 패킷을 처리하는 함수
+    public static void SC_AcceptParty(PacketSession session, IMessage packet)
+    {
+        SC_ACCEPT_PARTY acceptPartyPacket = packet as SC_ACCEPT_PARTY;
+
+        // TODO: SC_AcceptParty 패킷 처리 로직을 여기에 구현
+    }
+
+    // SC_CANCEL_ENTERING_DUNGEON 패킷을 처리하는 함수
+    public static void SC_CancelEnteringDungeon(PacketSession session, IMessage packet)
+    {
+        SC_CANCEL_ENTERING_DUNGEON cancelEnteringDungeonPacket = packet as SC_CANCEL_ENTERING_DUNGEON;
+
+        // TODO: SC_CancelEnteringDungeon 패킷 처리 로직을 여기에 구현
+    }
+
     // SC_CREATE_MONSTER 패킷을 처리하는 함수
     public static void SC_CreateMonster(PacketSession session, IMessage packet)
     {
@@ -214,6 +230,38 @@ class PacketHandler
         player.inputController.ReciveTransformSyncRotation(positionSyncPacket);
     }
 
+    // SC_MONSTER_AI 패킷을 처리하는 함수
+    public static void SC_MonsterAi(PacketSession session, IMessage packet)
+    {
+        SC_MONSTER_AI monsterAiPacket = packet as SC_MONSTER_AI;
+
+        // TODO: SC_MonsterAi 패킷 처리 로직을 여기에 구현
+    }
+
+    // SC_MONSTER_ROTATE 패킷을 처리하는 함수
+    public static void SC_MonsterRotate(PacketSession session, IMessage packet)
+    {
+        SC_MONSTER_ROTATE monsterRotatePacket = packet as SC_MONSTER_ROTATE;
+
+        // TODO: SC_MonsterRotate 패킷 처리 로직을 여기에 구현
+    }
+
+    // SC_MAKE_PARTY 패킷을 처리하는 함수
+    public static void SC_MakeParty(PacketSession session, IMessage packet)
+    {
+        SC_MAKE_PARTY makePartyPacket = packet as SC_MAKE_PARTY;
+
+        // TODO: SC_MakeParty 패킷 처리 로직을 여기에 구현
+    }
+
+    // SC_PREPARE_ENTERING_DUNGEON 패킷을 처리하는 함수
+    public static void SC_PrepareEnteringDungeon(PacketSession session, IMessage packet)
+    {
+        SC_PREPARE_ENTERING_DUNGEON prepareEnteringDungeonPacket = packet as SC_PREPARE_ENTERING_DUNGEON;
+
+        // TODO: SC_PrepareEnteringDungeon 패킷 처리 로직을 여기에 구현
+    }
+
     // SC_REMOVE_CHARACTER 패킷을 처리하는 함수
     public static void SC_RemoveCharacter(PacketSession session, IMessage packet)
     {
@@ -221,6 +269,22 @@ class PacketHandler
 
         // TODO: SC_RemoveCharacter 패킷 처리 로직을 여기에 구현
         Managers.Player.RemovePlayer(removeCharacterPacket.PlayerID);
+    }
+
+    // SC_RESPONSE_ENTER_DUNGEON_BEGIN 패킷을 처리하는 함수
+    public static void SC_ResponseEnterDungeonBegin(PacketSession session, IMessage packet)
+    {
+        SC_RESPONSE_ENTER_DUNGEON_BEGIN responseEnterDungeonBeginPacket = packet as SC_RESPONSE_ENTER_DUNGEON_BEGIN;
+
+        // TODO: SC_ResponseEnterDungeonBegin 패킷 처리 로직을 여기에 구현
+    }
+
+    // SC_RESPONSE_ENTER_DUNGEON_END 패킷을 처리하는 함수
+    public static void SC_ResponseEnterDungeonEnd(PacketSession session, IMessage packet)
+    {
+        SC_RESPONSE_ENTER_DUNGEON_END responseEnterDungeonEndPacket = packet as SC_RESPONSE_ENTER_DUNGEON_END;
+
+        // TODO: SC_ResponseEnterDungeonEnd 패킷 처리 로직을 여기에 구현
     }
 
     // SC_SPAWN_CHARACTER 패킷을 처리하는 함수
