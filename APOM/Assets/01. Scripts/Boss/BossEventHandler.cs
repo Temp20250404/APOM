@@ -17,9 +17,14 @@ public class BossEventHandler : MonoBehaviour
         bossAI.ColliderOnEnable(0.3f);
     }
 
-    public void UseSkill1()
+    public void UseSkill1Area()
     {
         bossAI.ShowSkill1Area();
+    }
+    
+    public void UseSkill1Eff()
+    {
+        bossAI.OnSkill1Eff(1.5f);
     }
     public void TurnSkill1()
     {
@@ -39,9 +44,15 @@ public class BossEventHandler : MonoBehaviour
             EndSkillByServer();
         }
     }
-    public void Skill2Eff()
+
+    public void UseSkill2Area()
     {
-        bossAI.OnSkill2Eff(3.0f);
+        bossAI.ShowSkill2Area();
+    }
+
+    public void UseSkill2Eff()
+    {
+        bossAI.OnSkill2Eff(2.5f);
     }
 
     public void UseSkill3()
@@ -57,6 +68,11 @@ public class BossEventHandler : MonoBehaviour
     public void EndSkill3Anim()
     {
         bossAI.EndSkillAnim();
+    }
+
+    public void UseSkill3Eff()
+    {
+        bossAI.UseSkil3Eff();
     }
 
     public void EndSkillByServer()
