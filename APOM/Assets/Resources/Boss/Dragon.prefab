@@ -82,11 +82,7 @@ MonoBehaviour:
   targetMask:
     serializedVersion: 2
     m_Bits: 16384
-  obstacleMask:
-    serializedVersion: 2
-    m_Bits: 0
   target: {fileID: 0}
-  isPerson: 0
   phase: 0
   isSkillActive: 0
   postSkillCooldown: 60

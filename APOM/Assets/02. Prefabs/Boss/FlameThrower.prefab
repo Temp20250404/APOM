@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4712776607018738519}
   - component: {fileID: 3571377694675557236}
   - component: {fileID: 4600074877693656290}
+  - component: {fileID: 9148689881852039567}
   m_Layer: 0
   m_Name: FlameThrower
   m_TagString: Untagged
@@ -4875,6 +4876,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.46, y: 2.3, z: 13.5}
   m_Center: {x: -0.05338147, y: 0.15882434, z: 6.6644645}
+--- !u!114 &9148689881852039567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5088409850155259892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 945bf3b33f8e23f4697f0c3cafebf39e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageAmount: 30
 --- !u!1 &6439946519175467192
 GameObject:
   m_ObjectHideFlags: 0

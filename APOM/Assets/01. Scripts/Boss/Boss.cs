@@ -22,7 +22,7 @@ public class Boss : MonoBehaviour
     [Header("Condition")]
     [SerializeField] public float currentHealth;
 
-    public static bool IsMainClient = false;
+    public static bool IsMainClient = true;
 
     private void Awake()
     {
@@ -46,21 +46,6 @@ public class Boss : MonoBehaviour
             TakeDamage(10.0f);
         }
     }
-
-    //public void TakeDamage(float damage)
-    //{
-    //    currentHealth -= damage;
-    //    bossAI.UpdatePhase(currentHealth, SOData.BossConditions.Health);
-
-    //    if (currentHealth <= 0)
-    //    {
-    //        CS_BOSS_PHASE packet = new CS_BOSS_PHASE();
-    //        packet.BossID = bossID;
-    //        packet.BossState = (uint)BossState.Die;
-    //        packet.CurSpeed = 0f;
-    //        Managers.Network.Send(packet);
-    //    }
-    //}
 
     public void TakeDamage(float damage)
     {
