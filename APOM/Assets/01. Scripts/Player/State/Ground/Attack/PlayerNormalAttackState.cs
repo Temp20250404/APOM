@@ -22,10 +22,13 @@ public class PlayerNormalAttackState : PlayerAttackState
         {
             Util.SendPacket<CS_PLAYER_ATTACK>(packet =>
             {
-                if (stateMachine.player.targetObject.TryGetComponent<Boss>(out Boss boss))
+                Boss boss = stateMachine.player.targetObject.GetComponentInParent<Boss>();
+
+                if(boss != null)
                 {
                     packet.AiID = boss.bossID;
                 }
+
                 packet.AttackDamage = stateMachine.player.Stat.CulSkillDamage(1f);
             });
         }

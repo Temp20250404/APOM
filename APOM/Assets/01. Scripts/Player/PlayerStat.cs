@@ -90,7 +90,7 @@ public class PlayerStat
         {
             finalDamage = 1;
         }
-        else if (finalDamage <= UInt32.MaxValue)
+        else if (finalDamage >= UInt32.MaxValue)
         {
             finalDamage = UInt32.MaxValue;
         }
