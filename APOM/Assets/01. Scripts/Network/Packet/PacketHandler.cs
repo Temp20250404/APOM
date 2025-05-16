@@ -41,6 +41,7 @@ class PacketHandler
         SC_MONSTER_DAMAGED monsterDamagedPacket = packet as SC_MONSTER_DAMAGED;
 
         // TODO: SC_MonsterDamaged 패킷 처리 로직을 여기에 구현
+        Managers.BossManager.GetBoss(monsterDamagedPacket.AiID).TakeDamage(monsterDamagedPacket.Damage);
     }
 
     // SC_MONSTER_DIE 패킷을 처리하는 함수
