@@ -48,11 +48,11 @@ public class PlayerModelAnimEvent : MonoBehaviour
 
         dir = (target - arrowSpawnPoints[_spawnPoint].position).normalized;
         angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        targetRot = Quaternion.Euler(0f, 0f, angle);
+        targetRot = Quaternion.FromToRotation(Vector3.right, dir);
 
         GameObject go = Instantiate(arrowPrefab,
             arrowSpawnPoints[_spawnPoint].position,
-            arrowSpawnPoints[_spawnPoint].rotation
+            targetRot
         );
     }
 }

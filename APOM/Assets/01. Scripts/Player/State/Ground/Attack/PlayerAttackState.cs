@@ -57,7 +57,7 @@ public class PlayerAttackState : PlayerGroundState
     {
         float rayDistance = stateMachine.player.Stat.rayRange;
 
-        int enemyMask = 1 << LayerMask.NameToLayer("Enemy");
+        int enemyMask = (1 << LayerMask.NameToLayer("Enemy")) | (1 << LayerMask.NameToLayer("Boss"));
         int ObstacleMask = (1 << LayerMask.NameToLayer("Ground")) | (1 << LayerMask.NameToLayer("Obstacle"));
 
         Ray ray = stateMachine.player.mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));

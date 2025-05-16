@@ -210,7 +210,8 @@ public class PlayerController : MonoBehaviour
         Util.SendPacket<CS_POSITION_SYNC>(packet =>
         {
             packet.PosX = transform.position.x;
-            packet.PosY = transform.position.z;
+            packet.PosY = transform.position.y;
+            packet.PosZ = transform.position.z;
             packet.CameraYaw = transform.rotation.eulerAngles.y;
         });
         //Debug.Log($"Send Position Packet: {transform.position.x}, {transform.position.z}, {transform.rotation.eulerAngles.y}");
@@ -228,7 +229,7 @@ public class PlayerController : MonoBehaviour
 
     public void ReciveTransformSyncPosition(SC_POSITION_SYNC packet)
     {
-        TargetSyncPosition = new Vector3(packet.PosX, 0f, packet.PosY);
+        TargetSyncPosition = new Vector3(packet.PosX, packet.PosY, packet.PosZ);
         //Debug.Log($"Recive Position Packet {packet.PlayerID} : {packet.PosX}, {packet.PosY}");
     }
 
