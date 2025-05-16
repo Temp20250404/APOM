@@ -21,8 +21,6 @@ public class BossManager : IManager
     public void Init()
     {
         bossList.Clear();
-
-        SendCreatePacket(MonsterType.Boss, new Vector3(53.67f, 1.21f, -33.59f));
     }
 
     public void Clear()
@@ -94,7 +92,7 @@ public class BossManager : IManager
             Debug.Log($"몬스터 {_id} 삭제 실패");
     }
 
-    private void SendCreatePacket(MonsterType type, Vector3 transform)
+    public void SendCreatePacket(MonsterType type, Vector3 transform)
     {
         CS_CREATE_MONSTER packet = new CS_CREATE_MONSTER
         {

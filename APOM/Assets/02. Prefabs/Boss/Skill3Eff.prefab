@@ -4899,6 +4899,8 @@ GameObject:
   - component: {fileID: 4456061856819592393}
   - component: {fileID: 2844853978419651034}
   - component: {fileID: 6933401444779367259}
+  - component: {fileID: 8469897451951093627}
+  - component: {fileID: 3355096434485964990}
   m_Layer: 0
   m_Name: Style 1 - Flamethrower
   m_TagString: Untagged
@@ -9727,6 +9729,40 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!135 &8469897451951093627
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 962721380220789146}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 13.210002
+  m_Center: {x: 0.37, y: 0.03, z: 2.05}
+--- !u!114 &3355096434485964990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 962721380220789146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 945bf3b33f8e23f4697f0c3cafebf39e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageAmount: 30
 --- !u!1 &1059500183383540902
 GameObject:
   m_ObjectHideFlags: 0
