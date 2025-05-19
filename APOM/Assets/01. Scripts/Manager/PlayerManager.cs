@@ -36,11 +36,15 @@ public class PlayerManager : IManager
         }
         Vector3 spawnPosition = new Vector3(_packet.PlayerPos.PosX, 0f, _packet.PlayerPos.PosY);
         GameObject go = Object.Instantiate(playerprefab, spawnPosition, Quaternion.identity);
-        var uiMain = Managers.UI._sceneUI as UI_Main;
-        //uiMain.minimap.player = go.GetComponent<Player>();
+
         Player player = Util.GetOrAddComponent<Player>(go);
         player.playerID = _packet.PlayerID;
         player.Stat.SetStats(_packet.PlayerInfo.PlayerJob);
+
+        var uiMain = Managers.UI._sceneUI as UI_Main;
+        uiMain.minimap.player = player;
+        uiMain.condition.player = player
+            ;
         AddPlayer(_packet.PlayerID, player);
 
         if (isFirstSpawn)
