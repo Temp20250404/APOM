@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: 3195478084246986708}
   - component: {fileID: 4748149797593182721}
   m_Layer: 5
-  m_Name: Image (2)
+  m_Name: HpFill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 4298170628314642315}
   - component: {fileID: 8003357627585670626}
   m_Layer: 5
-  m_Name: Image (3)
+  m_Name: MpFill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -563,7 +563,7 @@ GameObject:
   - component: {fileID: 1815074074465397149}
   - component: {fileID: 8643944158451070562}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: RactTransfrom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

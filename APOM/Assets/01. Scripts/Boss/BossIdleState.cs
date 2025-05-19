@@ -4,6 +4,9 @@ public class BossIdleState : BossBaseState
 {
     public BossIdleState(BossStateMachine stateMachine) : base(stateMachine) { }
 
+    private float lastRotateSendTime = 0f;
+    private float rotateCooldown = 0.2f;
+
     public override void StateEnter()
     {
         stateMachine.MoveMentSpeedModifier = 0f;
@@ -14,6 +17,13 @@ public class BossIdleState : BossBaseState
     public override void StateUpdate()
     {
         base.StateUpdate();
+
+        //  회전 중이 아니고, 아직 타겟을 안 보고 있다면 회전 요청
+        if (!stateMachine.Boss.bossAI.IsRotating && !stateMachine.Boss.bossAI.IsLookingAtTarget(5f) && Time.time - lastRotateSendTime > rotateCooldown)
+        {
+            stateMachine.Boss.bossAI.CSRotateToTarget();
+            lastRotateSendTime = Time.time;
+        }
 
         if (stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData))
         {
