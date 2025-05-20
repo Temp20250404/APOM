@@ -43,8 +43,9 @@ public class PlayerManager : IManager
 
         var uiMain = Managers.UI._sceneUI as UI_Main;
         uiMain.minimap.player = player;
-        uiMain.condition.player = player
-            ;
+        uiMain.condition.player = player;
+        uiMain.condition.SetFill();
+
         AddPlayer(_packet.PlayerID, player);
 
         if (isFirstSpawn)

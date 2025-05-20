@@ -19,12 +19,6 @@ public class UI_Condition : UI_Base
         hpFill = Get<Image>((int)(ConditionObject.HPFill));
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        SetFill();
-    }
-
     public void SetFill()
     {
         hpFill.fillAmount = player.Stat.currentHp / player.Stat.maxHp;

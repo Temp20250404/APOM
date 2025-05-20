@@ -78,6 +78,7 @@ public class BossAI : MonoBehaviour
     void Update()
     {
         HandleSkills();
+
         if (!isBlending) return;
         BlendModelRotationToParent();
     }

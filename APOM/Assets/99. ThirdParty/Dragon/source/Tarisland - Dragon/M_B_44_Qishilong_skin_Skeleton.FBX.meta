@@ -58,8 +58,8 @@ ModelImporter:
       curves: []
       events:
       - time: 0.43218553
-        functionName: OnHit
-        data: 
+        functionName: EnableHitbox
+        data: Hit_Arm_R
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0

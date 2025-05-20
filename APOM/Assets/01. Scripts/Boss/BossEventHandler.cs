@@ -8,9 +8,30 @@ public class BossEventHandler : MonoBehaviour
     private BossAI bossAI;
 
     private bool isSkill1Active = false;
+
+    [System.Serializable]
+    public class HitboxEntry
+    {
+        public string name;                            // 부위 이름 (e.g. "RightHand")
+        public Collider collider;                      // 실제 콜라이더
+        public BossBasicAttack hitboxScript;         // 데미지 처리용 스크립트
+        public GameObject hitEffect;                // 히트 이펙트 오브젝트
+    }
+
+    [Header("히트박스 목록")]
+    [SerializeField] private List<HitboxEntry> hitboxes = new();
+
+    private Dictionary<string, HitboxEntry> hitboxDict = new();
+
     private void Awake()
     {
         bossAI = GetComponentInParent<BossAI>();
+
+        foreach (var entry in hitboxes)
+        {
+            if (!hitboxDict.ContainsKey(entry.name))
+                hitboxDict.Add(entry.name, entry);
+        }
     }
     public void OnHit()
     {
@@ -94,4 +115,37 @@ public class BossEventHandler : MonoBehaviour
             Debug.Log("스킬 종료 후 보류 상태 적용: " + nextState);
         }
     }
+
+    public void EnableHitbox(string name)
+    {
+        if (!hitboxDict.TryGetValue(name, out HitboxEntry entry))
+        {
+            Debug.LogWarning($"[BossEventHandler] Hitbox '{name}' not found.");
+            return;
+        }
+
+        entry.hitboxScript.ResetHitList();
+        entry.collider.enabled = true;
+        entry.hitEffect.SetActive(true);
+
+        StartCoroutine(DisableCollider(name));
+    }
+
+    IEnumerator DisableCollider(string name)
+    {
+        yield return new WaitForSeconds(1.0f);
+        DisableHitbox(name);
+    }
+    public void DisableHitbox(string name)
+    {
+        if (!hitboxDict.TryGetValue(name, out HitboxEntry entry))
+        {
+            Debug.LogWarning($"[BossEventHandler] Hitbox '{name}' not found.");
+            return;
+        }
+
+        entry.collider.enabled = false;
+        entry.hitEffect.SetActive(false);
+    }
+
 }
