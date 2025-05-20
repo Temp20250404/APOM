@@ -1,5 +1,7 @@
 using Game;
 using System.Collections;
+using Unity.VisualScripting;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -174,11 +176,19 @@ public class BossAI : MonoBehaviour
         if (!Boss.IsMainClient)
             return;
 
-        CS_MONSTER_AI packet = new CS_MONSTER_AI
+        CS_MONSTER_AI packet = new CS_MONSTER_AI();
+        packet.AiID = boss.bossID;
+        packet.BossState = (uint)skillState;
+        packet.CurSpeed = boss.SOData.GroundData.BaseSpeed * boss.SOData.GroundData.ChasingSpeedModifier;
+        packet.BossPos = new Position
         {
-            AiID = boss.bossID,
-            BossState = (uint)skillState
+            PosX = transform.position.x,
+            PosY = transform.position.y,
+            PosZ = transform.position.z
         };
+
+        packet.TargetMovementPos = packet.BossPos;
+
         Managers.Network.Send(packet);
     }
 
@@ -194,6 +204,13 @@ public class BossAI : MonoBehaviour
         {
             AiID = boss.bossID,
             BossState = (int)BossState.Chase,
+            BossPos = new Position
+            {
+                PosX = transform.position.x,
+                PosY = transform.position.y,
+                PosZ = transform.position.z
+            },
+
             TargetMovementPos = new Position
             {
                 PosX = target.position.x,

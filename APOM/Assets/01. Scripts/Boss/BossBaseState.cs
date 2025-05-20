@@ -37,12 +37,30 @@ public abstract class BossBaseState : IState
         if (!Boss.IsMainClient)
             return;
 
-        CS_MONSTER_AI packet = new CS_MONSTER_AI
+        CS_MONSTER_AI packet = new CS_MONSTER_AI();
+        packet.AiID = stateMachine.Boss.bossID;
+        packet.BossState = (uint)nextState;
+        packet.CurSpeed = speed;
+        packet.BossPos = new Position
         {
-            AiID = stateMachine.Boss.bossID,
-            BossState = (uint)nextState,
-            CurSpeed = speed
+            PosX = stateMachine.Boss.transform.position.x,
+            PosY = stateMachine.Boss.transform.position.y,
+            PosZ = stateMachine.Boss.transform.position.z
         };
+
+        if (nextState != BossState.Chase)
+        {
+            packet.TargetMovementPos = packet.BossPos;
+        }
+        else
+        {
+            packet.TargetMovementPos = new Position
+            {
+                PosX = stateMachine.Boss.bossAI.target.position.x,
+                PosY = stateMachine.Boss.bossAI.target.position.y,
+                PosZ = stateMachine.Boss.bossAI.target.position.z
+            };
+        }
         Managers.Network.Send(packet);
     }
 }
