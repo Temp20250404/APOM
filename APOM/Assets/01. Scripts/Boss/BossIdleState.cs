@@ -4,9 +4,6 @@ public class BossIdleState : BossBaseState
 {
     public BossIdleState(BossStateMachine stateMachine) : base(stateMachine) { }
 
-    private float lastRotateSendTime = 0f;
-    private float rotateCooldown = 0.2f;
-
     public override void StateEnter()
     {
         stateMachine.MoveMentSpeedModifier = 0f;  
@@ -18,27 +15,24 @@ public class BossIdleState : BossBaseState
     {
         base.StateUpdate();
 
-        //  회전 중이 아니고, 아직 타겟을 안 보고 있다면 회전 요청
-        if (!stateMachine.Boss.bossAI.IsRotating && !stateMachine.Boss.bossAI.IsLookingAtTarget(5f) && Time.time - lastRotateSendTime > rotateCooldown)
-        {
-            stateMachine.Boss.bossAI.CSRotateToTarget();
-            lastRotateSendTime = Time.time;
-        }
-
         if (stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData))
         {
-            AnimatorStateInfo animState = stateMachine.Boss.Anim.GetCurrentAnimatorStateInfo(0);
-            if (animState.IsTag("Idle") && animState.normalizedTime >= 0.8f)
+            // 타겟을 안 보고 있으면 회전용 Walk 상태로 전환
+            if (!stateMachine.Boss.bossAI.IsLookingAtTarget(5f))
             {
-                int rand = Random.Range(0, 2);
-                if (rand == 0)
-                {
-                    SendBossState(BossState.Attack);
-                }
-                else
-                {
-                    SendBossState(BossState.Attack1);
-                }
+                float walkSpeed = groundData.WalkSpeedModifier * groundData.BaseSpeed;
+                SendBossState(BossState.Walk, walkSpeed);
+                return;
+            }
+
+            int rand = Random.Range(0, 2);
+            if (rand == 0)
+            {
+                SendBossState(BossState.Attack);
+            }
+            else
+            {
+                SendBossState(BossState.Attack1);
             }
         }
         else if (stateMachine.Boss.bossAI.DetectTargets(stateMachine.Boss.SOData.PlayerChasingRange))
