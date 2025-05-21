@@ -1,5 +1,7 @@
 using Game;
 using System.Collections;
+using Unity.VisualScripting;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -53,6 +55,11 @@ public class BossAI : MonoBehaviour
     private bool isBlending = false;
     private float elapsed = 0f;
 
+    private Coroutine rotateCoroutine;
+
+    // 회전 중인지 외부에서 확인 가능하게
+    public bool IsRotating => rotateCoroutine != null;
+
     // ─────────────────────────────────────────────
     // ▶ 초기화
     void Awake()
@@ -73,6 +80,7 @@ public class BossAI : MonoBehaviour
     void Update()
     {
         HandleSkills();
+
         if (!isBlending) return;
         BlendModelRotationToParent();
     }
@@ -168,11 +176,19 @@ public class BossAI : MonoBehaviour
         if (!Boss.IsMainClient)
             return;
 
-        CS_MONSTER_AI packet = new CS_MONSTER_AI
+        CS_MONSTER_AI packet = new CS_MONSTER_AI();
+        packet.AiID = boss.bossID;
+        packet.BossState = (uint)skillState;
+        packet.CurSpeed = boss.SOData.GroundData.BaseSpeed * boss.SOData.GroundData.ChasingSpeedModifier;
+        packet.BossPos = new Position
         {
-            AiID = boss.bossID,
-            BossState = (uint)skillState
+            PosX = transform.position.x,
+            PosY = transform.position.y,
+            PosZ = transform.position.z
         };
+
+        packet.TargetMovementPos = packet.BossPos;
+
         Managers.Network.Send(packet);
     }
 
@@ -188,6 +204,13 @@ public class BossAI : MonoBehaviour
         {
             AiID = boss.bossID,
             BossState = (int)BossState.Chase,
+            BossPos = new Position
+            {
+                PosX = transform.position.x,
+                PosY = transform.position.y,
+                PosZ = transform.position.z
+            },
+
             TargetMovementPos = new Position
             {
                 PosX = target.position.x,
@@ -197,6 +220,69 @@ public class BossAI : MonoBehaviour
             CurSpeed = boss.SOData.GroundData.BaseSpeed * boss.SOData.GroundData.ChasingSpeedModifier
         };
         Managers.Network.Send(packet);
+    }
+
+    public bool IsLookingAtTarget(float angleThreshold = 5f)
+    {
+        if (target == null) return true;
+
+        Vector3 dirToTarget = (target.position - transform.position).normalized;
+        dirToTarget.y = 0f;
+
+        float angle = Vector3.Angle(transform.forward, dirToTarget);
+        return angle <= angleThreshold;
+    }
+
+    public void CSRotateToTarget()
+    {
+        if (!Boss.IsMainClient || target == null) return;
+
+        Vector3 dir = (target.position - transform.position).normalized;
+        dir.y = 0f;
+
+        if (dir == Vector3.zero) return;
+
+        float angle = Vector3.Angle(transform.forward, dir);
+        if (angle < 3f) return; // 너무 작으면 회전 안 보냄
+
+        float targetY = Quaternion.LookRotation(dir).eulerAngles.y;
+
+        CS_MONSTER_ROTATE packet = new CS_MONSTER_ROTATE
+        {
+            AiID = boss.bossID,
+            RotateY = targetY
+        };
+
+        Managers.Network.Send(packet);
+    }
+
+    public void StartSmoothRotate(float targetY, float duration = 1f)
+    {
+        if (rotateCoroutine != null)
+            StopCoroutine(rotateCoroutine);
+
+        rotateCoroutine = StartCoroutine(SmoothRotateY(targetY, duration));
+    }
+
+    private IEnumerator SmoothRotateY(float targetY, float duration)
+    {
+        float time = 0f;
+        Quaternion startRot = transform.rotation;
+        Quaternion endRot = Quaternion.Euler(0, targetY, 0);
+
+        while (time < duration)
+        {
+            transform.rotation = Quaternion.Slerp(startRot, endRot, time / duration);
+            time += Time.deltaTime;
+
+            if (Quaternion.Angle(transform.rotation, endRot) < 0.5f)
+                break;
+
+            yield return null;
+        }
+
+        transform.rotation = endRot;
+        rotateCoroutine = null;
     }
 
     public void SCChaseTarget(Vector3 destination)

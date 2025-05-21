@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public enum MiniMapType
+public enum MiniMapObject
 {
     MiniMapCamera,
 }
@@ -13,13 +13,8 @@ public class UI_MiniMap : UI_Base
     private Camera miniMapCamera;
     public override void Init()
     {
-        
-    }
-    private void Start()
-    {
-        Bind<Camera>(typeof(MiniMapType));
-        miniMapCamera = Get<Camera>((int)(MiniMapType.MiniMapCamera));
-
+        Bind<Camera>(typeof(MiniMapObject));
+        miniMapCamera = Get<Camera>((int)(MiniMapObject.MiniMapCamera));
     }
 
     // Update is called once per frame

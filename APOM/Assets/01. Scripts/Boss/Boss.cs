@@ -81,6 +81,13 @@ public class Boss : MonoBehaviour
         packet.AiID = bossID;
         packet.BossState = (uint)state;
         packet.CurSpeed = curSpeed;
+        packet.BossPos = new Position
+        {
+            PosX = transform.position.x,
+            PosY = transform.position.y,
+            PosZ = transform.position.z
+        };
+        packet.TargetMovementPos = packet.BossPos;
         // 위치, 목표 좌표도 필요시 설정
 
         Managers.Network.Send(packet);

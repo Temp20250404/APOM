@@ -311,6 +311,11 @@ class PacketHandler
         SC_MONSTER_ROTATE monsterRotatePacket = packet as SC_MONSTER_ROTATE;
 
         // TODO: SC_MonsterRotate 패킷 처리 로직을 여기에 구현
+
+        Boss boss = Managers.BossManager.GetBoss(monsterRotatePacket.AiID);
+        if (boss == null) return;
+
+        boss.GetComponent<BossAI>().StartSmoothRotate(monsterRotatePacket.RotateY);
     }
 
     // SC_MAKE_PARTY 패킷을 처리하는 함수

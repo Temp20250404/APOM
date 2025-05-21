@@ -106,6 +106,10 @@ public class PlayerStat
         }
 
         currentHp -= _damage;
+
+        var uiMain = Managers.UI._sceneUI as UI_Main;
+        uiMain.condition.SetFill();
+
         if (currentHp < 0)
         {
             currentHp = 0;

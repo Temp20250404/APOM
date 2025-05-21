@@ -54,7 +54,9 @@ public class UI_BossCondition : UI_Popup
 
     public void SetHPFill(SC_MONSTER_CONDITION packet)
     {
-        hpFill.fillAmount = packet.CurrentHp / packet.MaxHp;
+        float currentHp = packet.CurrentHp;
+        float maxHp = packet.MaxHp;
+        hpFill.fillAmount = currentHp / maxHp;
     }
 
     public void AddBuff()

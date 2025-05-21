@@ -36,12 +36,17 @@ public class PlayerManager : IManager
         }
         Vector3 spawnPosition = new Vector3(_packet.PlayerPos.PosX, 0f, _packet.PlayerPos.PosY);
         GameObject go = Object.Instantiate(playerprefab, spawnPosition, Quaternion.identity);
-        var uiMain = Managers.UI._sceneUI as UI_Main;
-        //uiMain.minimap.player = go.GetComponent<Player>();
+
         Player player = Util.GetOrAddComponent<Player>(go);
         player.playerID = _packet.PlayerID;
         player.Stat.SetStats(_packet.PlayerInfo.PlayerJob);
         player.skillManager.SetSkillDatas(_packet.PlayerInfo.PlayerJob);
+
+        var uiMain = Managers.UI._sceneUI as UI_Main;
+        uiMain.minimap.player = player;
+        uiMain.condition.player = player;
+        uiMain.condition.SetFill();
+
         AddPlayer(_packet.PlayerID, player);
 
         if (isFirstSpawn)
@@ -67,10 +72,10 @@ public class PlayerManager : IManager
             loginPlayerList.Remove(_id);
             GameObject.Destroy(_player.gameObject);
 
-            Debug.Log($"ÇÃ·¹ÀÌ¾î {_id} »èÁ¦ ¼º°ø");
+            Debug.Log($"ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ {_id} ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
         }
         else
-            Debug.Log($"ÇÃ·¹ÀÌ¾î {_id} »èÁ¦ ½ÇÆÐ");
+            Debug.Log($"ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ {_id} ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
     }
 
     public Player GetPlayer(uint _playerID)
