@@ -1,9 +1,12 @@
+using Game;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerArcherPoisonArrowState : PlayerAttackState
 {
+    private int skillindex = 3;
+
     public PlayerArcherPoisonArrowState(PlayerStateMachine playerStateMachine) : base(playerStateMachine)
     {
     }
@@ -13,6 +16,8 @@ public class PlayerArcherPoisonArrowState : PlayerAttackState
 
         base.StateEnter();
         StartAnimation(stateMachine.player.animationData.skill2ParameterHash);
+
+        SendAttackPacket(skillindex);
     }
 
     public override void StateUpdate()
@@ -22,8 +27,10 @@ public class PlayerArcherPoisonArrowState : PlayerAttackState
 
     public override void StateExit()
     {
-        base.StateExit();
         StopAnimation(stateMachine.player.animationData.skill2ParameterHash);
+
+        //DirectRotate(GetCameraDirection());
+        base.StateExit();
     }
 
     public override void StateHandleInput()

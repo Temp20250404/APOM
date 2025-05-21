@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerArcherRainArrowState : PlayerAttackState
 {
+    private int skillindex = 2;
+
     public PlayerArcherRainArrowState(PlayerStateMachine playerStateMachine) : base(playerStateMachine)
     {
     }
@@ -13,6 +15,8 @@ public class PlayerArcherRainArrowState : PlayerAttackState
 
         base.StateEnter();
         StartAnimation(stateMachine.player.animationData.skill1ParameterHash);
+
+        //DirectRotate((Quaternion.Euler(0f, 90f, 0f) * GetCameraDirection()));
     }
 
     public override void StateUpdate()
@@ -22,8 +26,10 @@ public class PlayerArcherRainArrowState : PlayerAttackState
 
     public override void StateExit()
     {
-        base.StateExit();
         StopAnimation(stateMachine.player.animationData.skill1ParameterHash);
+
+        //DirectRotate(GetCameraDirection());
+        base.StateExit();
     }
 
     public override void StateHandleInput()

@@ -1,3 +1,5 @@
+using APOM_Data;
+using Game;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -74,6 +76,24 @@ public class PlayerAttackState : PlayerGroundState
         else
         {
             stateMachine.player.targetPosition = ray.origin + ray.direction * rayDistance;
+        }
+    }
+
+    protected void SendAttackPacket(int _skillIndex)
+    {
+        if (stateMachine.player.targetObject != null)
+        {
+            Util.SendPacket<CS_PLAYER_ATTACK>(packet =>
+            {
+                Boss boss = stateMachine.player.targetObject.GetComponentInParent<Boss>();
+
+                if (boss != null)
+                {
+                    packet.AiID = boss.bossID;
+                }
+
+                packet.AttackDamage = stateMachine.player.Stat.CulSkillDamage(skillManager.equippedSkills[_skillIndex].skilloperation);
+            });
         }
     }
 }

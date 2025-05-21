@@ -1,9 +1,11 @@
+using Game;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerArcherRapidFireState : PlayerAttackState
 {
+    private int skillindex = 6;
     public PlayerArcherRapidFireState(PlayerStateMachine playerStateMachine) : base(playerStateMachine)
     {
     }
@@ -13,6 +15,8 @@ public class PlayerArcherRapidFireState : PlayerAttackState
 
         base.StateEnter();
         StartAnimation(stateMachine.player.animationData.skill5ParameterHash);
+
+        SendAttackPacket(skillindex);
     }
 
     public override void StateUpdate()
@@ -22,8 +26,10 @@ public class PlayerArcherRapidFireState : PlayerAttackState
 
     public override void StateExit()
     {
-        base.StateExit();
         StopAnimation(stateMachine.player.animationData.skill5ParameterHash);
+
+        //DirectRotate(GetCameraDirection());
+        base.StateExit();
     }
 
     public override void StateHandleInput()

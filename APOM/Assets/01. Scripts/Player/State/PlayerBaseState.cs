@@ -13,11 +13,13 @@ public class PlayerBaseState : IState
 {
     protected PlayerStateMachine stateMachine;
     protected readonly PlayerDefaultData defaultData;
+    protected PlayerSkillManager skillManager;
 
     public PlayerBaseState(PlayerStateMachine stateMachine)
     {
         this.stateMachine = stateMachine;
         defaultData = this.stateMachine.player.data.defaultData;
+        skillManager = this.stateMachine.player.skillManager;
     }
 
     public virtual void StateEnter()

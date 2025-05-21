@@ -34,7 +34,7 @@ public class Managers : Singleton<Managers>
     [field: SerializeField] private BossManager bossManager = new BossManager();
     [field: SerializeField] private PlayerDataManager playerData = new PlayerDataManager();
 
-    public static GameManager GameManager => Instance.gameManager;
+    public static GameManager Game => Instance.gameManager;
     public static DataManager Data => Instance.data;
     public static InputManager Input => Instance.input;
     public static ResourceManager Resource => Instance.resource;
@@ -84,11 +84,13 @@ public class Managers : Singleton<Managers>
 
     private void Update()
     {
+        Game.Update();
         Network.Update();
     }
 
     private static void Init()
     {
+        Game.Init();
         Data.Init();
         Input.Init();
         Resource.Init();

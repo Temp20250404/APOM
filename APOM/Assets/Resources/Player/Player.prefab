@@ -2764,6 +2764,7 @@ GameObject:
   - component: {fileID: 5072290704131383980}
   - component: {fileID: 7807379593457248071}
   - component: {fileID: 3329417173526020203}
+  - component: {fileID: 8782380862920108422}
   m_Layer: 14
   m_Name: Player
   m_TagString: Untagged
@@ -2864,6 +2865,8 @@ MonoBehaviour:
     skill3ParameterName: Skill3
     skill4ParameterName: Skill4
     skill5ParameterName: Skill5
+  targetObject: {fileID: 0}
+  targetPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &3329417173526020203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2880,8 +2883,18 @@ MonoBehaviour:
   isMoving: 0
   reciveKeyInputs: 000000000000000000000000
   recivePacketRotation: 0
-  TargetSyncPosition: {x: 0, y: 0, z: 0}
-  TargetSyncRotation: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8782380862920108422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7700766915224855703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3dceee242717c743879753674a2822e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7744020318529129716
 GameObject:
   m_ObjectHideFlags: 0

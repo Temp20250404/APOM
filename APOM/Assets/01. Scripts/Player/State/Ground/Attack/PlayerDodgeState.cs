@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerDodgeState : PlayerAttackState
 {
+    private int skillindex = 1;
     private Vector3 dodgeDir;
 
     public PlayerDodgeState(PlayerStateMachine playerStateMachine) : base(playerStateMachine)
@@ -38,7 +39,7 @@ public class PlayerDodgeState : PlayerAttackState
 
         dodgeDir = Quaternion.Euler(0f, yaw, 0f) * Vector3.forward;
 
-        DirectRotate((Quaternion.Euler(0f, 90f, 0f) * dodgeDir));
+        DirectRotate((Quaternion.Euler(0f, 0f, 0f) * dodgeDir));
     }
 
     public override void StateUpdate()
@@ -50,10 +51,10 @@ public class PlayerDodgeState : PlayerAttackState
 
     public override void StateExit()
     {
-        base.StateExit();
         stateMachine.player.Stat.isDodge = false;
         StopAnimation(stateMachine.player.animationData.dodgeParameterHash);
-        DirectRotate((Quaternion.Euler(0f, 0f, 0f) * dodgeDir));
+        //DirectRotate((Quaternion.Euler(0f, 0f, 0f) * dodgeDir));
+        base.StateExit();
     }
 
     public override void StateHandleInput()

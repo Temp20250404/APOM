@@ -1,10 +1,14 @@
+using APOM_Data;
 using Game;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerNormalAttackState : PlayerAttackState
 {
+    private int skillindex = 0;
+
     public PlayerNormalAttackState(PlayerStateMachine playerStateMachine) : base(playerStateMachine)
     {
     }
@@ -16,22 +20,7 @@ public class PlayerNormalAttackState : PlayerAttackState
         base.StateEnter();
         StartAnimation(stateMachine.player.animationData.normalAttackParameterHash);
 
-        DirectRotate(Quaternion.Euler(0f, 41f, 0f) * GetCameraDirection());
-
-        if (stateMachine.player.targetObject != null)
-        {
-            Util.SendPacket<CS_PLAYER_ATTACK>(packet =>
-            {
-                Boss boss = stateMachine.player.targetObject.GetComponentInParent<Boss>();
-
-                if(boss != null)
-                {
-                    packet.AiID = boss.bossID;
-                }
-
-                packet.AttackDamage = stateMachine.player.Stat.CulSkillDamage(1f);
-            });
-        }
+        SendAttackPacket(skillindex);
     }
 
     public override void StateUpdate()
@@ -43,10 +32,10 @@ public class PlayerNormalAttackState : PlayerAttackState
 
     public override void StateExit()
     {
-        base.StateExit();
         StopAnimation(stateMachine.player.animationData.normalAttackParameterHash);
 
         //DirectRotate(GetCameraDirection());
+        base.StateExit();
     }
 
     public override void StateHandleInput()

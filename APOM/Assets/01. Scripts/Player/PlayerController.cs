@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     public PlayerInputs playerInputs { get; private set; }
     public PlayerInputs.PlayerActions playerActions { get; private set; }
     public CinemachineFreeLook cinemachineFreeLook { get; private set; }
+    private CinemachineInputProvider cinemachineInputProvider;
     GameObject pivot;
 
     public bool isMoving = false;
@@ -61,6 +62,8 @@ public class PlayerController : MonoBehaviour
         if (GameObject.Find("Player Camera") != null)
         {
             cinemachineFreeLook = GameObject.Find("Player Camera").GetComponent<CinemachineFreeLook>();
+            // 카메라 움직임을 막기 위해 가져옴
+            cinemachineInputProvider = GameObject.Find("Player Camera").GetComponent<CinemachineInputProvider>();
         }
 
         Transform _pivot = transform.Find("Pivot");
@@ -80,8 +83,7 @@ public class PlayerController : MonoBehaviour
 
     public void Update()
     {
-        KeyInput();
-        CheckMoveRotationChange();
+        CheckCursorVisible(Managers.Game.cursorVisible);
 
         if (isMainPlayer)
         {
@@ -107,6 +109,24 @@ public class PlayerController : MonoBehaviour
         cinemachineFreeLook.LookAt = pivot.transform;
     }
 
+    void CheckCursorVisible(bool _isVisible)
+    {
+        if (_isVisible)
+        {
+            cinemachineInputProvider.enabled = false;
+
+            Array.Fill(currentKeyInputs, false);
+            AfterKeyInputs();
+        }
+        else
+        {
+            cinemachineInputProvider.enabled = true;
+
+            KeyInput();
+            CheckMoveRotationChange();
+        }
+    }
+
     void KeyInput()
     {
         currentKeyInputs[(int)EKEYINPUT.W] = Input.GetKey(KeyCode.W);
@@ -124,12 +144,17 @@ public class PlayerController : MonoBehaviour
         currentKeyInputs[(int)EKEYINPUT.NUM4] = Input.GetKey(KeyCode.Alpha4);
         currentKeyInputs[(int)EKEYINPUT.NUM5] = Input.GetKey(KeyCode.Alpha5);
 
+        AfterKeyInputs();
+    }
+
+    void AfterKeyInputs()
+    {
         ucurrentKeyInputs = ChnageToUint(currentKeyInputs);
 
         if (currentKeyInputs[(int)EKEYINPUT.W] != false ||
-            currentKeyInputs[(int)EKEYINPUT.S] != false ||
-            currentKeyInputs[(int)EKEYINPUT.A] != false ||
-            currentKeyInputs[(int)EKEYINPUT.D] != false)
+        currentKeyInputs[(int)EKEYINPUT.S] != false ||
+        currentKeyInputs[(int)EKEYINPUT.A] != false ||
+        currentKeyInputs[(int)EKEYINPUT.D] != false)
         {
             wasdDir = GetWASDDir(currentKeyInputs);
             isMoving = true;

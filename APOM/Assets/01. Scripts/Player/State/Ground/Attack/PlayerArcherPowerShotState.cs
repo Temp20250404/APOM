@@ -1,9 +1,12 @@
+using Game;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerArcherPowerShotState : PlayerAttackState
 {
+    private int skillindex = 4;
+
     public PlayerArcherPowerShotState(PlayerStateMachine playerStateMachine) : base(playerStateMachine)
     {
     }
@@ -13,6 +16,8 @@ public class PlayerArcherPowerShotState : PlayerAttackState
 
         base.StateEnter();
         StartAnimation(stateMachine.player.animationData.skill3ParameterHash);
+
+        SendAttackPacket(skillindex);
     }
 
     public override void StateUpdate()
@@ -22,8 +27,10 @@ public class PlayerArcherPowerShotState : PlayerAttackState
 
     public override void StateExit()
     {
-        base.StateExit();
         StopAnimation(stateMachine.player.animationData.skill3ParameterHash);
+
+        //DirectRotate(GetCameraDirection());
+        base.StateExit();
     }
 
     public override void StateHandleInput()

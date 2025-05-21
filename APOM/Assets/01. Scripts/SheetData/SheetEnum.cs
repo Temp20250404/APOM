@@ -74,3 +74,9 @@ public enum ECollidertype
     Sphere,
     Capsule
 }
+
+[UGS(typeof(ETARGET))]
+public enum ETARGET
+{
+    ENEMY
+}

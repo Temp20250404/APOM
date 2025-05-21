@@ -14,6 +14,7 @@ public class DataManager : IManager
     public ItemData itemData { get; private set; } = new ItemData();
     public ColliderData colliderData { get; private set; } = new ColliderData();
     public JobBaseStatsData jobBaseStatsData { get; private set; } = new JobBaseStatsData();
+    public SkillData skillData { get; private set; } = new SkillData();
 
     public void Init()
     {
@@ -21,6 +22,7 @@ public class DataManager : IManager
 
         itemData.Init();
         jobBaseStatsData.Init();
+        skillData.Init();
 
         Debug.Log("DataManager Initialized");
     }
