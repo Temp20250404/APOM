@@ -48,7 +48,7 @@ public abstract class BossBaseState : IState
             PosZ = stateMachine.Boss.transform.position.z
         };
 
-        if (nextState != BossState.Chase && nextState != BossState.Walk)
+        if (nextState != BossState.Chase)
         {
             packet.TargetMovementPos = packet.BossPos;
         }
