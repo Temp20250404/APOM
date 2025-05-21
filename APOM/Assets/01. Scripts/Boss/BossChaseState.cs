@@ -15,8 +15,6 @@ public class BossChaseState : BossBaseState
     {
         base.StateUpdate();
 
-        stateMachine.Boss.bossAI.CSChaseTarget();
-
         if (!stateMachine.Boss.bossAI.DetectTargets(stateMachine.Boss.SOData.PlayerChasingRange))
         {
             stateMachine.Boss.bossAI.target = null;
@@ -25,6 +23,10 @@ public class BossChaseState : BossBaseState
         else if (stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData))
         {
             SendBossState(BossState.Attack);
+        }
+        else
+        {
+            stateMachine.Boss.bossAI.CSChaseTarget();
         }
     }
 

@@ -1,10 +1,13 @@
 using UnityEngine;
 using Game;
+using UnityEngine.InputSystem.LowLevel;
 
 public abstract class BossBaseState : IState
 {
     protected BossStateMachine stateMachine;
     protected readonly BossGroundData groundData;
+
+    private BossState? lastSentState = null;
 
     public BossBaseState(BossStateMachine stateMachine)
     {
@@ -34,6 +37,11 @@ public abstract class BossBaseState : IState
 
     protected void SendBossState(BossState nextState, float speed = 0f)
     {
+        //if (lastSentState.HasValue && lastSentState.Value == nextState)
+        //    return; // 중복 상태 전송 방지
+
+        //lastSentState = nextState;
+
         if (!Boss.IsMainClient)
             return;
 
@@ -48,7 +56,7 @@ public abstract class BossBaseState : IState
             PosZ = stateMachine.Boss.transform.position.z
         };
 
-        if (nextState != BossState.Chase)
+        if (nextState != BossState.Chase && nextState != BossState.Walk)
         {
             packet.TargetMovementPos = packet.BossPos;
         }
