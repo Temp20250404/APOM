@@ -16,16 +16,18 @@ public class BossAttackState1 : BossBaseState
         base.StateUpdate();
 
         AnimatorStateInfo animState = stateMachine.Boss.Anim.GetCurrentAnimatorStateInfo(0);
-        if (animState.IsTag("Attack") && animState.normalizedTime >= 0.8f)
+        if (animState.IsTag("Attack") && animState.normalizedTime >= 0.9f)
         {
-            SendBossState(BossState.Idle);
-            return;
-        }
-
-        if (!stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData))
-        {
-            float chaseSpeed = groundData.ChasingSpeedModifier * groundData.BaseSpeed;
-            SendBossState(BossState.Chase, chaseSpeed);
+            if (!stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData))
+            {
+                float walkSpeed = groundData.WalkSpeedModifier * groundData.BaseSpeed;
+                SendBossState(BossState.Walk, walkSpeed);
+            }
+            else
+            {
+                // 공격 범위에 있을 때는 Idle 상태로 전환
+                SendBossState(BossState.Idle);
+            }
         }
     }
 

@@ -4,12 +4,12 @@ public class BossIdleState : BossBaseState
 {
     public BossIdleState(BossStateMachine stateMachine) : base(stateMachine) { }
 
-    private float lastRotateSendTime = 0f;
-    private float rotateCooldown = 0.2f;
+    private float attackCooldown = 2.0f; // 공격 쿨타임 (초)
+    private float lastAttackTime = -Mathf.Infinity;
 
     public override void StateEnter()
     {
-        stateMachine.MoveMentSpeedModifier = 0f;  
+        stateMachine.MoveMentSpeedModifier = 0f;
         base.StateEnter();
         StartAnimation(stateMachine.Boss.BossAnimationData.IdleParameterHash);
     }
@@ -18,35 +18,34 @@ public class BossIdleState : BossBaseState
     {
         base.StateUpdate();
 
-        //  회전 중이 아니고, 아직 타겟을 안 보고 있다면 회전 요청
-        if (!stateMachine.Boss.bossAI.IsRotating && !stateMachine.Boss.bossAI.IsLookingAtTarget(5f) && Time.time - lastRotateSendTime > rotateCooldown)
+        // 1. 타겟 시야 체크 → 회전 필요 시 Walk 전환
+        if (!stateMachine.Boss.bossAI.IsLookingAtTarget(5f))
         {
-            stateMachine.Boss.bossAI.CSRotateToTarget();
-            lastRotateSendTime = Time.time;
+            float walkSpeed = groundData.WalkSpeedModifier * groundData.BaseSpeed;
+            SendBossState(BossState.Walk, walkSpeed);
+            return;
         }
 
+        // 2. 공격 범위 안에 있을 때만 공격
         if (stateMachine.Boss.bossAI.IsAttackRange(stateMachine.Boss.SOData))
         {
-            AnimatorStateInfo animState = stateMachine.Boss.Anim.GetCurrentAnimatorStateInfo(0);
-            if (animState.IsTag("Idle") && animState.normalizedTime >= 0.8f)
+            // 쿨타임 검사
+            if (Time.time - lastAttackTime >= attackCooldown)
             {
+                lastAttackTime = Time.time;
+
                 int rand = Random.Range(0, 2);
-                if (rand == 0)
-                {
-                    SendBossState(BossState.Attack);
-                }
-                else
-                {
-                    SendBossState(BossState.Attack1);
-                }
+                SendBossState(rand == 0 ? BossState.Attack : BossState.Attack1);
             }
         }
+        // 3. 감지 범위 내에 있고 공격 범위는 아닐 경우 → 추적
         else if (stateMachine.Boss.bossAI.DetectTargets(stateMachine.Boss.SOData.PlayerChasingRange))
         {
             float chaseSpeed = groundData.ChasingSpeedModifier * groundData.BaseSpeed;
             SendBossState(BossState.Chase, chaseSpeed);
         }
     }
+    
 
     public override void StateExit()
     {

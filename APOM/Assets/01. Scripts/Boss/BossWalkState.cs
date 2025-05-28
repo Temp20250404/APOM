@@ -8,13 +8,13 @@ public class BossWalkState : BossBaseState
     {
     }
 
+    private float lastRotateSendTime = 0f;
+    private float rotateCooldown = 0.2f;
+
     public override void StateEnter()
     {
-        // BaseSpeed에 곱해줄 값 세팅
-        stateMachine.MoveMentSpeedModifier = groundData.WalkSpeedModifier * groundData.BaseSpeed;
         base.StateEnter();
         StartAnimation(stateMachine.Boss.BossAnimationData.WalkParameterHash);
-        //stateMachine.Boss.bossAI.StartWalk();
     }
 
     // Walk 상태에서 다른 상태로 전환될 때
@@ -28,17 +28,18 @@ public class BossWalkState : BossBaseState
     {
         base.StateUpdate();
 
-        if (stateMachine.Boss.bossAI.DetectTargets(stateMachine.Boss.SOData.PlayerChasingRange))
+        //  회전 중이 아니고, 아직 타겟을 안 보고 있다면 회전 요청
+        if (!stateMachine.Boss.bossAI.IsRotating && !stateMachine.Boss.bossAI.IsLookingAtTarget(5f) && Time.time - lastRotateSendTime > rotateCooldown)
         {
-            stateMachine.ChangeState(BossState.Chase);
-            Debug.Log("Chase State");
-            return;
+            stateMachine.Boss.bossAI.CSRotateToTarget();
+            lastRotateSendTime = Time.time;
         }
 
-        //if (stateMachine.Boss.bossAI.EndWalk())
-        //{
-        //    stateMachine.ChangeState(BossState.Idle); // 도착 시 Idle 상태로 전환
-        //    return;
-        //}
+        if (stateMachine.Boss.bossAI.IsLookingAtTarget(5f))
+        {
+            SendBossState(BossState.Idle);
+        }
     }
 }
+
+
