@@ -55,6 +55,7 @@ public class PlayerDodgeState : PlayerAttackState
         StopAnimation(stateMachine.player.animationData.dodgeParameterHash);
         //DirectRotate((Quaternion.Euler(0f, 0f, 0f) * dodgeDir));
         base.StateExit();
+        skillManager.StartCooldown(skillindex);
     }
 
     public override void StateHandleInput()

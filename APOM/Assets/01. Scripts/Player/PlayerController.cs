@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     public bool isMainPlayer = false;
     public PlayerInputs playerInputs { get; private set; }
     public PlayerInputs.PlayerActions playerActions { get; private set; }
+    public PlayerSkillManager skillManager { get; private set; }
     public CinemachineFreeLook cinemachineFreeLook { get; private set; }
     private CinemachineInputProvider cinemachineInputProvider;
     GameObject pivot;
@@ -54,10 +55,22 @@ public class PlayerController : MonoBehaviour
     public Vector3 TargetSyncPosition { get; set; }
     public Quaternion TargetSyncRotation { get; set; }
 
+    KeyCode[] skillKeys = new KeyCode[]
+{
+    KeyCode.Mouse0, // LCLICK
+    KeyCode.Mouse1, // RCLICK
+    KeyCode.Alpha1, // NUM1
+    KeyCode.Alpha2, // NUM2
+    KeyCode.Alpha3, // NUM3
+    KeyCode.Alpha4, // NUM4
+    KeyCode.Alpha5  // NUM5
+};
+
     private void Awake()
     {
         playerInputs = new PlayerInputs();
         playerActions = playerInputs.Player;
+        skillManager = GetComponent<PlayerSkillManager>();
 
         if (GameObject.Find("Player Camera") != null)
         {
@@ -135,14 +148,42 @@ public class PlayerController : MonoBehaviour
         currentKeyInputs[(int)EKEYINPUT.D] = Input.GetKey(KeyCode.D);
         currentKeyInputs[(int)EKEYINPUT.SPACE] = Input.GetKey(KeyCode.Space);
 
-        currentKeyInputs[(int)EKEYINPUT.LCLICK] = Input.GetKey(KeyCode.Mouse0);
-        currentKeyInputs[(int)EKEYINPUT.RCLICK] = Input.GetKey(KeyCode.Mouse1);
+        for (int i = 0; i < skillKeys.Length; i++)
+        {
+            if (skillManager.canUseSkill[i])
+            {
+                currentKeyInputs[i + (int)EKEYINPUT.LCLICK] = Input.GetKey(skillKeys[i]);
+            }
+        }
+        //if (skillManager.canUseSkill[0])
+        //{
+        //    currentKeyInputs[(int)EKEYINPUT.LCLICK] = Input.GetKey(KeyCode.Mouse0);
+        //}
+        //if (skillManager.canUseSkill[1])
+        //{
+        //    currentKeyInputs[(int)EKEYINPUT.RCLICK] = Input.GetKey(KeyCode.Mouse1);
+        //}
 
-        currentKeyInputs[(int)EKEYINPUT.NUM1] = Input.GetKey(KeyCode.Alpha1);
-        currentKeyInputs[(int)EKEYINPUT.NUM2] = Input.GetKey(KeyCode.Alpha2);
-        currentKeyInputs[(int)EKEYINPUT.NUM3] = Input.GetKey(KeyCode.Alpha3);
-        currentKeyInputs[(int)EKEYINPUT.NUM4] = Input.GetKey(KeyCode.Alpha4);
-        currentKeyInputs[(int)EKEYINPUT.NUM5] = Input.GetKey(KeyCode.Alpha5);
+        //if (skillManager.canUseSkill[2])
+        //{
+        //    currentKeyInputs[(int)EKEYINPUT.NUM1] = Input.GetKey(KeyCode.Alpha1);
+        //}
+        //if (skillManager.canUseSkill[3])
+        //{
+        //    currentKeyInputs[(int)EKEYINPUT.NUM2] = Input.GetKey(KeyCode.Alpha2);
+        //}
+        //if (skillManager.canUseSkill[4])
+        //{
+        //    currentKeyInputs[(int)EKEYINPUT.NUM3] = Input.GetKey(KeyCode.Alpha3);
+        //}
+        //if (skillManager.canUseSkill[5])
+        //{
+        //    currentKeyInputs[(int)EKEYINPUT.NUM4] = Input.GetKey(KeyCode.Alpha4);
+        //}
+        //if (skillManager.canUseSkill[6])
+        //{
+        //    currentKeyInputs[(int)EKEYINPUT.NUM5] = Input.GetKey(KeyCode.Alpha5);
+        //}
 
         AfterKeyInputs();
     }

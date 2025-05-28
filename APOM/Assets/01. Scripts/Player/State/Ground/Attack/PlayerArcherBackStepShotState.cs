@@ -37,6 +37,7 @@ public class PlayerArcherBackStepShotState : PlayerAttackState
     {
         StopAnimation(stateMachine.player.animationData.skill4ParameterHash);
         base.StateExit();
+        skillManager.StartCooldown(skillindex);
     }
 
     public override void StateHandleInput()

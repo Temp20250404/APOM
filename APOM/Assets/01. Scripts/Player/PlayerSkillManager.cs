@@ -10,16 +10,12 @@ public class PlayerSkillManager : MonoBehaviour
     public APOM_Data.Skill_Data[] equippedSkills = new APOM_Data.Skill_Data[SkillCount];
     public bool[] canUseSkill = new bool[SkillCount];
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        for (int i = 0; i < SkillCount; i++)
+        {
+            canUseSkill[i] = true;
+        }
     }
 
     public void SetSkillDatas(uint _jobIndex)
@@ -47,7 +43,7 @@ public class PlayerSkillManager : MonoBehaviour
         if (canUseSkill[skillIndex])
         {
             canUseSkill[skillIndex] = false;
-            //StartCoroutine(SkillCooldownCoroutine(skillIndex, skillCooldowns[skillIndex]));
+            StartCoroutine(SkillCooldownCoroutine(skillIndex, equippedSkills[skillIndex].cooldown));
         }
     }
 

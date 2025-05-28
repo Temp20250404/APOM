@@ -31,6 +31,7 @@ public class PlayerArcherPowerShotState : PlayerAttackState
 
         //DirectRotate(GetCameraDirection());
         base.StateExit();
+        skillManager.StartCooldown(skillindex);
     }
 
     public override void StateHandleInput()

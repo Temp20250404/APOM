@@ -30,6 +30,7 @@ public class PlayerArcherRapidFireState : PlayerAttackState
 
         //DirectRotate(GetCameraDirection());
         base.StateExit();
+        skillManager.StartCooldown(skillindex);
     }
 
     public override void StateHandleInput()
